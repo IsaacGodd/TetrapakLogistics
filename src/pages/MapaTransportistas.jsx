@@ -1,9 +1,11 @@
 import { useState, useMemo } from 'react'
 import { Truck, Calendar, ChevronDown, Plus, Check, Download } from 'lucide-react'
 import MockMap from '../components/MockMap'
-import { centros, diasSemana, materialesLista } from '../data/mockData'
+import { diasSemana, materialesLista } from '../data/mockData'
+import { useData } from '../context/DataContext'
 
 export default function MapaTransportistas() {
+  const { centros } = useData()
   const [selectedDia, setSelectedDia] = useState('Lun')
   const [materialFiltro, setMaterialFiltro] = useState('Todos los materiales')
   const [tetrapakFiltro, setTetrapakFiltro] = useState('todos') // 'todos' | 'si' | 'no'
@@ -190,9 +192,9 @@ export default function MapaTransportistas() {
             <div className="flex items-start justify-between mb-3">
               <div>
                 <h3 className="font-bold text-sm text-gray-900 leading-tight">{selectedCentro.nombre}</h3>
-                {selectedCentro.tetrapak && (
+                {selectedCentro.movil && (
                   <span className="inline-flex items-center gap-1 mt-1 text-xs font-semibold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full">
-                    Móvil
+                    📍 Móvil · {selectedCentro.dias_activo ?? 0} días activo
                   </span>
                 )}
               </div>

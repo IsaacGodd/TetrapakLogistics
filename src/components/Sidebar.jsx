@@ -1,25 +1,27 @@
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink, Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useState } from 'react'
 import {
-  LayoutDashboard, Map, HelpCircle, History, MapPin, LogOut, Menu, X
+  LayoutDashboard, Map, HelpCircle, History, MapPin, LogOut, Menu, X, Upload
 } from 'lucide-react'
 
-// Per-path brand colors for active state
+// Per-path brand colors for active state (dark mode only)
 const navColors = {
   '/dashboard':           { bg: 'bg-blue-50',   text: 'text-blue-700',   border: 'border-l-blue-600'   },
   '/mapa-transportistas': { bg: 'bg-orange-50', text: 'text-orange-600', border: 'border-l-orange-500' },
   '/que-hacer':           { bg: 'bg-teal-50',   text: 'text-teal-700',   border: 'border-l-teal-600'   },
   '/historia':            { bg: 'bg-green-50',  text: 'text-green-700',  border: 'border-l-green-600'  },
   '/centros-acopio':      { bg: 'bg-orange-50', text: 'text-orange-600', border: 'border-l-orange-500' },
+  '/importar':            { bg: 'bg-indigo-50', text: 'text-indigo-700', border: 'border-l-indigo-600' },
 }
 
 const navItems = [
-  { path: '/dashboard',           label: 'Dashboard',                roles: ['admin','employee'],                              Icon: LayoutDashboard },
-  { path: '/mapa-transportistas', label: 'Mapa Transportistas',       roles: ['admin','employee','transportista'],               Icon: Map             },
-  { path: '/que-hacer',           label: '¿Qué hacer con Tetrapak?',  roles: ['admin','employee','transportista','invitado'],    Icon: HelpCircle      },
-  { path: '/historia',            label: 'Historia',                  roles: ['admin','employee','transportista','invitado'],    Icon: History         },
-  { path: '/centros-acopio',      label: 'Centros de Acopio',         roles: ['admin','employee','transportista','invitado'],    Icon: MapPin          },
+  { path: '/dashboard',           label: 'Dashboard',                roles: ['admin','employee','tester'],                                 Icon: LayoutDashboard },
+  { path: '/mapa-transportistas', label: 'Mapa Transportistas',       roles: ['admin','employee','transportista','tester'],                  Icon: Map             },
+  { path: '/que-hacer',           label: '¿Qué hacer con Tetrapak?',  roles: ['admin','employee','transportista','invitado','tester'],       Icon: HelpCircle      },
+  { path: '/historia',            label: 'Historia',                  roles: ['admin','employee','transportista','invitado','tester'],       Icon: History         },
+  { path: '/centros-acopio',      label: 'Centros de Acopio',         roles: ['admin','employee','transportista','invitado','tester'],       Icon: MapPin          },
+  { path: '/importar',            label: 'Importar Datos',            roles: ['admin','employee','tester'],                                 Icon: Upload          },
 ]
 
 export default function Sidebar() {
@@ -34,18 +36,18 @@ export default function Sidebar() {
   const Content = () => (
     <div className="flex flex-col h-full">
       {/* Logo */}
-      <div className="px-5 py-6 border-b border-gray-100">
-        <div className="flex items-center gap-3">
-          <div className="w-13 h-13 rounded-2xl flex items-center justify-center text-white font-extrabold text-2xl shrink-0 shadow-lg"
+      <div className="px-5 py-6 border-b border-gray-100 dark:border-gray-800">
+        <Link to="/dashboard" className="flex items-center gap-3 group">
+          <div className="rounded-2xl flex items-center justify-center text-white font-extrabold text-2xl shrink-0 shadow-lg transition-transform group-hover:scale-105"
             style={{ background: 'linear-gradient(135deg, #1D6ADE 0%, #0d9488 100%)', width: 52, height: 52 }}>
             T
           </div>
           <div className="leading-tight">
             <div className="font-extrabold text-primary text-base tracking-tight">Tetrapak</div>
             <div className="font-extrabold text-teal-600 text-base -mt-0.5 tracking-tight">Logistics</div>
-            <div className="text-xs text-gray-400 font-medium mt-0.5">SEDUSO</div>
+            <div className="text-xs text-gray-400 dark:text-gray-500 font-medium mt-0.5">SEDUSO</div>
           </div>
-        </div>
+        </Link>
       </div>
 
       {/* Nav */}
@@ -61,7 +63,7 @@ export default function Sidebar() {
                 `group flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 border-l-2 ${
                   isActive
                     ? `${colors.bg} ${colors.text} border-l-2 ${colors.border} shadow-sm`
-                    : 'text-gray-500 hover:bg-gray-50 hover:text-gray-800 border-transparent'
+                    : 'text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-800 dark:hover:text-gray-200 border-transparent'
                 }`
               }
             >
@@ -78,17 +80,17 @@ export default function Sidebar() {
 
       {/* User info */}
       {user && (
-        <div className="px-4 py-3 mx-3 mb-2 bg-gray-50 rounded-xl">
-          <p className="text-xs font-semibold text-gray-700 truncate">{user.name}</p>
-          <p className="text-xs text-gray-400 capitalize">{user.role}</p>
+        <div className="px-4 py-3 mx-3 mb-2 bg-gray-50 dark:bg-gray-800 rounded-xl">
+          <p className="text-xs font-semibold text-gray-700 dark:text-gray-200 truncate">{user.name}</p>
+          <p className="text-xs text-gray-400 dark:text-gray-500 capitalize">{user.role}</p>
         </div>
       )}
 
       {/* Logout */}
-      <div className="px-3 py-4 border-t border-gray-100">
+      <div className="px-3 py-4 border-t border-gray-100 dark:border-gray-800">
         <button
           onClick={handleLogout}
-          className="group flex items-center gap-2.5 w-full px-3 py-2.5 rounded-xl text-sm font-medium text-red-500 hover:bg-red-50 hover:text-red-600 transition-all duration-200 active:scale-95"
+          className="group flex items-center gap-2.5 w-full px-3 py-2.5 rounded-xl text-sm font-medium text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 transition-all duration-200 active:scale-95"
         >
           <LogOut size={17} strokeWidth={1.8} className="shrink-0" />
           Cerrar Sesión
@@ -112,12 +114,12 @@ export default function Sidebar() {
       )}
 
       {/* Desktop */}
-      <aside className="hidden lg:flex flex-col w-56 bg-white border-r border-gray-100 h-screen sticky top-0 shrink-0 shadow-sm">
+      <aside className="hidden lg:flex flex-col w-56 bg-white dark:bg-gray-900 border-r border-gray-100 dark:border-gray-800 h-screen sticky top-0 shrink-0 shadow-sm">
         <Content />
       </aside>
 
       {/* Mobile drawer */}
-      <aside className={`lg:hidden fixed left-0 top-0 h-full w-56 bg-white border-r border-gray-100 z-50 shadow-xl transition-transform duration-300 ${mobileOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+      <aside className={`lg:hidden fixed left-0 top-0 h-full w-56 bg-white dark:bg-gray-900 border-r border-gray-100 dark:border-gray-800 z-50 shadow-xl transition-transform duration-300 ${mobileOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <Content />
       </aside>
     </>

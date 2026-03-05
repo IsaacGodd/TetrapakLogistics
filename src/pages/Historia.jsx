@@ -50,7 +50,7 @@ const aliados = [
 
 export default function Historia() {
   return (
-    <div className="min-h-full" style={{ background: 'linear-gradient(180deg, #EFF6FF 0%, #F8FAFC 60%, #F0FDF4 100%)' }}>
+    <div className="min-h-full bg-white dark:bg-gray-900">
       <div className="max-w-3xl mx-auto px-6 py-10 space-y-8">
 
         {/* Hero */}

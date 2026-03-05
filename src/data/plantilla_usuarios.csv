@@ -1,0 +1,5 @@
+id,username,password,role,name,email
+1,admin,admin123,admin,Carlos Admin,admin@tetrapak.com
+2,empleado,empleado123,employee,Ana García,ana@tetrapak.com
+3,transportista,trans123,transportista,Juan Pérez,juan@tetrapak.com
+4,tester,tester123,tester,Test User,tester@tetrapak.com

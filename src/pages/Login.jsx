@@ -20,7 +20,7 @@ export default function Login() {
       setLoading(false)
       if (result.success) {
         const r = result.user.role
-        navigate(r === 'admin' || r === 'employee' ? '/dashboard' : '/que-hacer')
+        navigate(['admin', 'employee', 'tester'].includes(r) ? '/dashboard' : '/que-hacer')
       } else {
         setError(result.error)
       }
@@ -114,7 +114,7 @@ export default function Login() {
           <div className="mt-6 p-3 bg-gray-50 rounded-xl text-xs text-gray-400 space-y-0.5">
             <p className="font-semibold text-gray-500 mb-1">Cuentas de prueba:</p>
             <p>admin / admin123 &nbsp;·&nbsp; empleado / empleado123</p>
-            <p>transportista / trans123</p>
+            <p>transportista / trans123 &nbsp;·&nbsp; tester / tester123</p>
           </div>
         </div>
 

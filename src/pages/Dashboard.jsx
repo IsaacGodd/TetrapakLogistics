@@ -1,12 +1,12 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import {
   BarChart, Bar, LineChart, Line, AreaChart, Area,
   ComposedChart, PieChart, Pie, Cell,
   XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts'
 import { Truck, Package, MapPin, TrendingUp, Users, DollarSign, Filter, Download, Check } from 'lucide-react'
+import { useData } from '../context/DataContext'
 import {
-  centros, viajes,
   recoleccionMensual, tendenciaViajes, eficienciaOperativa,
   ingresosCostos, distribucionMateriales
 } from '../data/mockData'
@@ -18,22 +18,17 @@ const statusStyles = {
   'Cancelado':   'bg-red-50    text-red-600    border border-red-200',
 }
 
-// Totals across ALL centers (constant — for computing scale ratios)
-const ALL_TONELADAS  = centros.reduce((s, c) => s + c.stats.toneladas, 0)
-const ALL_VIAJES     = centros.reduce((s, c) => s + c.stats.viajes,    0)
-const ALL_COSTOS     = centros.reduce((s, c) => s + c.stats.costos,    0)
-const BASE_EF_AVG    = centros.reduce((s, c) => s + c.stats.eficiencia, 0) / centros.length
 const MESES = ['Ene','Feb','Mar','Abr','May','Jun']
 
-// Compute eficiencia shift so monthly curve keeps its shape but reflects the selection's average
-function computeEficiencia(selectedData) {
-  if (!selectedData.length) return MESES.map((mes, i) => ({ mes, eficiencia: 0 }))
+function computeEficiencia(selectedData, baseAvg) {
+  if (!selectedData.length) return MESES.map(mes => ({ mes, eficiencia: 0 }))
   const selAvg = selectedData.reduce((s, c) => s + c.stats.eficiencia, 0) / selectedData.length
-  const shift  = selAvg - BASE_EF_AVG
-  return eficienciaOperativa.map(d => ({ ...d, eficiencia: Math.min(100, Math.max(0, Math.round(d.eficiencia + shift))) }))
+  const shift  = selAvg - baseAvg
+  return eficienciaOperativa.map(d => ({
+    ...d, eficiencia: Math.min(100, Math.max(0, Math.round(d.eficiencia + shift)))
+  }))
 }
 
-// Pie chart: proportion per material from selected centers
 function computeDistribucion(selectedData) {
   const matTons = {}
   selectedData.forEach(c => {
@@ -49,22 +44,25 @@ function computeDistribucion(selectedData) {
 }
 
 export default function Dashboard() {
-  const [selectedIds, setSelectedIds] = useState(centros.map(c => c.id))
+  const { centros, viajes } = useData()
+  const [selectedIds, setSelectedIds] = useState([])
 
-  const toggleCentro = (id) => setSelectedIds(prev =>
+  // Sync chip selection when centros are imported
+  useEffect(() => {
+    setSelectedIds(centros.map(c => c.id))
+  }, [centros])
+
+  const toggleCentro = id => setSelectedIds(prev =>
     prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
   )
   const selectAll = () => setSelectedIds(centros.map(c => c.id))
   const clearAll  = () => setSelectedIds([])
 
-  // ---- reactive derivations ----
-  const selectedData = useMemo(() => centros.filter(c => selectedIds.includes(c.id)), [selectedIds])
+  const selectedData = useMemo(() => centros.filter(c => selectedIds.includes(c.id)), [selectedIds, centros])
 
   const kpis = useMemo(() => {
-    if (!selectedData.length) return {
-      viajes: 0, toneladas: '0.0', centros: 0, eficiencia: 0, conductores: 0, costos: 0
-    }
-    const tons  = selectedData.reduce((s, c) => s + c.stats.toneladas,    0)
+    if (!selectedData.length) return { viajes: 0, toneladas: '0.0', centros: 0, eficiencia: 0, conductores: 0, costos: 0 }
+    const tons  = selectedData.reduce((s, c) => s + c.stats.toneladas, 0)
     const efPon = selectedData.reduce((s, c) => s + c.stats.eficiencia * c.stats.toneladas, 0)
     return {
       viajes:      selectedData.reduce((s, c) => s + c.stats.viajes,      0),
@@ -77,6 +75,11 @@ export default function Dashboard() {
   }, [selectedData])
 
   const charts = useMemo(() => {
+    const allTons   = centros.reduce((s, c) => s + c.stats.toneladas,   0)
+    const allViajes = centros.reduce((s, c) => s + c.stats.viajes,      0)
+    const allCostos = centros.reduce((s, c) => s + c.stats.costos,      0)
+    const baseAvg   = centros.length ? centros.reduce((s, c) => s + c.stats.eficiencia, 0) / centros.length : 82
+
     if (!selectedData.length) return {
       recoleccion: MESES.map(mes => ({ mes, toneladas: 0 })),
       tendencia:   MESES.map(mes => ({ mes, viajes:    0 })),
@@ -84,30 +87,30 @@ export default function Dashboard() {
       ingresos:    ingresosCostos.map(d => ({ ...d, ingresos: 0, costos: 0, tendencia: 0 })),
       dist:        [],
     }
-    const tonR  = selectedData.reduce((s, c) => s + c.stats.toneladas, 0) / ALL_TONELADAS
-    const viaR  = ALL_VIAJES   > 0 ? selectedData.reduce((s, c) => s + c.stats.viajes,   0) / ALL_VIAJES   : 0
-    const cosR  = ALL_COSTOS   > 0 ? selectedData.reduce((s, c) => s + c.stats.costos,   0) / ALL_COSTOS   : 0
+    const tonR = allTons   > 0 ? selectedData.reduce((s,c) => s + c.stats.toneladas, 0) / allTons   : 0
+    const viaR = allViajes > 0 ? selectedData.reduce((s,c) => s + c.stats.viajes,    0) / allViajes : 0
+    const cosR = allCostos > 0 ? selectedData.reduce((s,c) => s + c.stats.costos,    0) / allCostos : 0
     return {
       recoleccion: recoleccionMensual.map(d => ({ ...d, toneladas: Math.round(d.toneladas * tonR) })),
-      tendencia:   tendenciaViajes.map(d =>   ({ ...d, viajes:    Math.round(d.viajes    * viaR) })),
-      eficiencia:  computeEficiencia(selectedData),
-      ingresos:    ingresosCostos.map(d =>    ({
+      tendencia:   tendenciaViajes.map(d =>    ({ ...d, viajes:    Math.round(d.viajes    * viaR) })),
+      eficiencia:  computeEficiencia(selectedData, baseAvg),
+      ingresos:    ingresosCostos.map(d => ({
         ...d,
-        ingresos:   Math.round(d.ingresos  * cosR),
-        costos:     Math.round(d.costos    * cosR),
-        tendencia:  Math.round(d.tendencia * cosR),
+        ingresos:  Math.round(d.ingresos  * cosR),
+        costos:    Math.round(d.costos    * cosR),
+        tendencia: Math.round(d.tendencia * cosR),
       })),
       dist: computeDistribucion(selectedData),
     }
-  }, [selectedData])
+  }, [selectedData, centros])
 
   const kpiCards = [
-    { key: 'viajes',       label: 'Viajes Totales',       Icon: Truck,       bg: 'bg-blue-500',   fmt: v => v,           delta: '+12%', positive: true,  deltaLabel: 'vs sem anterior' },
-    { key: 'toneladas',    label: 'Material Recolectado', Icon: Package,     bg: 'bg-green-500',  fmt: v => `${v} Tons`, delta: '+8%',  positive: true,  deltaLabel: 'vs mes anterior' },
-    { key: 'centros',      label: 'Centros Activos',      Icon: MapPin,      bg: 'bg-orange-500', fmt: v => v,           delta: '+5%',  positive: true,  deltaLabel: 'vs mes anterior' },
-    { key: 'eficiencia',   label: 'Eficiencia de Ruta',   Icon: TrendingUp,  bg: 'bg-purple-500', fmt: v => `${v}%`,     delta: '+5%',  positive: true,  deltaLabel: 'vs mes anterior' },
-    { key: 'conductores',  label: 'Conductores Activos',  Icon: Users,       bg: 'bg-cyan-500',   fmt: v => v,           delta: '-2%',  positive: false, deltaLabel: 'vs mes anterior' },
-    { key: 'costos',       label: 'Costos Operativos',    Icon: DollarSign,  bg: 'bg-red-500',    fmt: v => `$${v}`,     delta: '-20%', positive: true,  deltaLabel: 'vs mes anterior' },
+    { key: 'viajes',      label: 'Viajes Totales',       Icon: Truck,      bg: 'bg-blue-500',   fmt: v => v,           delta: '+12%', positive: true,  deltaLabel: 'vs sem anterior' },
+    { key: 'toneladas',   label: 'Material Recolectado', Icon: Package,    bg: 'bg-green-500',  fmt: v => `${v} Tons`, delta: '+8%',  positive: true,  deltaLabel: 'vs mes anterior' },
+    { key: 'centros',     label: 'Centros Activos',      Icon: MapPin,     bg: 'bg-orange-500', fmt: v => v,           delta: '+5%',  positive: true,  deltaLabel: 'vs mes anterior' },
+    { key: 'eficiencia',  label: 'Eficiencia de Ruta',   Icon: TrendingUp, bg: 'bg-purple-500', fmt: v => `${v}%`,     delta: '+5%',  positive: true,  deltaLabel: 'vs mes anterior' },
+    { key: 'conductores', label: 'Conductores Activos',  Icon: Users,      bg: 'bg-cyan-500',   fmt: v => v,           delta: '-2%',  positive: false, deltaLabel: 'vs mes anterior' },
+    { key: 'costos',      label: 'Costos Operativos',    Icon: DollarSign, bg: 'bg-red-500',    fmt: v => `$${v}`,     delta: '-20%', positive: true,  deltaLabel: 'vs mes anterior' },
   ]
 
   return (
@@ -130,37 +133,51 @@ export default function Dashboard() {
             <Filter size={16} className="text-primary" strokeWidth={2} />
             Filtrar por Centro de Acopio
           </div>
-          <div className="flex gap-2 text-xs">
+          <div className="flex gap-2 text-xs items-center">
             <span className="text-gray-400 font-medium mr-1">{selectedIds.length}/{centros.length} seleccionados</span>
             <button onClick={selectAll} className="px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium transition active:scale-95">Seleccionar Todos</button>
             <button onClick={clearAll}  className="px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium transition active:scale-95">Limpiar</button>
           </div>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
-          {centros.map(centro => {
-            const active = selectedIds.includes(centro.id)
-            return (
-              <button
-                key={centro.id}
-                onClick={() => toggleCentro(centro.id)}
-                className={`px-3 py-2.5 rounded-xl text-xs font-medium transition-all duration-200 active:scale-95 text-left border ${
-                  active
-                    ? 'bg-gray-800 text-white border-gray-800 shadow-sm'
-                    : 'bg-white text-gray-600 border-gray-200 hover:border-gray-400 hover:bg-gray-50'
-                }`}
-              >
-                <div className="font-semibold leading-tight truncate">{centro.nombre}</div>
-                <div className={`text-xs mt-0.5 flex items-center gap-1 ${active ? (centro.tetrapak ? 'text-green-300' : 'text-gray-400') : (centro.tetrapak ? 'text-green-600' : 'text-gray-400')}`}>
-                  {centro.tetrapak && <Check size={10} strokeWidth={3} />}
-                  {centro.tetrapak ? 'Tetrapak' : 'Sin Tetrapak'}
-                </div>
-              </button>
-            )
-          })}
-        </div>
+        {centros.length === 0 ? (
+          <p className="text-sm text-gray-400 text-center py-4">
+            Sin centros cargados. <a href="/importar" className="text-primary hover:underline font-medium">Importa un CSV</a> para comenzar.
+          </p>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
+            {centros.map(centro => {
+              const active = selectedIds.includes(centro.id)
+              return (
+                <button
+                  key={centro.id}
+                  onClick={() => toggleCentro(centro.id)}
+                  className={`px-3 py-2.5 rounded-xl text-xs font-medium transition-all duration-200 active:scale-95 text-left border ${
+                    active
+                      ? 'bg-gray-800 text-white border-gray-800 shadow-sm'
+                      : 'bg-white text-gray-600 border-gray-200 hover:border-gray-400 hover:bg-gray-50'
+                  }`}
+                >
+                  <div className="font-semibold leading-tight truncate">{centro.nombre}</div>
+                  <div className={`text-xs mt-0.5 flex items-center gap-1 ${
+                    active
+                      ? (centro.movil ? 'text-orange-300' : centro.tetrapak ? 'text-green-300' : 'text-gray-400')
+                      : (centro.movil ? 'text-orange-500' : centro.tetrapak ? 'text-green-600' : 'text-gray-400')
+                  }`}>
+                    {centro.movil
+                      ? <span>📍 Móvil</span>
+                      : centro.tetrapak
+                        ? <><Check size={10} strokeWidth={3} /> Tetrapak</>
+                        : 'Sin Tetrapak'
+                    }
+                  </div>
+                </button>
+              )
+            })}
+          </div>
+        )}
       </div>
 
-      {/* ---- KPI CARDS (reactive) ---- */}
+      {/* ---- KPI CARDS ---- */}
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
         {kpiCards.map(({ key, label, Icon, bg, fmt, delta, positive, deltaLabel }) => (
           <div key={key} className="bg-white rounded-2xl border border-gray-100 p-5 flex items-center justify-between shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5">
@@ -250,20 +267,20 @@ export default function Dashboard() {
         </ChartCard>
       </div>
 
-      {/* ---- DISTRIBUCIÓN DE MATERIALES (reactive) ---- */}
+      {/* ---- DISTRIBUCIÓN DE MATERIALES ---- */}
       <ChartCard title="Distribución de Materiales">
         {charts.dist.length === 0 ? (
           <div className="h-40 flex items-center justify-center text-gray-400 text-sm">
-            Selecciona al menos un centro para ver la distribución
+            {centros.length === 0
+              ? 'Importa centros de acopio para ver la distribución'
+              : 'Selecciona al menos un centro'}
           </div>
         ) : (
           <div className="flex flex-col md:flex-row items-center gap-6">
             <ResponsiveContainer width="100%" height={220}>
               <PieChart>
                 <Pie data={charts.dist} cx="50%" cy="50%" outerRadius={90} innerRadius={30} dataKey="value" paddingAngle={2}>
-                  {charts.dist.map((entry, i) => (
-                    <Cell key={i} fill={entry.color} stroke="none" />
-                  ))}
+                  {charts.dist.map((entry, i) => <Cell key={i} fill={entry.color} stroke="none" />)}
                 </Pie>
                 <Tooltip formatter={v => `${v}%`} contentStyle={{ borderRadius: 10, border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', fontSize: 12 }} />
               </PieChart>
@@ -286,39 +303,42 @@ export default function Dashboard() {
           <h3 className="text-sm font-semibold text-gray-800">Registros Recientes</h3>
           <select className="text-xs border border-gray-200 rounded-lg px-2.5 py-1.5 text-gray-600 focus:outline-none focus:border-primary cursor-pointer">
             <option>Estado</option>
-            <option>Completado</option>
-            <option>En Proceso</option>
-            <option>Pendiente</option>
-            <option>Cancelado</option>
+            <option>Completado</option><option>En Proceso</option><option>Pendiente</option><option>Cancelado</option>
           </select>
         </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-gray-100">
-                {['ID','Fecha','Conductor','Ruta','Toneladas','Estado'].map(h => (
-                  <th key={h} className="text-left text-xs font-semibold text-gray-400 uppercase tracking-wide pb-3 pr-4 first:pl-1">{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-50">
-              {viajes.map(v => (
-                <tr key={v.id} className="hover:bg-gray-50/70 transition-colors duration-150">
-                  <td className="py-3 pr-4 pl-1 text-gray-400 font-mono text-xs">#{v.id}</td>
-                  <td className="py-3 pr-4 text-gray-600 text-xs">{v.fecha}</td>
-                  <td className="py-3 pr-4 text-gray-800 font-medium text-xs">{v.conductor}</td>
-                  <td className="py-3 pr-4 text-gray-600 text-xs">{v.ruta}</td>
-                  <td className="py-3 pr-4 text-gray-800 font-semibold text-xs">{v.toneladas}</td>
-                  <td className="py-3">
-                    <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${statusStyles[v.estado] || 'bg-gray-100 text-gray-600'}`}>
-                      {v.estado}
-                    </span>
-                  </td>
+        {viajes.length === 0 ? (
+          <p className="text-sm text-gray-400 text-center py-6">
+            Sin registros. <a href="/importar" className="text-primary hover:underline font-medium">Importa viajes</a> para verlos aquí.
+          </p>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-gray-100">
+                  {['ID','Fecha','Conductor','Ruta','Toneladas','Estado'].map(h => (
+                    <th key={h} className="text-left text-xs font-semibold text-gray-400 uppercase tracking-wide pb-3 pr-4 first:pl-1">{h}</th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody className="divide-y divide-gray-50">
+                {viajes.map(v => (
+                  <tr key={v.id} className="hover:bg-gray-50/70 transition-colors duration-150">
+                    <td className="py-3 pr-4 pl-1 text-gray-400 font-mono text-xs">#{v.id}</td>
+                    <td className="py-3 pr-4 text-gray-600 text-xs">{v.fecha}</td>
+                    <td className="py-3 pr-4 text-gray-800 font-medium text-xs">{v.conductor}</td>
+                    <td className="py-3 pr-4 text-gray-600 text-xs">{v.ruta}</td>
+                    <td className="py-3 pr-4 text-gray-800 font-semibold text-xs">{v.toneladas}</td>
+                    <td className="py-3">
+                      <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${statusStyles[v.estado] || 'bg-gray-100 text-gray-600'}`}>
+                        {v.estado}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   )

@@ -1,9 +1,11 @@
 import { useState, useMemo } from 'react'
 import { MapPin, Calendar, ChevronDown, Info, ExternalLink } from 'lucide-react'
 import MockMap from '../components/MockMap'
-import { centros, diasSemana, materialesLista } from '../data/mockData'
+import { diasSemana, materialesLista } from '../data/mockData'
+import { useData } from '../context/DataContext'
 
 export default function CentrosAcopio() {
+  const { centros } = useData()
   const [selectedDia, setSelectedDia] = useState('Lun')
   const [materialFiltro, setMaterialFiltro] = useState('Todos')
   const [tetrapakFiltro, setTetrapakFiltro] = useState('todos')
@@ -160,8 +162,10 @@ export default function CentrosAcopio() {
             <div className="flex items-start justify-between mb-3">
               <div>
                 <h3 className="font-bold text-sm text-gray-900 leading-tight">{selectedCentro.nombre}</h3>
-                {selectedCentro.tetrapak && (
-                  <span className="inline-flex items-center gap-1 mt-1 text-xs font-semibold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full">Móvil</span>
+                {selectedCentro.movil && (
+                  <span className="inline-flex items-center gap-1 mt-1 text-xs font-semibold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full">
+                    📍 Móvil · {selectedCentro.dias_activo ?? 0} días activo
+                  </span>
                 )}
               </div>
               <button onClick={() => setSelectedCentro(null)} className="text-gray-400 hover:text-gray-600 transition-colors ml-2 mt-0.5 active:scale-90">

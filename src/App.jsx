@@ -1,6 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom'
 import { AuthProvider, useAuth } from './context/AuthContext'
+import { DataProvider } from './context/DataContext'
+import { ThemeProvider } from './context/ThemeContext'
 import Sidebar from './components/Sidebar'
+import TopBar from './components/TopBar'
 import ProtectedRoute from './components/ProtectedRoute'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
@@ -8,14 +11,23 @@ import MapaTransportistas from './pages/MapaTransportistas'
 import QueHacer from './pages/QueHacer'
 import Historia from './pages/Historia'
 import CentrosAcopio from './pages/CentrosAcopio'
+import ImportarDatos from './pages/ImportarDatos'
+import Perfil from './pages/Perfil'
+
+const ADMIN_ROLES       = ['admin', 'employee', 'tester']
+const TRANSPORT_ROLES   = ['admin', 'employee', 'transportista', 'tester']
+const ALL_ROLES         = ['admin', 'employee', 'transportista', 'invitado', 'tester']
 
 function AppLayout() {
   return (
-    <div className="flex h-screen overflow-hidden bg-app-bg">
+    <div className="flex h-screen overflow-hidden bg-white dark:bg-gray-950">
       <Sidebar />
-      <main className="flex-1 overflow-y-auto">
-        <Outlet />
-      </main>
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <TopBar />
+        <main className="flex-1 overflow-y-auto">
+          <Outlet />
+        </main>
+      </div>
     </div>
   )
 }
@@ -23,7 +35,7 @@ function AppLayout() {
 function HomeRedirect() {
   const { user } = useAuth()
   if (!user) return <Navigate to="/login" replace />
-  if (user.role === 'admin' || user.role === 'employee') return <Navigate to="/dashboard" replace />
+  if (['admin', 'employee', 'tester'].includes(user.role)) return <Navigate to="/dashboard" replace />
   return <Navigate to="/que-hacer" replace />
 }
 
@@ -34,23 +46,29 @@ function AppRoutes() {
       <Route path="/" element={<HomeRedirect />} />
 
       <Route element={
-        <ProtectedRoute allowedRoles={['admin','employee','transportista','invitado']}>
+        <ProtectedRoute allowedRoles={ALL_ROLES}>
           <AppLayout />
         </ProtectedRoute>
       }>
         <Route path="/dashboard" element={
-          <ProtectedRoute allowedRoles={['admin','employee']}>
+          <ProtectedRoute allowedRoles={ADMIN_ROLES}>
             <Dashboard />
           </ProtectedRoute>
         }/>
         <Route path="/mapa-transportistas" element={
-          <ProtectedRoute allowedRoles={['admin','employee','transportista']}>
+          <ProtectedRoute allowedRoles={TRANSPORT_ROLES}>
             <MapaTransportistas />
           </ProtectedRoute>
         }/>
-        <Route path="/que-hacer" element={<QueHacer />} />
-        <Route path="/historia" element={<Historia />} />
+        <Route path="/que-hacer"      element={<QueHacer />} />
+        <Route path="/historia"       element={<Historia />} />
         <Route path="/centros-acopio" element={<CentrosAcopio />} />
+        <Route path="/importar" element={
+          <ProtectedRoute allowedRoles={ADMIN_ROLES}>
+            <ImportarDatos />
+          </ProtectedRoute>
+        }/>
+        <Route path="/perfil" element={<Perfil />} />
       </Route>
 
       <Route path="*" element={<Navigate to="/" replace />} />
@@ -61,9 +79,13 @@ function AppRoutes() {
 export default function App() {
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <AppRoutes />
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <DataProvider>
+            <AppRoutes />
+          </DataProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </BrowserRouter>
   )
 }

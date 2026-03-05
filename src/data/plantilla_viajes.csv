@@ -1,0 +1,6 @@
+id,fecha,conductor,ruta,toneladas,estado
+1,2023-01-15,Juan Pérez,Ruta Norte,12.3,Completado
+2,2023-01-16,Ana García,Ruta Centro,8.2,En Proceso
+3,2023-01-17,Carlos López,Ruta Sur,9.0,Pendiente
+4,2023-01-18,María Díaz,Ruta Este,15.7,Completado
+5,2023-01-19,Roberto Ruiz,Ruta Oeste,11.0,Cancelado
