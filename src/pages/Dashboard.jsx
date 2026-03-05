@@ -102,12 +102,12 @@ export default function Dashboard() {
   }, [selectedData])
 
   const kpiCards = [
-    { key: 'viajes',       label: 'Viajes Totales',       Icon: Truck,       bg: 'bg-blue-500',   fmt: v => v       },
-    { key: 'toneladas',    label: 'Material Recolectado', Icon: Package,     bg: 'bg-green-500',  fmt: v => `${v} Tons` },
-    { key: 'centros',      label: 'Centros Activos',      Icon: MapPin,      bg: 'bg-orange-500', fmt: v => v       },
-    { key: 'eficiencia',   label: 'Eficiencia de Ruta',   Icon: TrendingUp,  bg: 'bg-purple-500', fmt: v => `${v}%` },
-    { key: 'conductores',  label: 'Conductores Activos',  Icon: Users,       bg: 'bg-cyan-500',   fmt: v => v       },
-    { key: 'costos',       label: 'Costos Operativos',    Icon: DollarSign,  bg: 'bg-red-500',    fmt: v => `$${v}` },
+    { key: 'viajes',       label: 'Viajes Totales',       Icon: Truck,       bg: 'bg-blue-500',   fmt: v => v,           delta: '+12%', positive: true,  deltaLabel: 'vs sem anterior' },
+    { key: 'toneladas',    label: 'Material Recolectado', Icon: Package,     bg: 'bg-green-500',  fmt: v => `${v} Tons`, delta: '+8%',  positive: true,  deltaLabel: 'vs mes anterior' },
+    { key: 'centros',      label: 'Centros Activos',      Icon: MapPin,      bg: 'bg-orange-500', fmt: v => v,           delta: '+5%',  positive: true,  deltaLabel: 'vs mes anterior' },
+    { key: 'eficiencia',   label: 'Eficiencia de Ruta',   Icon: TrendingUp,  bg: 'bg-purple-500', fmt: v => `${v}%`,     delta: '+5%',  positive: true,  deltaLabel: 'vs mes anterior' },
+    { key: 'conductores',  label: 'Conductores Activos',  Icon: Users,       bg: 'bg-cyan-500',   fmt: v => v,           delta: '-2%',  positive: false, deltaLabel: 'vs mes anterior' },
+    { key: 'costos',       label: 'Costos Operativos',    Icon: DollarSign,  bg: 'bg-red-500',    fmt: v => `$${v}`,     delta: '-20%', positive: true,  deltaLabel: 'vs mes anterior' },
   ]
 
   return (
@@ -162,12 +162,16 @@ export default function Dashboard() {
 
       {/* ---- KPI CARDS (reactive) ---- */}
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-        {kpiCards.map(({ key, label, Icon, bg, fmt }) => (
+        {kpiCards.map(({ key, label, Icon, bg, fmt, delta, positive, deltaLabel }) => (
           <div key={key} className="bg-white rounded-2xl border border-gray-100 p-5 flex items-center justify-between shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5">
             <div>
               <p className="text-xs text-gray-500 font-medium mb-1">{label}</p>
               <p className="text-3xl font-bold text-gray-900 leading-none transition-all duration-300">
                 {fmt(kpis[key])}
+              </p>
+              <p className={`text-xs mt-2 font-semibold flex items-center gap-1 ${positive ? 'text-green-600' : 'text-red-500'}`}>
+                <span className="text-base leading-none">{positive ? '↑' : '↓'}</span>
+                <span>{delta} {deltaLabel}</span>
               </p>
             </div>
             <div className={`w-12 h-12 ${bg} rounded-2xl flex items-center justify-center shadow-sm shrink-0`}>

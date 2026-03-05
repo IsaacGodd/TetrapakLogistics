@@ -5,6 +5,15 @@ import {
   LayoutDashboard, Map, HelpCircle, History, MapPin, LogOut, Menu, X
 } from 'lucide-react'
 
+// Per-path brand colors for active state
+const navColors = {
+  '/dashboard':           { bg: 'bg-blue-50',   text: 'text-blue-700',   border: 'border-l-blue-600'   },
+  '/mapa-transportistas': { bg: 'bg-orange-50', text: 'text-orange-600', border: 'border-l-orange-500' },
+  '/que-hacer':           { bg: 'bg-teal-50',   text: 'text-teal-700',   border: 'border-l-teal-600'   },
+  '/historia':            { bg: 'bg-green-50',  text: 'text-green-700',  border: 'border-l-green-600'  },
+  '/centros-acopio':      { bg: 'bg-orange-50', text: 'text-orange-600', border: 'border-l-orange-500' },
+}
+
 const navItems = [
   { path: '/dashboard',           label: 'Dashboard',                roles: ['admin','employee'],                              Icon: LayoutDashboard },
   { path: '/mapa-transportistas', label: 'Mapa Transportistas',       roles: ['admin','employee','transportista'],               Icon: Map             },
@@ -25,43 +34,55 @@ export default function Sidebar() {
   const Content = () => (
     <div className="flex flex-col h-full">
       {/* Logo */}
-      <div className="px-4 py-5 border-b border-gray-100">
-        <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl flex items-center justify-center text-white font-bold text-base shrink-0 shadow-sm"
-            style={{ background: 'linear-gradient(135deg, #1D6ADE, #16a085)' }}>
+      <div className="px-5 py-6 border-b border-gray-100">
+        <div className="flex items-center gap-3">
+          <div className="w-13 h-13 rounded-2xl flex items-center justify-center text-white font-extrabold text-2xl shrink-0 shadow-lg"
+            style={{ background: 'linear-gradient(135deg, #1D6ADE 0%, #0d9488 100%)', width: 52, height: 52 }}>
             T
           </div>
           <div className="leading-tight">
-            <div className="font-bold text-primary text-sm">Tetrapak</div>
-            <div className="font-bold text-teal-600 text-sm -mt-0.5">Logistics</div>
+            <div className="font-extrabold text-primary text-base tracking-tight">Tetrapak</div>
+            <div className="font-extrabold text-teal-600 text-base -mt-0.5 tracking-tight">Logistics</div>
+            <div className="text-xs text-gray-400 font-medium mt-0.5">SEDUSO</div>
           </div>
         </div>
       </div>
 
       {/* Nav */}
       <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
-        {visibleItems.map(({ path, label, Icon }) => (
-          <NavLink
-            key={path}
-            to={path}
-            onClick={() => setMobileOpen(false)}
-            className={({ isActive }) =>
-              `group flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
-                isActive
-                  ? 'bg-blue-50 text-primary shadow-sm'
-                  : 'text-gray-500 hover:bg-gray-50 hover:text-gray-800'
-              }`
-            }
-          >
-            {({ isActive }) => (
-              <>
-                <Icon size={17} strokeWidth={isActive ? 2.2 : 1.8} className="shrink-0 transition-all duration-200" />
-                <span className="leading-tight">{label}</span>
-              </>
-            )}
-          </NavLink>
-        ))}
+        {visibleItems.map(({ path, label, Icon }) => {
+          const colors = navColors[path] || { bg: 'bg-blue-50', text: 'text-blue-700', border: 'border-l-blue-600' }
+          return (
+            <NavLink
+              key={path}
+              to={path}
+              onClick={() => setMobileOpen(false)}
+              className={({ isActive }) =>
+                `group flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 border-l-2 ${
+                  isActive
+                    ? `${colors.bg} ${colors.text} border-l-2 ${colors.border} shadow-sm`
+                    : 'text-gray-500 hover:bg-gray-50 hover:text-gray-800 border-transparent'
+                }`
+              }
+            >
+              {({ isActive }) => (
+                <>
+                  <Icon size={17} strokeWidth={isActive ? 2.2 : 1.8} className="shrink-0 transition-all duration-200" />
+                  <span className="leading-tight">{label}</span>
+                </>
+              )}
+            </NavLink>
+          )
+        })}
       </nav>
+
+      {/* User info */}
+      {user && (
+        <div className="px-4 py-3 mx-3 mb-2 bg-gray-50 rounded-xl">
+          <p className="text-xs font-semibold text-gray-700 truncate">{user.name}</p>
+          <p className="text-xs text-gray-400 capitalize">{user.role}</p>
+        </div>
+      )}
 
       {/* Logout */}
       <div className="px-3 py-4 border-t border-gray-100">
@@ -91,7 +112,7 @@ export default function Sidebar() {
       )}
 
       {/* Desktop */}
-      <aside className="hidden lg:flex flex-col w-52 bg-white border-r border-gray-100 h-screen sticky top-0 shrink-0 shadow-sm">
+      <aside className="hidden lg:flex flex-col w-56 bg-white border-r border-gray-100 h-screen sticky top-0 shrink-0 shadow-sm">
         <Content />
       </aside>
 
