@@ -6,6 +6,9 @@ export const users = [
 ]
 
 // ===================== CENTROS DE ACOPIO =====================
+// stats: viajes/toneladas/conductores/eficiencia/costos calibrados para que
+// la suma de todos los centros iguale exactamente los totales del Dashboard:
+// viajes=8, toneladas=62.3, conductores=15, eficiencia≈94%, costos=$282
 export const centros = [
   {
     id: 1,
@@ -20,6 +23,7 @@ export const centros = [
     direccion: 'Av. Universidad 1234, San Nicolás de los Garza',
     telefono: '81 9999 0001',
     capacidad: 56,
+    stats: { viajes: 1, toneladas: 9.2, conductores: 2, eficiencia: 95, costos: 38 },
   },
   {
     id: 2,
@@ -34,6 +38,7 @@ export const centros = [
     direccion: 'Blvd. Cumbres 567, Monterrey',
     telefono: '81 9999 0002',
     capacidad: 42,
+    stats: { viajes: 1, toneladas: 7.5, conductores: 2, eficiencia: 97, costos: 32 },
   },
   {
     id: 3,
@@ -48,6 +53,7 @@ export const centros = [
     direccion: 'Calle Reforma 890, Guadalupe',
     telefono: '81 9999 0003',
     capacidad: 38,
+    stats: { viajes: 1, toneladas: 8.1, conductores: 2, eficiencia: 95, costos: 35 },
   },
   {
     id: 4,
@@ -62,6 +68,7 @@ export const centros = [
     direccion: 'Av. Industrial 234, Santa Catarina',
     telefono: '81 9999 0004',
     capacidad: 30,
+    stats: { viajes: 0, toneladas: 3.2, conductores: 1, eficiencia: 92, costos: 18 },
   },
   {
     id: 5,
@@ -76,6 +83,7 @@ export const centros = [
     direccion: 'Av. Vasconcelos 456, San Pedro Garza García',
     telefono: '81 9999 0005',
     capacidad: 50,
+    stats: { viajes: 1, toneladas: 5.8, conductores: 1, eficiencia: 96, costos: 28 },
   },
   {
     id: 6,
@@ -90,6 +98,7 @@ export const centros = [
     direccion: 'Blvd. Apodaca 789, Apodaca',
     telefono: '81 9999 0006',
     capacidad: 35,
+    stats: { viajes: 1, toneladas: 6.2, conductores: 1, eficiencia: 94, costos: 24 },
   },
   {
     id: 7,
@@ -104,6 +113,7 @@ export const centros = [
     direccion: 'Calle Principal 100, García',
     telefono: '81 9999 0007',
     capacidad: 28,
+    stats: { viajes: 0, toneladas: 2.8, conductores: 1, eficiencia: 93, costos: 15 },
   },
   {
     id: 8,
@@ -118,6 +128,7 @@ export const centros = [
     direccion: 'Av. López Mateos 321, General Escobedo',
     telefono: '81 9999 0008',
     capacidad: 45,
+    stats: { viajes: 0, toneladas: 3.5, conductores: 1, eficiencia: 91, costos: 19 },
   },
   {
     id: 9,
@@ -132,6 +143,7 @@ export const centros = [
     direccion: 'Calle Juárez 567, Ciudad Juárez NL',
     telefono: '81 9999 0009',
     capacidad: 22,
+    stats: { viajes: 0, toneladas: 1.8, conductores: 0, eficiencia: 88, costos: 12 },
   },
   {
     id: 10,
@@ -146,6 +158,7 @@ export const centros = [
     direccion: 'Av. Constitución 1, Centro, Monterrey',
     telefono: '81 9999 0010',
     capacidad: 70,
+    stats: { viajes: 1, toneladas: 7.2, conductores: 2, eficiencia: 97, costos: 35 },
   },
   {
     id: 11,
@@ -160,6 +173,7 @@ export const centros = [
     direccion: 'Av. Hidalgo 88, Santiago',
     telefono: '81 9999 0011',
     capacidad: 18,
+    stats: { viajes: 0, toneladas: 2.4, conductores: 0, eficiencia: 93, costos: 10 },
   },
   {
     id: 12,
@@ -174,6 +188,7 @@ export const centros = [
     direccion: 'Blvd. Industrial 45, Cadereyta Jiménez',
     telefono: '81 9999 0012',
     capacidad: 32,
+    stats: { viajes: 1, toneladas: 3.6, conductores: 1, eficiencia: 91, costos: 14 },
   },
   {
     id: 13,
@@ -188,6 +203,7 @@ export const centros = [
     direccion: 'Calle Morelos 200, Linares',
     telefono: '81 9999 0013',
     capacidad: 25,
+    stats: { viajes: 1, toneladas: 1.0, conductores: 1, eficiencia: 90, costos: 2 },
   },
 ]
 
