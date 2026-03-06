@@ -12,9 +12,8 @@ export default function TopBar() {
     .toUpperCase() ?? '?'
 
   return (
-    <div className={`h-12 bg-white flex items-center justify-end px-5 gap-2 shrink-0 ${
-      dark ? 'dark:bg-gray-900 border-b border-gray-800' : 'border-b border-gray-100'
-    }`}>
+    <div className={`h-12 bg-gradient-to-r from-blue-50/80 via-teal-50/70 to-green-50/80 backdrop-blur-sm flex items-center justify-end px-5 gap-2 shrink-0 ${dark ? 'dark:bg-gray-900 border-b border-gray-800' : 'border-b border-gray-100'
+      }`}>
 
       {/* Theme toggle */}
       <button
@@ -32,19 +31,17 @@ export default function TopBar() {
       <NavLink
         to="/perfil"
         className={({ isActive }) =>
-          `flex items-center gap-2 px-2.5 py-1.5 rounded-xl text-sm font-medium transition-all active:scale-95 ${
-            isActive
-              ? 'bg-gray-100 dark:bg-violet-900/30 text-gray-800 dark:text-violet-400'
-              : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+          `flex items-center gap-2 px-2.5 py-1.5 rounded-xl text-sm font-medium transition-all active:scale-95 ${isActive
+            ? 'bg-gray-100 dark:bg-violet-900/30 text-gray-800 dark:text-violet-400'
+            : 'text-gray-700 dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-gray-800'
           }`
         }
       >
         {/* Avatar: gray in light mode, gradient in dark mode */}
-        <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
-          dark
-            ? 'bg-gradient-to-br from-primary to-teal-500 text-white'
-            : 'bg-gray-200 text-gray-600'
-        }`}>
+        <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${dark
+          ? 'bg-gradient-to-br from-primary to-teal-500 text-white'
+          : 'bg-gray-200 text-gray-600'
+          }`}>
           {initials}
         </div>
         <span className="hidden sm:block text-sm font-medium">Perfil</span>

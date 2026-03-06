@@ -7,21 +7,21 @@ import {
 
 // Per-path brand colors for active state (dark mode only)
 const navColors = {
-  '/dashboard':           { bg: 'bg-blue-50',   text: 'text-blue-700',   border: 'border-l-blue-600'   },
-  '/mapa-transportistas': { bg: 'bg-orange-50', text: 'text-orange-600', border: 'border-l-orange-500' },
-  '/que-hacer':           { bg: 'bg-teal-50',   text: 'text-teal-700',   border: 'border-l-teal-600'   },
-  '/historia':            { bg: 'bg-green-50',  text: 'text-green-700',  border: 'border-l-green-600'  },
-  '/centros-acopio':      { bg: 'bg-orange-50', text: 'text-orange-600', border: 'border-l-orange-500' },
-  '/importar':            { bg: 'bg-indigo-50', text: 'text-indigo-700', border: 'border-l-indigo-600' },
+  '/dashboard': { bg: 'bg-gradient-to-r from-blue-100 via-teal-50 to-green-100', text: 'text-blue-700', border: 'border-l-blue-600' },
+  '/mapa-transportistas': { bg: 'bg-gradient-to-r from-teal-100 to-blue-50', text: 'text-teal-700', border: 'border-l-teal-600' },
+  '/que-hacer': { bg: 'bg-gradient-to-r from-green-100 to-teal-50', text: 'text-green-700', border: 'border-l-green-600' },
+  '/historia': { bg: 'bg-gradient-to-r from-blue-50 to-green-100', text: 'text-blue-700', border: 'border-l-blue-600' },
+  '/centros-acopio': { bg: 'bg-gradient-to-r from-teal-50 to-green-100', text: 'text-teal-700', border: 'border-l-teal-600' },
+  '/importar': { bg: 'bg-gradient-to-r from-blue-100 to-teal-100', text: 'text-blue-700', border: 'border-l-blue-600' },
 }
 
 const navItems = [
-  { path: '/dashboard',           label: 'Dashboard',                roles: ['admin','employee','tester'],                                 Icon: LayoutDashboard },
-  { path: '/mapa-transportistas', label: 'Mapa Transportistas',       roles: ['admin','employee','transportista','tester'],                  Icon: Map             },
-  { path: '/que-hacer',           label: '¿Qué hacer con Tetrapak?',  roles: ['admin','employee','transportista','invitado','tester'],       Icon: HelpCircle      },
-  { path: '/historia',            label: 'Historia',                  roles: ['admin','employee','transportista','invitado','tester'],       Icon: History         },
-  { path: '/centros-acopio',      label: 'Centros de Acopio',         roles: ['admin','employee','transportista','invitado','tester'],       Icon: MapPin          },
-  { path: '/importar',            label: 'Importar Datos',            roles: ['admin','employee','tester'],                                 Icon: Upload          },
+  { path: '/dashboard', label: 'Dashboard', roles: ['admin', 'employee', 'tester'], Icon: LayoutDashboard },
+  { path: '/mapa-transportistas', label: 'Mapa Transportistas', roles: ['admin', 'employee', 'transportista', 'tester'], Icon: Map },
+  { path: '/que-hacer', label: '¿Qué hacer con Tetrapak?', roles: ['admin', 'employee', 'transportista', 'invitado', 'tester'], Icon: HelpCircle },
+  { path: '/historia', label: 'Historia', roles: ['admin', 'employee', 'transportista', 'invitado', 'tester'], Icon: History },
+  { path: '/centros-acopio', label: 'Centros de Acopio', roles: ['admin', 'employee', 'transportista', 'invitado', 'tester'], Icon: MapPin },
+  { path: '/importar', label: 'Importar Datos', roles: ['admin', 'employee', 'tester'], Icon: Upload },
 ]
 
 export default function Sidebar() {
@@ -39,7 +39,7 @@ export default function Sidebar() {
       <div className="px-5 py-6 border-b border-gray-100 dark:border-gray-800">
         <Link to="/dashboard" className="flex items-center gap-3 group">
           <div className="rounded-2xl flex items-center justify-center text-white font-extrabold text-2xl shrink-0 shadow-lg transition-transform group-hover:scale-105"
-            style={{ background: 'linear-gradient(135deg, #1D6ADE 0%, #0d9488 100%)', width: 52, height: 52 }}>
+            style={{ background: 'linear-gradient(135deg, #1d6ade 0%, #0d9488 55%, #69b34c 100%)', width: 52, height: 52 }}>
             T
           </div>
           <div className="leading-tight">
@@ -60,10 +60,9 @@ export default function Sidebar() {
               to={path}
               onClick={() => setMobileOpen(false)}
               className={({ isActive }) =>
-                `group flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 border-l-2 ${
-                  isActive
-                    ? `${colors.bg} ${colors.text} border-l-2 ${colors.border} shadow-sm`
-                    : 'text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-800 dark:hover:text-gray-200 border-transparent'
+                `group flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 border-l-2 ${isActive
+                  ? `${colors.bg} ${colors.text} border-l-2 ${colors.border} shadow-sm`
+                  : 'text-gray-500 dark:text-gray-400 hover:bg-gradient-to-r hover:from-blue-50 hover:to-teal-50 dark:hover:bg-gray-800 hover:text-teal-700 dark:hover:text-gray-200 border-transparent'
                 }`
               }
             >
@@ -80,7 +79,7 @@ export default function Sidebar() {
 
       {/* User info */}
       {user && (
-        <div className="px-4 py-3 mx-3 mb-2 bg-gray-50 dark:bg-gray-800 rounded-xl">
+        <div className="px-4 py-3 mx-3 mb-2 bg-gradient-to-r from-blue-50 via-teal-50 to-green-50 dark:bg-gray-800 rounded-xl border border-blue-100 dark:border-gray-700">
           <p className="text-xs font-semibold text-gray-700 dark:text-gray-200 truncate">{user.name}</p>
           <p className="text-xs text-gray-400 dark:text-gray-500 capitalize">{user.role}</p>
         </div>
@@ -90,7 +89,7 @@ export default function Sidebar() {
       <div className="px-3 py-4 border-t border-gray-100 dark:border-gray-800">
         <button
           onClick={handleLogout}
-          className="group flex items-center gap-2.5 w-full px-3 py-2.5 rounded-xl text-sm font-medium text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 transition-all duration-200 active:scale-95"
+          className="group flex items-center gap-2.5 w-full px-3 py-2.5 rounded-xl text-sm font-medium text-red-500 hover:bg-gradient-to-r hover:from-red-50 hover:to-orange-50 dark:hover:bg-red-900/20 hover:text-red-600 transition-all duration-200 active:scale-95"
         >
           <LogOut size={17} strokeWidth={1.8} className="shrink-0" />
           Cerrar Sesión
@@ -114,12 +113,12 @@ export default function Sidebar() {
       )}
 
       {/* Desktop */}
-      <aside className="hidden lg:flex flex-col w-56 bg-white dark:bg-gray-900 border-r border-gray-100 dark:border-gray-800 h-screen sticky top-0 shrink-0 shadow-sm">
+      <aside className="hidden lg:flex flex-col w-56 bg-gradient-to-b from-[#f4faff] via-[#eef9f6] to-[#f2f9ef] dark:bg-gray-900 border-r border-gray-100 dark:border-gray-800 h-screen sticky top-0 shrink-0 shadow-sm">
         <Content />
       </aside>
 
       {/* Mobile drawer */}
-      <aside className={`lg:hidden fixed left-0 top-0 h-full w-56 bg-white dark:bg-gray-900 border-r border-gray-100 dark:border-gray-800 z-50 shadow-xl transition-transform duration-300 ${mobileOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+      <aside className={`lg:hidden fixed left-0 top-0 h-full w-56 bg-gradient-to-b from-[#f4faff] via-[#eef9f6] to-[#f2f9ef] dark:bg-gray-900 border-r border-gray-100 dark:border-gray-800 z-50 shadow-xl transition-transform duration-300 ${mobileOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <Content />
       </aside>
     </>

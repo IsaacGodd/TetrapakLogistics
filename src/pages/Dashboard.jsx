@@ -14,17 +14,17 @@ import {
 
 const statusStyles = {
   'Completado': 'bg-emerald-50 text-emerald-700 border border-emerald-200',
-  'En Proceso':  'bg-blue-50   text-blue-700   border border-blue-200',
-  'Pendiente':   'bg-amber-50  text-amber-700  border border-amber-200',
-  'Cancelado':   'bg-red-50    text-red-600    border border-red-200',
+  'En Proceso': 'bg-blue-50   text-blue-700   border border-blue-200',
+  'Pendiente': 'bg-amber-50  text-amber-700  border border-amber-200',
+  'Cancelado': 'bg-red-50    text-red-600    border border-red-200',
 }
 
-const MESES = ['Ene','Feb','Mar','Abr','May','Jun']
+const MESES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun']
 
 function computeEficiencia(selectedData, baseAvg) {
   if (!selectedData.length) return MESES.map(mes => ({ mes, eficiencia: 0 }))
   const selAvg = selectedData.reduce((s, c) => s + c.stats.eficiencia, 0) / selectedData.length
-  const shift  = selAvg - baseAvg
+  const shift = selAvg - baseAvg
   return eficienciaOperativa.map(d => ({
     ...d, eficiencia: Math.min(100, Math.max(0, Math.round(d.eficiencia + shift)))
   }))
@@ -68,48 +68,48 @@ export default function Dashboard() {
     prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
   )
   const selectAll = () => setSelectedIds(centros.map(c => c.id))
-  const clearAll  = () => setSelectedIds([])
+  const clearAll = () => setSelectedIds([])
 
   const selectedData = useMemo(() => centros.filter(c => selectedIds.includes(c.id)), [selectedIds, centros])
 
   const kpis = useMemo(() => {
     if (!selectedData.length) return { viajes: 0, toneladas: '0.0', centros: 0, eficiencia: 0, conductores: 0, costos: 0 }
-    const tons  = selectedData.reduce((s, c) => s + c.stats.toneladas, 0)
+    const tons = selectedData.reduce((s, c) => s + c.stats.toneladas, 0)
     const efPon = selectedData.reduce((s, c) => s + c.stats.eficiencia * c.stats.toneladas, 0)
     return {
-      viajes:      selectedData.reduce((s, c) => s + c.stats.viajes,      0),
-      toneladas:   tons.toFixed(1),
-      centros:     selectedData.length,
-      eficiencia:  tons > 0 ? Math.round(efPon / tons) : 0,
+      viajes: selectedData.reduce((s, c) => s + c.stats.viajes, 0),
+      toneladas: tons.toFixed(1),
+      centros: selectedData.length,
+      eficiencia: tons > 0 ? Math.round(efPon / tons) : 0,
       conductores: selectedData.reduce((s, c) => s + c.stats.conductores, 0),
-      costos:      selectedData.reduce((s, c) => s + c.stats.costos,      0),
+      costos: selectedData.reduce((s, c) => s + c.stats.costos, 0),
     }
   }, [selectedData])
 
   const charts = useMemo(() => {
-    const allTons   = centros.reduce((s, c) => s + c.stats.toneladas,   0)
-    const allViajes = centros.reduce((s, c) => s + c.stats.viajes,      0)
-    const allCostos = centros.reduce((s, c) => s + c.stats.costos,      0)
-    const baseAvg   = centros.length ? centros.reduce((s, c) => s + c.stats.eficiencia, 0) / centros.length : 82
+    const allTons = centros.reduce((s, c) => s + c.stats.toneladas, 0)
+    const allViajes = centros.reduce((s, c) => s + c.stats.viajes, 0)
+    const allCostos = centros.reduce((s, c) => s + c.stats.costos, 0)
+    const baseAvg = centros.length ? centros.reduce((s, c) => s + c.stats.eficiencia, 0) / centros.length : 82
 
     if (!selectedData.length) return {
       recoleccion: MESES.map(mes => ({ mes, toneladas: 0 })),
-      tendencia:   MESES.map(mes => ({ mes, viajes:    0 })),
-      eficiencia:  MESES.map(mes => ({ mes, eficiencia: 0 })),
-      ingresos:    ingresosCostos.map(d => ({ ...d, ingresos: 0, costos: 0, tendencia: 0 })),
-      dist:        [],
+      tendencia: MESES.map(mes => ({ mes, viajes: 0 })),
+      eficiencia: MESES.map(mes => ({ mes, eficiencia: 0 })),
+      ingresos: ingresosCostos.map(d => ({ ...d, ingresos: 0, costos: 0, tendencia: 0 })),
+      dist: [],
     }
-    const tonR = allTons   > 0 ? selectedData.reduce((s,c) => s + c.stats.toneladas, 0) / allTons   : 0
-    const viaR = allViajes > 0 ? selectedData.reduce((s,c) => s + c.stats.viajes,    0) / allViajes : 0
-    const cosR = allCostos > 0 ? selectedData.reduce((s,c) => s + c.stats.costos,    0) / allCostos : 0
+    const tonR = allTons > 0 ? selectedData.reduce((s, c) => s + c.stats.toneladas, 0) / allTons : 0
+    const viaR = allViajes > 0 ? selectedData.reduce((s, c) => s + c.stats.viajes, 0) / allViajes : 0
+    const cosR = allCostos > 0 ? selectedData.reduce((s, c) => s + c.stats.costos, 0) / allCostos : 0
     return {
       recoleccion: recoleccionMensual.map(d => ({ ...d, toneladas: Math.round(d.toneladas * tonR) })),
-      tendencia:   tendenciaViajes.map(d =>    ({ ...d, viajes:    Math.round(d.viajes    * viaR) })),
-      eficiencia:  computeEficiencia(selectedData, baseAvg),
-      ingresos:    ingresosCostos.map(d => ({
+      tendencia: tendenciaViajes.map(d => ({ ...d, viajes: Math.round(d.viajes * viaR) })),
+      eficiencia: computeEficiencia(selectedData, baseAvg),
+      ingresos: ingresosCostos.map(d => ({
         ...d,
-        ingresos:  Math.round(d.ingresos  * cosR),
-        costos:    Math.round(d.costos    * cosR),
+        ingresos: Math.round(d.ingresos * cosR),
+        costos: Math.round(d.costos * cosR),
         tendencia: Math.round(d.tendencia * cosR),
       })),
       dist: computeDistribucion(selectedData),
@@ -117,12 +117,12 @@ export default function Dashboard() {
   }, [selectedData, centros])
 
   const kpiCards = [
-    { key: 'viajes',      label: 'Viajes Totales',       Icon: Truck,      bg: 'bg-blue-500',   fmt: v => v,           delta: '+12%', positive: true,  deltaLabel: 'vs sem anterior' },
-    { key: 'toneladas',   label: 'Material Recolectado', Icon: Package,    bg: 'bg-green-500',  fmt: v => `${v} Tons`, delta: '+8%',  positive: true,  deltaLabel: 'vs mes anterior' },
-    { key: 'centros',     label: 'Centros Activos',      Icon: MapPin,     bg: 'bg-orange-500', fmt: v => v,           delta: '+5%',  positive: true,  deltaLabel: 'vs mes anterior' },
-    { key: 'eficiencia',  label: 'Eficiencia de Ruta',   Icon: TrendingUp, bg: 'bg-purple-500', fmt: v => `${v}%`,     delta: '+5%',  positive: true,  deltaLabel: 'vs mes anterior' },
-    { key: 'conductores', label: 'Conductores Activos',  Icon: Users,      bg: 'bg-cyan-500',   fmt: v => v,           delta: '-2%',  positive: false, deltaLabel: 'vs mes anterior' },
-    { key: 'costos',      label: 'Costos Operativos',    Icon: DollarSign, bg: 'bg-red-500',    fmt: v => `$${v}`,     delta: '-20%', positive: true,  deltaLabel: 'vs mes anterior' },
+    { key: 'viajes', label: 'Viajes Totales', Icon: Truck, bg: 'bg-blue-500', fmt: v => v, delta: '+12%', positive: true, deltaLabel: 'vs sem anterior' },
+    { key: 'toneladas', label: 'Material Recolectado', Icon: Package, bg: 'bg-green-500', fmt: v => `${v} Tons`, delta: '+8%', positive: true, deltaLabel: 'vs mes anterior' },
+    { key: 'centros', label: 'Centros Activos', Icon: MapPin, bg: 'bg-orange-500', fmt: v => v, delta: '+5%', positive: true, deltaLabel: 'vs mes anterior' },
+    { key: 'eficiencia', label: 'Eficiencia de Ruta', Icon: TrendingUp, bg: 'bg-purple-500', fmt: v => `${v}%`, delta: '+5%', positive: true, deltaLabel: 'vs mes anterior' },
+    { key: 'conductores', label: 'Conductores Activos', Icon: Users, bg: 'bg-cyan-500', fmt: v => v, delta: '-2%', positive: false, deltaLabel: 'vs mes anterior' },
+    { key: 'costos', label: 'Costos Operativos', Icon: DollarSign, bg: 'bg-red-500', fmt: v => `$${v}`, delta: '-20%', positive: true, deltaLabel: 'vs mes anterior' },
   ]
 
   // ── Export Excel ─────────────────────────────────────────────────────────
@@ -238,7 +238,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="p-6 space-y-5 bg-gray-50 min-h-full">
+    <div className="p-6 space-y-5 bg-app-bg min-h-full">
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
@@ -248,7 +248,7 @@ export default function Dashboard() {
         <div ref={exportRef} className="relative">
           <button
             onClick={() => setShowExportMenu(v => !v)}
-            className="flex items-center gap-2 px-4 py-2 bg-primary text-white text-sm rounded-xl font-medium hover:bg-blue-700 transition-all active:scale-95 shadow-sm"
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 via-teal-600 to-green-600 text-white text-sm rounded-xl font-medium hover:from-blue-700 hover:via-teal-700 hover:to-green-700 transition-all active:scale-95 shadow-sm"
           >
             <Download size={15} strokeWidth={2} /> Exportar
             <ChevronDown size={13} strokeWidth={2.5} className={`transition-transform ${showExportMenu ? 'rotate-180' : ''}`} />
@@ -273,7 +273,7 @@ export default function Dashboard() {
       </div>
 
       {/* ---- FILTRO CENTROS ---- */}
-      <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+      <div className="bg-white rounded-2xl border border-blue-100 p-5 shadow-sm">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
             <Filter size={16} className="text-primary" strokeWidth={2} />
@@ -281,8 +281,8 @@ export default function Dashboard() {
           </div>
           <div className="flex gap-2 text-xs items-center">
             <span className="text-gray-400 font-medium mr-1">{selectedIds.length}/{centros.length} seleccionados</span>
-            <button onClick={selectAll} className="px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium transition active:scale-95">Seleccionar Todos</button>
-            <button onClick={clearAll}  className="px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium transition active:scale-95">Limpiar</button>
+            <button onClick={selectAll} className="px-3 py-1.5 rounded-lg bg-blue-100 hover:bg-blue-200 text-blue-700 font-semibold transition active:scale-95">Seleccionar Todos</button>
+            <button onClick={clearAll} className="px-3 py-1.5 rounded-lg bg-teal-100 hover:bg-teal-200 text-teal-700 font-semibold transition active:scale-95">Limpiar</button>
           </div>
         </div>
         {centros.length === 0 ? (
@@ -297,18 +297,16 @@ export default function Dashboard() {
                 <button
                   key={centro.id}
                   onClick={() => toggleCentro(centro.id)}
-                  className={`px-3 py-2.5 rounded-xl text-xs font-medium transition-all duration-200 active:scale-95 text-left border ${
-                    active
-                      ? 'bg-gray-800 text-white border-gray-800 shadow-sm'
-                      : 'bg-white text-gray-600 border-gray-200 hover:border-gray-400 hover:bg-gray-50'
-                  }`}
+                  className={`px-3 py-2.5 rounded-xl text-xs font-medium transition-all duration-200 active:scale-95 text-left border ${active
+                    ? 'bg-gradient-to-r from-blue-700 via-teal-700 to-green-700 text-white border-blue-700 shadow-sm'
+                    : 'bg-white text-gray-600 border-gray-200 hover:border-teal-300 hover:bg-teal-50/60'
+                    }`}
                 >
                   <div className="font-semibold leading-tight truncate">{centro.nombre}</div>
-                  <div className={`text-xs mt-0.5 flex items-center gap-1 ${
-                    active
-                      ? (centro.movil ? 'text-orange-300' : centro.tetrapak ? 'text-green-300' : 'text-gray-400')
-                      : (centro.movil ? 'text-orange-500' : centro.tetrapak ? 'text-green-600' : 'text-gray-400')
-                  }`}>
+                  <div className={`text-xs mt-0.5 flex items-center gap-1 ${active
+                    ? (centro.movil ? 'text-orange-300' : centro.tetrapak ? 'text-green-300' : 'text-gray-400')
+                    : (centro.movil ? 'text-orange-500' : centro.tetrapak ? 'text-green-600' : 'text-gray-400')
+                    }`}>
                     {centro.movil
                       ? <span>📍 Móvil</span>
                       : centro.tetrapak
@@ -326,7 +324,7 @@ export default function Dashboard() {
       {/* ---- KPI CARDS ---- */}
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
         {kpiCards.map(({ key, label, Icon, bg, fmt, delta, positive, deltaLabel }) => (
-          <div key={key} className="bg-white rounded-2xl border border-gray-100 p-5 flex items-center justify-between shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5">
+          <div key={key} className="bg-white rounded-2xl border border-gray-100 p-5 flex items-center justify-between shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:border-blue-200">
             <div>
               <p className="text-xs text-gray-500 font-medium mb-1">{label}</p>
               <p className="text-3xl font-bold text-gray-900 leading-none transition-all duration-300">
@@ -353,7 +351,7 @@ export default function Dashboard() {
               <XAxis dataKey="mes" tick={{ fontSize: 11, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fontSize: 11, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
               <Tooltip contentStyle={{ borderRadius: 10, border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', fontSize: 12 }} cursor={{ fill: '#f8fafc' }} />
-              <Bar dataKey="toneladas" fill="#1D6ADE" radius={[6,6,0,0]} name="Toneladas" />
+              <Bar dataKey="toneladas" fill="#1D6ADE" radius={[6, 6, 0, 0]} name="Toneladas" />
             </BarChart>
           </ResponsiveContainer>
         </ChartCard>
@@ -378,8 +376,8 @@ export default function Dashboard() {
             <AreaChart data={charts.eficiencia} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
               <defs>
                 <linearGradient id="efGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%"  stopColor="#F97316" stopOpacity={0.5}/>
-                  <stop offset="95%" stopColor="#F97316" stopOpacity={0.02}/>
+                  <stop offset="5%" stopColor="#F97316" stopOpacity={0.5} />
+                  <stop offset="95%" stopColor="#F97316" stopOpacity={0.02} />
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
@@ -396,8 +394,8 @@ export default function Dashboard() {
             <ComposedChart data={charts.ingresos} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
               <defs>
                 <linearGradient id="ingGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%"  stopColor="#8B5CF6" stopOpacity={0.5}/>
-                  <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0.02}/>
+                  <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.5} />
+                  <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0.02} />
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
@@ -406,8 +404,8 @@ export default function Dashboard() {
               <Tooltip contentStyle={{ borderRadius: 10, border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', fontSize: 12 }} />
               <Legend iconSize={8} wrapperStyle={{ fontSize: 11, paddingTop: 8 }} />
               <Area type="monotone" dataKey="ingresos" fill="url(#ingGrad)" stroke="#8B5CF6" strokeWidth={2} name="Ingresos" />
-              <Bar dataKey="costos" fill="#3730a3" radius={[4,4,0,0]} name="Costos" opacity={0.85} />
-              <Line type="monotone" dataKey="tendencia" stroke="#F97316" strokeWidth={2} dot={{ fill:'#F97316', r:3, strokeWidth:0 }} name="Tendencia Costos" />
+              <Bar dataKey="costos" fill="#3730a3" radius={[4, 4, 0, 0]} name="Costos" opacity={0.85} />
+              <Line type="monotone" dataKey="tendencia" stroke="#F97316" strokeWidth={2} dot={{ fill: '#F97316', r: 3, strokeWidth: 0 }} name="Tendencia Costos" />
             </ComposedChart>
           </ResponsiveContainer>
         </ChartCard>
@@ -461,14 +459,14 @@ export default function Dashboard() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-gray-100">
-                  {['ID','Fecha','Conductor','Ruta','Toneladas','Estado'].map(h => (
+                  {['ID', 'Fecha', 'Conductor', 'Ruta', 'Toneladas', 'Estado'].map(h => (
                     <th key={h} className="text-left text-xs font-semibold text-gray-400 uppercase tracking-wide pb-3 pr-4 first:pl-1">{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
                 {viajes.map(v => (
-                  <tr key={v.id} className="hover:bg-gray-50/70 transition-colors duration-150">
+                  <tr key={v.id} className="hover:bg-blue-50/60 transition-colors duration-150">
                     <td className="py-3 pr-4 pl-1 text-gray-400 font-mono text-xs">#{v.id}</td>
                     <td className="py-3 pr-4 text-gray-600 text-xs">{v.fecha}</td>
                     <td className="py-3 pr-4 text-gray-800 font-medium text-xs">{v.conductor}</td>
@@ -492,7 +490,7 @@ export default function Dashboard() {
 
 function ChartCard({ title, children }) {
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm hover:shadow-md transition-all duration-200">
+    <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm hover:shadow-md transition-all duration-200 hover:border-teal-200">
       <h3 className="text-sm font-semibold text-gray-800 mb-4">{title}</h3>
       {children}
     </div>

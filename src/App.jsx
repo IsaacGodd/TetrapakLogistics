@@ -14,13 +14,13 @@ import CentrosAcopio from './pages/CentrosAcopio'
 import ImportarDatos from './pages/ImportarDatos'
 import Perfil from './pages/Perfil'
 
-const ADMIN_ROLES       = ['admin', 'employee', 'tester']
-const TRANSPORT_ROLES   = ['admin', 'employee', 'transportista', 'tester']
-const ALL_ROLES         = ['admin', 'employee', 'transportista', 'invitado', 'tester']
+const ADMIN_ROLES = ['admin', 'employee', 'tester']
+const TRANSPORT_ROLES = ['admin', 'employee', 'transportista', 'tester']
+const ALL_ROLES = ['admin', 'employee', 'transportista', 'invitado', 'tester']
 
 function AppLayout() {
   return (
-    <div className="flex h-screen overflow-hidden bg-white dark:bg-gray-950">
+    <div className="flex h-screen overflow-hidden bg-app-bg dark:bg-gray-950">
       <Sidebar />
       <div className="flex-1 flex flex-col overflow-hidden">
         <TopBar />
@@ -54,20 +54,20 @@ function AppRoutes() {
           <ProtectedRoute allowedRoles={ADMIN_ROLES}>
             <Dashboard />
           </ProtectedRoute>
-        }/>
+        } />
         <Route path="/mapa-transportistas" element={
           <ProtectedRoute allowedRoles={TRANSPORT_ROLES}>
             <MapaTransportistas />
           </ProtectedRoute>
-        }/>
-        <Route path="/que-hacer"      element={<QueHacer />} />
-        <Route path="/historia"       element={<Historia />} />
+        } />
+        <Route path="/que-hacer" element={<QueHacer />} />
+        <Route path="/historia" element={<Historia />} />
         <Route path="/centros-acopio" element={<CentrosAcopio />} />
         <Route path="/importar" element={
           <ProtectedRoute allowedRoles={ADMIN_ROLES}>
             <ImportarDatos />
           </ProtectedRoute>
-        }/>
+        } />
         <Route path="/perfil" element={<Perfil />} />
       </Route>
 

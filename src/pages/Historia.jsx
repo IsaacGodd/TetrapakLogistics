@@ -5,44 +5,44 @@ const aliados = [
     nombre: 'Tetra Pak',
     categoria: 'Innovación en Envasado',
     Icon: Globe2,
-    gradient: 'linear-gradient(135deg, #1D4ED8 0%, #3B82F6 100%)',
+    gradient: 'linear-gradient(135deg, #2a61c9 0%, #4f8fe8 100%)',
     descripcion: [
       'Tetra Pak es una empresa líder mundial en soluciones de envasado y procesamiento de alimentos. Trabajando en estrecha colaboración con nuestros clientes y proveedores, ofrecemos productos seguros, innovadores y respetuosos con el medio ambiente que cada día cubren las necesidades de cientos de millones de personas en más de 160 países.',
       'Con más de 25,000 empleados en todo el mundo, creemos en el liderazgo industrial responsable y en un enfoque sostenible del negocio. Nuestro lema, "PROTEGE LO BUENO™", refleja nuestra visión de hacer que los alimentos sean seguros y estén disponibles en todas partes.',
     ],
     stats: [
       { value: '160+', label: 'países' },
-      { value: '25K',  label: 'empleados' },
-      { value: '70+',  label: 'años' },
+      { value: '25K', label: 'empleados' },
+      { value: '70+', label: 'años' },
     ],
   },
   {
     nombre: 'SEDUSO',
     categoria: 'Desarrollo Sustentable',
     Icon: Leaf,
-    gradient: 'linear-gradient(135deg, #059669 0%, #34D399 100%)',
+    gradient: 'linear-gradient(135deg, #0e9a95 0%, #4dc5b4 100%)',
     descripcion: [
       'La Secretaría de Desarrollo Sustentable (SEDUSO) es el organismo encargado de formular y coordinar las políticas públicas en materia de desarrollo urbano, medio ambiente y recursos naturales. Su misión es promover un crecimiento ordenado y equilibrado que respete el entorno natural y mejore la calidad de vida de los ciudadanos.',
       'A través de programas de reciclaje, conservación de áreas verdes y regulación ambiental, SEDUSO trabaja para asegurar que el desarrollo económico no comprometa el bienestar de las generaciones futuras, fomentando una cultura de respeto y cuidado por nuestro planeta.',
     ],
     stats: [
       { value: '100+', label: 'programas' },
-      { value: '50K',  label: 'familias' },
-      { value: '30+',  label: 'municipios' },
+      { value: '50K', label: 'familias' },
+      { value: '30+', label: 'municipios' },
     ],
   },
   {
     nombre: 'Ecolana',
     categoria: 'Reciclaje Inclusivo',
     Icon: RefreshCw,
-    gradient: 'linear-gradient(135deg, #EA580C 0%, #FB923C 100%)',
+    gradient: 'linear-gradient(135deg, #2f8b62 0%, #69b34c 100%)',
     descripcion: [
       'Ecolana es una plataforma innovadora dedicada a conectar a los consumidores con centros de acopio y reciclar. Su objetivo es facilitar el proceso de reciclaje para todos, haciendo que la información sea accesible y transparente. Ecolana ha creado una red extensa de puntos de reciclaje, permitiendo que miles de toneladas de residuos sean desviadas de los vertederos cada año.',
       'Además de su mapa de reciclaje, Ecolana ofrece consultoría a empresas para ayudarles a manejar sus residuos de manera responsable y cumplir con las normativas ambientales, promoviendo así la economía circular en México.',
     ],
     stats: [
-      { value: '2K+',  label: 'puntos de reciclaje' },
-      { value: '1M+',  label: 'usuarios' },
+      { value: '2K+', label: 'puntos de reciclaje' },
+      { value: '1M+', label: 'usuarios' },
       { value: '500T', label: 'residuos desviados' },
     ],
   },
@@ -50,13 +50,13 @@ const aliados = [
 
 export default function Historia() {
   return (
-    <div className="min-h-full bg-white dark:bg-gray-900">
+    <div className="min-h-full bg-gradient-to-br from-blue-50 via-white to-green-50 dark:bg-gray-900">
       <div className="max-w-3xl mx-auto px-6 py-10 space-y-8">
 
         {/* Hero */}
         <div className="text-center pt-4 pb-2 anim-fade-up" style={{ animationDelay: '0ms' }}>
           <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl mb-5 shadow-xl"
-            style={{ background: 'linear-gradient(135deg, #1D6ADE, #10B981)' }}>
+            style={{ background: 'linear-gradient(135deg, #2b67dc, #149e95, #3a9f6b)' }}>
             <Globe2 size={38} strokeWidth={1.4} className="text-white" />
           </div>
           <h1 className="text-4xl font-extrabold text-gray-900 mb-3 leading-tight">
@@ -72,7 +72,7 @@ export default function Historia() {
         {aliados.map(({ nombre, categoria, Icon, gradient, descripcion, stats }, i) => (
           <div
             key={i}
-            className="rounded-3xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 anim-fade-up"
+            className="rounded-3xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 anim-fade-up border border-blue-100/70"
             style={{ animationDelay: `${100 + i * 130}ms` }}
           >
             {/* Colored header */}
@@ -110,7 +110,7 @@ export default function Historia() {
             </div>
 
             {/* Body */}
-            <div className="bg-white px-8 py-7 space-y-3">
+            <div className="bg-[#fbfdff] px-8 py-7 space-y-3">
               {descripcion.map((p, j) => (
                 <p key={j} className="text-sm text-gray-600 leading-relaxed">{p}</p>
               ))}
@@ -127,7 +127,7 @@ export default function Historia() {
           style={{ animationDelay: '490ms' }}
         >
           <div className="px-8 py-10 text-center text-white"
-            style={{ background: 'linear-gradient(135deg, #1D6ADE 0%, #10B981 100%)' }}>
+            style={{ background: 'linear-gradient(135deg, #2b67dc 0%, #149e95 55%, #3a9f6b 100%)' }}>
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-5 shadow-lg"
               style={{ background: 'rgba(255,255,255,0.2)' }}>
               <Users size={30} strokeWidth={1.5} className="text-white" />
