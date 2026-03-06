@@ -30,7 +30,11 @@ body {
 }
 
 .dark body {
-  background-color: #18181b;
+  color: #e5edf8;
+  background:
+    radial-gradient(circle at 14% 8%, rgba(37, 99, 235, 0.16), transparent 34%),
+    radial-gradient(circle at 86% 2%, rgba(13, 148, 136, 0.14), transparent 32%),
+    #0b1220;
 }
 
 /* Light-mode utility tuning for a cleaner dashboard look */
@@ -132,27 +136,28 @@ body {
 /* ─── Backgrounds ─── */
 .dark .bg-white,
 .dark .hover\:bg-white:hover {
-  background-color: #27272a;
+  background-color: #111b2e;
+  background-image: none;
 }
 
 .dark .bg-gray-50,
 .dark .hover\:bg-gray-50:hover,
 .dark .focus\:bg-gray-50:focus {
-  background-color: #18181b;
+  background-color: #0b1220;
 }
 
 .dark .bg-gray-100,
 .dark .hover\:bg-gray-100:hover {
-  background-color: #3f3f46;
+  background-color: #18253b;
 }
 
 .dark .bg-gray-200,
 .dark .hover\:bg-gray-200:hover {
-  background-color: #52525b;
+  background-color: #23314a;
 }
 
 .dark .bg-app-bg {
-  background-color: #18181b;
+  background-color: #0b1220;
 }
 
 /* Subtle tinted backgrounds — darken for dark mode */
@@ -233,56 +238,56 @@ body {
 
 /* ─── Borders ─── */
 .dark .border-gray-50 {
-  border-color: #3f3f46;
+  border-color: #2a3b58;
 }
 
 .dark .border-gray-100 {
-  border-color: #3f3f46;
+  border-color: #2a3b58;
 }
 
 .dark .border-gray-200 {
-  border-color: #52525b;
+  border-color: #344767;
 }
 
 .dark .border-gray-300 {
-  border-color: #71717a;
+  border-color: #435a80;
 }
 
 .dark .divide-gray-50>*+* {
-  border-color: #3f3f46;
+  border-color: #2a3b58;
 }
 
 .dark .divide-gray-100>*+* {
-  border-color: #3f3f46;
+  border-color: #2a3b58;
 }
 
 .dark .divide-gray-200>*+* {
-  border-color: #52525b;
+  border-color: #344767;
 }
 
 /* ─── Text ─── */
 .dark .text-gray-900 {
-  color: #fafafa;
+  color: #f4f8ff;
 }
 
 .dark .text-gray-800 {
-  color: #f4f4f5;
+  color: #e7eefb;
 }
 
 .dark .text-gray-700 {
-  color: #e4e4e7;
+  color: #d6e2f4;
 }
 
 .dark .text-gray-600 {
-  color: #d4d4d8;
+  color: #b8c9e0;
 }
 
 .dark .text-gray-500 {
-  color: #a1a1aa;
+  color: #97adc9;
 }
 
 .dark .text-gray-400 {
-  color: #71717a;
+  color: #7f96b6;
 }
 
 /* Keep brand colours vibrant */
@@ -347,14 +352,50 @@ body {
 .dark input:not([type="range"]):not([type="checkbox"]):not([type="radio"]):not([type="file"]),
 .dark select,
 .dark textarea {
-  background-color: #3f3f46;
-  color: #fafafa;
-  border-color: #52525b;
+  background-color: #18253b;
+  color: #f4f8ff;
+  border-color: #344767;
 }
 
 .dark input::placeholder,
 .dark textarea::placeholder {
   color: #71717a;
+}
+
+/* Keep login visuals unchanged in dark mode (as requested) */
+.dark .tl-login-page .text-gray-900 {
+  color: #12263a;
+}
+
+.dark .tl-login-page .text-gray-600 {
+  color: #5e7288;
+}
+
+.dark .tl-login-page .text-gray-500 {
+  color: #64748b;
+}
+
+.dark .tl-login-page .text-gray-400 {
+  color: #94a3b8;
+}
+
+.dark .tl-login-page .bg-gray-50,
+.dark .tl-login-page .hover\:bg-gray-50:hover,
+.dark .tl-login-page .focus\:bg-gray-50:focus {
+  background-color: #f8fafc;
+}
+
+.dark .tl-login-page input:not([type="range"]):not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+.dark .tl-login-page select,
+.dark .tl-login-page textarea {
+  background-color: #ffffff;
+  color: #12263a;
+  border-color: #bfdbfe;
+}
+
+.dark .tl-login-page input::placeholder,
+.dark .tl-login-page textarea::placeholder {
+  color: #94a3b8;
 }
 
 /* Leaflet popups & map overlays */

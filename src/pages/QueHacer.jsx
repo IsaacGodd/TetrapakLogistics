@@ -23,7 +23,7 @@ const productos = [
 
 export default function QueHacer() {
   return (
-    <div className="min-h-full bg-gradient-to-br from-blue-50 via-white to-teal-50 dark:bg-gray-900">
+    <div className="min-h-full bg-gradient-to-br from-blue-50 via-white to-teal-50 dark:from-[#0b1324] dark:via-[#101b32] dark:to-[#0f2230] dark:bg-none">
       <div className="max-w-5xl mx-auto px-8 py-12 space-y-12">
 
         {/* Hero */}

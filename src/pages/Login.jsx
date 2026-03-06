@@ -30,7 +30,7 @@ export default function Login() {
   const handleGuest = () => { loginAsGuest(); navigate('/que-hacer') }
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center relative overflow-hidden"
+    <div className="tl-login-page min-h-screen w-full flex items-center justify-center relative overflow-hidden"
       style={{ background: 'linear-gradient(132deg, #214a88 0%, #2b67dc 36%, #149e95 68%, #3a9f6b 100%)' }}
     >
       {/* Background blobs */}

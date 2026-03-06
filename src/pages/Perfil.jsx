@@ -113,7 +113,7 @@ export default function Perfil() {
   )
 
   return (
-    <div className="min-h-full bg-gradient-to-br from-blue-50 via-slate-50 to-green-50 dark:bg-gray-950 p-6">
+    <div className="min-h-full bg-gradient-to-br from-blue-50 via-slate-50 to-green-50 dark:from-[#0b1324] dark:via-[#101b32] dark:to-[#0f2230] dark:bg-none p-6">
       <div className="max-w-2xl mx-auto space-y-5">
 
         {/* ── Header avatar ── */}
@@ -128,8 +128,8 @@ export default function Perfil() {
               />
             ) : (
               <div className={`w-16 h-16 rounded-2xl flex items-center justify-center text-2xl font-black shadow-lg ${dark
-                  ? 'bg-gradient-to-br from-primary to-teal-500 text-white'
-                  : 'bg-gradient-to-br from-blue-600 via-teal-600 to-green-600 text-white'
+                ? 'bg-gradient-to-br from-primary to-teal-500 text-white'
+                : 'bg-gradient-to-br from-blue-600 via-teal-600 to-green-600 text-white'
                 }`}>
                 {initials}
               </div>
@@ -169,7 +169,7 @@ export default function Perfil() {
               { icon: Mail, label: 'Correo', value: user?.email },
               { icon: Shield, label: 'Rol', value: ROLE_LABELS[user?.role] ?? user?.role },
             ].map(({ icon: Icon, label, value }) => (
-              <div key={label} className="bg-gradient-to-r from-blue-50/70 to-teal-50/60 dark:bg-gray-700/50 rounded-xl p-4 border border-blue-100/70 dark:border-gray-700">
+              <div key={label} className="bg-gradient-to-r from-blue-50/70 to-teal-50/60 dark:from-slate-700/60 dark:to-slate-700/60 dark:bg-none rounded-xl p-4 border border-blue-100/70 dark:border-gray-700">
                 <div className="flex items-center gap-1.5 mb-1">
                   <Icon size={12} strokeWidth={2} className="text-teal-500 dark:text-gray-500" />
                   <span className="text-xs font-semibold text-gray-400 dark:text-gray-500">{label}</span>
