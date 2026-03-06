@@ -12,7 +12,7 @@ export default function TopBar() {
     .toUpperCase() ?? '?'
 
   return (
-    <div className={`h-12 bg-gradient-to-r from-blue-50/80 via-teal-50/70 to-green-50/80 backdrop-blur-sm flex items-center justify-end px-5 gap-2 shrink-0 ${dark ? 'dark:bg-gray-900 border-b border-gray-800' : 'border-b border-gray-100'
+    <div className={`h-12 bg-gradient-to-r from-blue-50/80 via-teal-50/70 to-green-50/80 backdrop-blur-sm flex items-center justify-end px-5 gap-2 shrink-0 ${dark ? 'dark:bg-gray-900 dark:bg-none border-b border-gray-800' : 'border-b border-gray-100'
       }`}>
 
       {/* Theme toggle */}

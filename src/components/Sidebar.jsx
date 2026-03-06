@@ -7,12 +7,12 @@ import {
 
 // Per-path brand colors for active state (dark mode only)
 const navColors = {
-  '/dashboard': { bg: 'bg-gradient-to-r from-blue-100 via-teal-50 to-green-100', text: 'text-blue-700', border: 'border-l-blue-600' },
-  '/mapa-transportistas': { bg: 'bg-gradient-to-r from-teal-100 to-blue-50', text: 'text-teal-700', border: 'border-l-teal-600' },
-  '/que-hacer': { bg: 'bg-gradient-to-r from-green-100 to-teal-50', text: 'text-green-700', border: 'border-l-green-600' },
-  '/historia': { bg: 'bg-gradient-to-r from-blue-50 to-green-100', text: 'text-blue-700', border: 'border-l-blue-600' },
-  '/centros-acopio': { bg: 'bg-gradient-to-r from-teal-50 to-green-100', text: 'text-teal-700', border: 'border-l-teal-600' },
-  '/importar': { bg: 'bg-gradient-to-r from-blue-100 to-teal-100', text: 'text-blue-700', border: 'border-l-blue-600' },
+  '/dashboard': { bg: 'bg-gradient-to-r from-blue-100 via-teal-50 to-green-100 dark:from-slate-800 dark:via-slate-800 dark:to-slate-700', text: 'text-blue-700', border: 'border-l-blue-600' },
+  '/mapa-transportistas': { bg: 'bg-gradient-to-r from-teal-100 to-blue-50 dark:from-slate-800 dark:via-slate-800 dark:to-slate-700', text: 'text-teal-700', border: 'border-l-teal-600' },
+  '/que-hacer': { bg: 'bg-gradient-to-r from-green-100 to-teal-50 dark:from-slate-800 dark:via-slate-800 dark:to-slate-700', text: 'text-green-700', border: 'border-l-green-600' },
+  '/historia': { bg: 'bg-gradient-to-r from-blue-50 to-green-100 dark:from-slate-800 dark:via-slate-800 dark:to-slate-700', text: 'text-blue-700', border: 'border-l-blue-600' },
+  '/centros-acopio': { bg: 'bg-gradient-to-r from-teal-50 to-green-100 dark:from-slate-800 dark:via-slate-800 dark:to-slate-700', text: 'text-teal-700', border: 'border-l-teal-600' },
+  '/importar': { bg: 'bg-gradient-to-r from-blue-100 to-teal-100 dark:from-slate-800 dark:via-slate-800 dark:to-slate-700', text: 'text-blue-700', border: 'border-l-blue-600' },
 }
 
 const navItems = [
@@ -62,7 +62,7 @@ export default function Sidebar() {
               className={({ isActive }) =>
                 `group flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 border-l-2 ${isActive
                   ? `${colors.bg} ${colors.text} border-l-2 ${colors.border} shadow-sm`
-                  : 'text-gray-500 dark:text-gray-400 hover:bg-gradient-to-r hover:from-blue-50 hover:to-teal-50 dark:hover:bg-gray-800 hover:text-teal-700 dark:hover:text-gray-200 border-transparent'
+                  : 'text-gray-500 dark:text-gray-400 hover:bg-gradient-to-r hover:from-blue-50 hover:to-teal-50 dark:hover:bg-gray-800 dark:hover:bg-none hover:text-teal-700 dark:hover:text-gray-200 border-transparent'
                 }`
               }
             >
@@ -79,7 +79,7 @@ export default function Sidebar() {
 
       {/* User info */}
       {user && (
-        <div className="px-4 py-3 mx-3 mb-2 bg-gradient-to-r from-blue-50 via-teal-50 to-green-50 dark:bg-gray-800 rounded-xl border border-blue-100 dark:border-gray-700">
+        <div className="px-4 py-3 mx-3 mb-2 bg-gradient-to-r from-blue-50 via-teal-50 to-green-50 dark:bg-gray-800 dark:bg-none rounded-xl border border-blue-100 dark:border-gray-700">
           <p className="text-xs font-semibold text-gray-700 dark:text-gray-200 truncate">{user.name}</p>
           <p className="text-xs text-gray-400 dark:text-gray-500 capitalize">{user.role}</p>
         </div>
@@ -89,7 +89,7 @@ export default function Sidebar() {
       <div className="px-3 py-4 border-t border-gray-100 dark:border-gray-800">
         <button
           onClick={handleLogout}
-          className="group flex items-center gap-2.5 w-full px-3 py-2.5 rounded-xl text-sm font-medium text-red-500 hover:bg-gradient-to-r hover:from-red-50 hover:to-orange-50 dark:hover:bg-red-900/20 hover:text-red-600 transition-all duration-200 active:scale-95"
+          className="group flex items-center gap-2.5 w-full px-3 py-2.5 rounded-xl text-sm font-medium text-red-500 hover:bg-gradient-to-r hover:from-red-50 hover:to-orange-50 dark:hover:bg-red-900/20 dark:hover:bg-none hover:text-red-600 transition-all duration-200 active:scale-95"
         >
           <LogOut size={17} strokeWidth={1.8} className="shrink-0" />
           Cerrar Sesión
@@ -113,12 +113,12 @@ export default function Sidebar() {
       )}
 
       {/* Desktop */}
-      <aside className="hidden lg:flex flex-col w-56 bg-gradient-to-b from-[#f4faff] via-[#eef9f6] to-[#f2f9ef] dark:bg-gray-900 border-r border-gray-100 dark:border-gray-800 h-screen sticky top-0 shrink-0 shadow-sm">
+      <aside className="hidden lg:flex flex-col w-56 bg-gradient-to-b from-[#f4faff] via-[#eef9f6] to-[#f2f9ef] dark:bg-gray-900 dark:bg-none border-r border-gray-100 dark:border-gray-800 h-screen sticky top-0 shrink-0 shadow-sm">
         <Content />
       </aside>
 
       {/* Mobile drawer */}
-      <aside className={`lg:hidden fixed left-0 top-0 h-full w-56 bg-gradient-to-b from-[#f4faff] via-[#eef9f6] to-[#f2f9ef] dark:bg-gray-900 border-r border-gray-100 dark:border-gray-800 z-50 shadow-xl transition-transform duration-300 ${mobileOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+      <aside className={`lg:hidden fixed left-0 top-0 h-full w-56 bg-gradient-to-b from-[#f4faff] via-[#eef9f6] to-[#f2f9ef] dark:bg-gray-900 dark:bg-none border-r border-gray-100 dark:border-gray-800 z-50 shadow-xl transition-transform duration-300 ${mobileOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <Content />
       </aside>
     </>

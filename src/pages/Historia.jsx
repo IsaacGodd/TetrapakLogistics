@@ -50,7 +50,7 @@ const aliados = [
 
 export default function Historia() {
   return (
-    <div className="min-h-full bg-gradient-to-br from-blue-50 via-white to-green-50 dark:bg-gray-900">
+    <div className="min-h-full bg-gradient-to-br from-blue-50 via-white to-green-50 dark:from-[#0b1324] dark:via-[#101b32] dark:to-[#0f2230] dark:bg-none">
       <div className="max-w-3xl mx-auto px-6 py-10 space-y-8">
 
         {/* Hero */}
@@ -72,7 +72,7 @@ export default function Historia() {
         {aliados.map(({ nombre, categoria, Icon, gradient, descripcion, stats }, i) => (
           <div
             key={i}
-            className="rounded-3xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 anim-fade-up border border-blue-100/70"
+            className="rounded-3xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 anim-fade-up border border-blue-100/70 dark:border-[#2a3b58]"
             style={{ animationDelay: `${100 + i * 130}ms` }}
           >
             {/* Colored header */}
@@ -110,7 +110,7 @@ export default function Historia() {
             </div>
 
             {/* Body */}
-            <div className="bg-[#fbfdff] px-8 py-7 space-y-3">
+            <div className="bg-[#fbfdff] dark:bg-[#111b2e] px-8 py-7 space-y-3">
               {descripcion.map((p, j) => (
                 <p key={j} className="text-sm text-gray-600 leading-relaxed">{p}</p>
               ))}
