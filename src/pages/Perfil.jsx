@@ -13,11 +13,11 @@ const ROLE_LABELS = {
   transportista: 'Transportista', invitado: 'Invitado', tester: 'Tester',
 }
 const ROLE_COLORS = {
-  admin:         'bg-blue-100   text-blue-700   dark:bg-blue-900/40   dark:text-blue-300',
-  employee:      'bg-green-100  text-green-700  dark:bg-green-900/40  dark:text-green-300',
-  transportista: 'bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300',
-  invitado:      'bg-gray-100   text-gray-600   dark:bg-gray-700      dark:text-gray-300',
-  tester:        'bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300',
+  admin: 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300',
+  employee: 'bg-teal-100 text-teal-700 dark:bg-teal-900/40 dark:text-teal-300',
+  transportista: 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300',
+  invitado: 'bg-gray-100   text-gray-600   dark:bg-gray-700      dark:text-gray-300',
+  tester: 'bg-cyan-100 text-cyan-700 dark:bg-cyan-900/40 dark:text-cyan-300',
 }
 
 export default function Perfil() {
@@ -28,13 +28,13 @@ export default function Perfil() {
 
   // Profile image
   const [profileImg, setProfileImg] = useState(null)
-  const [imgError,   setImgError]   = useState('')
+  const [imgError, setImgError] = useState('')
 
   const handleImageUpload = e => {
     const file = e.target.files[0]
     if (!file) return
     if (!file.type.startsWith('image/')) { setImgError('Solo se aceptan imágenes'); return }
-    if (file.size > 5 * 1024 * 1024)    { setImgError('La imagen no debe superar 5 MB'); return }
+    if (file.size > 5 * 1024 * 1024) { setImgError('La imagen no debe superar 5 MB'); return }
     setImgError('')
     const reader = new FileReader()
     reader.onload = ev => setProfileImg(ev.target.result)
@@ -43,15 +43,15 @@ export default function Perfil() {
   }
 
   // Password form
-  const [pwForm,    setPwForm]    = useState({ current: '', new: '', confirm: '' })
-  const [showPw,    setShowPw]    = useState({ current: false, new: false, confirm: false })
-  const [pwErrors,  setPwErrors]  = useState({})
+  const [pwForm, setPwForm] = useState({ current: '', new: '', confirm: '' })
+  const [showPw, setShowPw] = useState({ current: false, new: false, confirm: false })
+  const [pwErrors, setPwErrors] = useState({})
   const [pwSuccess, setPwSuccess] = useState(false)
 
   // Assign route (admin)
-  const [assignModal,    setAssignModal]    = useState(null)
+  const [assignModal, setAssignModal] = useState(null)
   const [assignedRoutes, setAssignedRoutes] = useState({})
-  const [routeInput,     setRouteInput]     = useState('')
+  const [routeInput, setRouteInput] = useState('')
 
   const transportistas = users.filter(u => u.role === 'transportista')
 
@@ -64,9 +64,9 @@ export default function Perfil() {
 
   const validatePw = () => {
     const errs = {}
-    if (!pwForm.current)                    errs.current = 'Requerido'
-    if (!pwForm.new || pwForm.new.length < 6) errs.new   = 'Mínimo 6 caracteres'
-    if (pwForm.new !== pwForm.confirm)       errs.confirm = 'Las contraseñas no coinciden'
+    if (!pwForm.current) errs.current = 'Requerido'
+    if (!pwForm.new || pwForm.new.length < 6) errs.new = 'Mínimo 6 caracteres'
+    if (pwForm.new !== pwForm.confirm) errs.confirm = 'Las contraseñas no coinciden'
     setPwErrors(errs)
     return !Object.keys(errs).length
   }
@@ -95,11 +95,10 @@ export default function Perfil() {
           value={pwForm[fieldKey]}
           onChange={e => setPwForm(p => ({ ...p, [fieldKey]: e.target.value }))}
           className={`w-full pr-10 pl-3 py-2.5 text-sm rounded-xl border transition-all outline-none focus:ring-2
-            bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 ${
-            pwErrors[fieldKey]
+            bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 ${pwErrors[fieldKey]
               ? 'border-red-300 dark:border-red-600 focus:border-red-400 focus:ring-red-100'
               : 'border-gray-200 dark:border-gray-600 focus:border-primary focus:ring-primary/10'
-          }`}
+            }`}
         />
         <button
           type="button"
@@ -114,7 +113,7 @@ export default function Perfil() {
   )
 
   return (
-    <div className="min-h-full bg-gray-50 dark:bg-gray-950 p-6">
+    <div className="min-h-full bg-gradient-to-br from-blue-50 via-slate-50 to-green-50 dark:bg-gray-950 p-6">
       <div className="max-w-2xl mx-auto space-y-5">
 
         {/* ── Header avatar ── */}
@@ -128,11 +127,10 @@ export default function Perfil() {
                 className="w-16 h-16 rounded-2xl object-cover shadow-lg"
               />
             ) : (
-              <div className={`w-16 h-16 rounded-2xl flex items-center justify-center text-2xl font-black shadow-lg ${
-                dark
+              <div className={`w-16 h-16 rounded-2xl flex items-center justify-center text-2xl font-black shadow-lg ${dark
                   ? 'bg-gradient-to-br from-primary to-teal-500 text-white'
-                  : 'bg-gray-200 text-gray-600'
-              }`}>
+                  : 'bg-gradient-to-br from-blue-600 via-teal-600 to-green-600 text-white'
+                }`}>
                 {initials}
               </div>
             )}
@@ -160,20 +158,20 @@ export default function Perfil() {
         </div>
 
         {/* ── Mi información ── */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-6 anim-fade-up" style={{ animationDelay: '60ms' }}>
+        <div className="bg-white dark:bg-gray-800 rounded-2xl border border-blue-100 dark:border-gray-700 shadow-sm p-6 anim-fade-up" style={{ animationDelay: '60ms' }}>
           <h2 className="text-sm font-bold text-gray-700 dark:text-gray-200 mb-4 flex items-center gap-2">
-            <User size={14} strokeWidth={2} className="text-gray-400 dark:text-blue-400" /> Mi Información
+            <User size={14} strokeWidth={2} className="text-blue-500 dark:text-blue-400" /> Mi Información
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {[
-              { icon: Hash,   label: 'ID',     value: user?.id                            },
-              { icon: User,   label: 'Nombre', value: user?.name                          },
-              { icon: Mail,   label: 'Correo', value: user?.email                         },
-              { icon: Shield, label: 'Rol',    value: ROLE_LABELS[user?.role] ?? user?.role },
+              { icon: Hash, label: 'ID', value: user?.id },
+              { icon: User, label: 'Nombre', value: user?.name },
+              { icon: Mail, label: 'Correo', value: user?.email },
+              { icon: Shield, label: 'Rol', value: ROLE_LABELS[user?.role] ?? user?.role },
             ].map(({ icon: Icon, label, value }) => (
-              <div key={label} className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4">
+              <div key={label} className="bg-gradient-to-r from-blue-50/70 to-teal-50/60 dark:bg-gray-700/50 rounded-xl p-4 border border-blue-100/70 dark:border-gray-700">
                 <div className="flex items-center gap-1.5 mb-1">
-                  <Icon size={12} strokeWidth={2} className="text-gray-400 dark:text-gray-500" />
+                  <Icon size={12} strokeWidth={2} className="text-teal-500 dark:text-gray-500" />
                   <span className="text-xs font-semibold text-gray-400 dark:text-gray-500">{label}</span>
                 </div>
                 <p className="text-sm font-semibold text-gray-800 dark:text-gray-100 truncate">{value}</p>
@@ -183,9 +181,9 @@ export default function Perfil() {
         </div>
 
         {/* ── Cambiar contraseña ── */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-6 anim-fade-up" style={{ animationDelay: '120ms' }}>
+        <div className="bg-white dark:bg-gray-800 rounded-2xl border border-teal-100 dark:border-gray-700 shadow-sm p-6 anim-fade-up" style={{ animationDelay: '120ms' }}>
           <h2 className="text-sm font-bold text-gray-700 dark:text-gray-200 mb-4 flex items-center gap-2">
-            <Lock size={14} strokeWidth={2} className="text-gray-400 dark:text-blue-400" /> Cambiar Contraseña
+            <Lock size={14} strokeWidth={2} className="text-teal-500 dark:text-blue-400" /> Cambiar Contraseña
           </h2>
 
           {pwSuccess && (
@@ -197,11 +195,11 @@ export default function Perfil() {
 
           <div className="space-y-3">
             <PwField fieldKey="current" label="Contraseña actual" />
-            <PwField fieldKey="new"     label="Nueva contraseña"  />
+            <PwField fieldKey="new" label="Nueva contraseña" />
             <PwField fieldKey="confirm" label="Confirmar contraseña" />
             <button
               onClick={handleChangePassword}
-              className="mt-1 px-5 py-2.5 bg-primary text-white text-sm rounded-xl font-semibold hover:bg-blue-700 transition-all active:scale-95 shadow-sm"
+              className="mt-1 px-5 py-2.5 bg-gradient-to-r from-blue-600 via-teal-600 to-green-600 text-white text-sm rounded-xl font-semibold hover:from-blue-700 hover:via-teal-700 hover:to-green-700 transition-all active:scale-95 shadow-sm"
             >
               Guardar contraseña
             </button>
@@ -210,9 +208,9 @@ export default function Perfil() {
 
         {/* ── Transportistas (admin / employee / tester) ── */}
         {['admin', 'employee', 'tester'].includes(user?.role) && (
-          <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden anim-fade-up" style={{ animationDelay: '180ms' }}>
+          <div className="bg-white dark:bg-gray-800 rounded-2xl border border-blue-100 dark:border-gray-700 shadow-sm overflow-hidden anim-fade-up" style={{ animationDelay: '180ms' }}>
             <div className="px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex items-center gap-2">
-              <Truck size={14} strokeWidth={2} className="text-orange-500" />
+              <Truck size={14} strokeWidth={2} className="text-teal-500" />
               <h2 className="text-sm font-bold text-gray-700 dark:text-gray-200">Transportistas</h2>
               <span className="text-xs text-gray-400 ml-1">({transportistas.length})</span>
             </div>
@@ -224,8 +222,8 @@ export default function Perfil() {
                 {transportistas.map(t => (
                   <div key={t.id} className="px-6 py-4 flex items-center gap-4">
                     {/* Avatar */}
-                    <div className="w-10 h-10 rounded-xl bg-orange-50 dark:bg-orange-900/30 flex items-center justify-center shrink-0">
-                      <span className="text-orange-600 dark:text-orange-400 font-bold text-sm">
+                    <div className="w-10 h-10 rounded-xl bg-teal-50 dark:bg-teal-900/30 flex items-center justify-center shrink-0">
+                      <span className="text-teal-600 dark:text-teal-300 font-bold text-sm">
                         {t.name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase()}
                       </span>
                     </div>
@@ -253,7 +251,7 @@ export default function Perfil() {
                     {user.role === 'admin' && (
                       <button
                         onClick={() => { setAssignModal(t); setRouteInput(assignedRoutes[t.id] ?? '') }}
-                        className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 dark:bg-blue-900/30 text-gray-600 dark:text-blue-400 text-xs rounded-xl font-semibold hover:bg-gray-200 dark:hover:bg-blue-900/50 transition-all active:scale-95 shrink-0"
+                        className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs rounded-xl font-semibold hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-all active:scale-95 shrink-0"
                       >
                         <Route size={11} strokeWidth={2} />
                         Asignar ruta
@@ -304,7 +302,7 @@ export default function Perfil() {
               <button
                 onClick={handleAssignRoute}
                 disabled={!routeInput.trim()}
-                className="flex-1 py-2.5 text-sm bg-primary text-white rounded-xl font-semibold hover:bg-blue-700 transition-all active:scale-95 disabled:opacity-40"
+                className="flex-1 py-2.5 text-sm bg-gradient-to-r from-blue-600 to-teal-600 text-white rounded-xl font-semibold hover:from-blue-700 hover:to-teal-700 transition-all active:scale-95 disabled:opacity-40"
               >
                 Guardar
               </button>

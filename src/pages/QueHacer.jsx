@@ -4,37 +4,37 @@ import {
 } from 'lucide-react'
 
 const pasos = [
-  { num: 1, titulo: 'Recolección',     desc: 'Los envases Tetrapak se recolectan en centros de acopio designados donde se separan de otros materiales.',                   Icon: Package,   bg: '#2563EB' },
-  { num: 2, titulo: 'Clasificación',   desc: 'Los envases se clasifican y se preparan para el proceso de separación de sus componentes principales.',                     Icon: RefreshCw, bg: '#059669' },
-  { num: 3, titulo: 'Pulpado',         desc: 'Los envases se sumergen en agua para separar las fibras de papel del aluminio y plástico.',                                 Icon: Droplets,  bg: '#EA580C' },
-  { num: 4, titulo: 'Separación',      desc: 'Las fibras de papel se recuperan y el polialuminio (plástico + aluminio) se procesa por separado.',                         Icon: BarChart2, bg: '#9333EA' },
-  { num: 5, titulo: 'Transformación',  desc: 'Los materiales separados se procesan para crear nuevos productos sostenibles y útiles.',                                    Icon: Sparkles,  bg: '#DB2777' },
-  { num: 6, titulo: 'Productos Nuevos',desc: 'Se fabrican nuevos productos como papel, muebles, láminas para construcción y más.',                                       Icon: Leaf,      bg: '#0D9488' },
+  { num: 1, titulo: 'Recolección', desc: 'Los envases Tetrapak se recolectan en centros de acopio designados donde se separan de otros materiales.', Icon: Package, bg: '#2563EB' },
+  { num: 2, titulo: 'Clasificación', desc: 'Los envases se clasifican y se preparan para el proceso de separación de sus componentes principales.', Icon: RefreshCw, bg: '#0D9488' },
+  { num: 3, titulo: 'Pulpado', desc: 'Los envases se sumergen en agua para separar las fibras de papel del aluminio y plástico.', Icon: Droplets, bg: '#0891B2' },
+  { num: 4, titulo: 'Separación', desc: 'Las fibras de papel se recuperan y el polialuminio (plástico + aluminio) se procesa por separado.', Icon: BarChart2, bg: '#1D4ED8' },
+  { num: 5, titulo: 'Transformación', desc: 'Los materiales separados se procesan para crear nuevos productos sostenibles y útiles.', Icon: Sparkles, bg: '#2F8B62' },
+  { num: 6, titulo: 'Productos Nuevos', desc: 'Se fabrican nuevos productos como papel, muebles, láminas para construcción y más.', Icon: Leaf, bg: '#69B34C' },
 ]
 
 const productos = [
-  { Icon: FileText,  titulo: 'Papel y Cartón',          desc: 'Las fibras de papel recuperadas se utilizan para fabricar papel higiénico, servilletas, cajas de cartón y otros productos de papel.',  color: '#2563EB' },
-  { Icon: Sofa,      titulo: 'Muebles y Tableros',       desc: 'El polialuminio se transforma en tableros aglomerados para fabricar muebles durables y ecológicos.',                                    color: '#9333EA' },
-  { Icon: Hammer,    titulo: 'Material de Construcción', desc: 'Se crean láminas y tejas para techos, así como otros materiales usados en la industria de la construcción.',                            color: '#EA580C' },
-  { Icon: PenLine,   titulo: 'Artículos Escolares',      desc: 'Reglas, carpetas y otros útiles escolares se fabrican a partir del aluminio y plástico reciclado.',                                     color: '#059669' },
-  { Icon: Container, titulo: 'Pallets y Estibas',        desc: 'Los pallets utilizados para transporte y almacenamiento se fabrican con el material reciclado.',                                        color: '#DB2777' },
-  { Icon: Palette,   titulo: 'Artesanías',               desc: 'Diversos productos artesanales como bolsas, carteras y accesorios se crean aprovechando el material reciclado.',                       color: '#0D9488' },
+  { Icon: FileText, titulo: 'Papel y Cartón', desc: 'Las fibras de papel recuperadas se utilizan para fabricar papel higiénico, servilletas, cajas de cartón y otros productos de papel.', color: '#2563EB' },
+  { Icon: Sofa, titulo: 'Muebles y Tableros', desc: 'El polialuminio se transforma en tableros aglomerados para fabricar muebles durables y ecológicos.', color: '#0D9488' },
+  { Icon: Hammer, titulo: 'Material de Construcción', desc: 'Se crean láminas y tejas para techos, así como otros materiales usados en la industria de la construcción.', color: '#0891B2' },
+  { Icon: PenLine, titulo: 'Artículos Escolares', desc: 'Reglas, carpetas y otros útiles escolares se fabrican a partir del aluminio y plástico reciclado.', color: '#2F8B62' },
+  { Icon: Container, titulo: 'Pallets y Estibas', desc: 'Los pallets utilizados para transporte y almacenamiento se fabrican con el material reciclado.', color: '#1D4ED8' },
+  { Icon: Palette, titulo: 'Artesanías', desc: 'Diversos productos artesanales como bolsas, carteras y accesorios se crean aprovechando el material reciclado.', color: '#69B34C' },
 ]
 
 export default function QueHacer() {
   return (
-    <div className="min-h-full bg-white dark:bg-gray-900">
+    <div className="min-h-full bg-gradient-to-br from-blue-50 via-white to-teal-50 dark:bg-gray-900">
       <div className="max-w-5xl mx-auto px-8 py-12 space-y-12">
 
         {/* Hero */}
         <div className="text-center anim-fade-up" style={{ animationDelay: '0ms' }}>
           <div className="inline-flex items-center justify-center w-24 h-24 rounded-3xl mb-6 shadow-2xl"
-            style={{ background: 'linear-gradient(135deg, #1D6ADE 0%, #F97316 100%)' }}>
+            style={{ background: 'linear-gradient(135deg, #1D6ADE 0%, #0D9488 62%, #69B34C 100%)' }}>
             <Recycle size={46} strokeWidth={1.3} className="text-white" />
           </div>
           <h1 className="text-4xl font-extrabold text-gray-900 mb-4 leading-tight">
             ¿Qué se hace con el{' '}
-            <span style={{ background: 'linear-gradient(90deg, #EA580C, #F97316)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+            <span style={{ background: 'linear-gradient(90deg, #1D6ADE, #0D9488)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
               Tetrapak
             </span>?
           </h1>
@@ -109,7 +109,7 @@ export default function QueHacer() {
         <section className="anim-fade-up" style={{ animationDelay: '300ms' }}>
           <div className="rounded-3xl overflow-hidden shadow-lg">
             <div className="px-8 py-5 text-center"
-              style={{ background: 'linear-gradient(90deg, #1D6ADE 0%, #F97316 50%, #10B981 100%)' }}>
+              style={{ background: 'linear-gradient(90deg, #1D6ADE 0%, #0D9488 55%, #69B34C 100%)' }}>
               <h2 className="text-2xl font-extrabold text-white">Impacto Ambiental</h2>
               <p className="text-white/75 text-sm mt-1">Por cada tonelada reciclada</p>
             </div>
@@ -119,9 +119,9 @@ export default function QueHacer() {
               </p>
               <div className="grid grid-cols-3 gap-5">
                 {[
-                  { value: '1 Ton',      label: 'Tetrapak reciclado', color: '#1D6ADE' },
-                  { value: '17 Árboles', label: 'Salvados',           color: '#10B981' },
-                  { value: '27,000 L',   label: 'Agua ahorrada',      color: '#0891B2' },
+                  { value: '1 Ton', label: 'Tetrapak reciclado', color: '#1D6ADE' },
+                  { value: '17 Árboles', label: 'Salvados', color: '#10B981' },
+                  { value: '27,000 L', label: 'Agua ahorrada', color: '#0891B2' },
                 ].map((stat, i) => (
                   <div
                     key={i}
@@ -140,16 +140,16 @@ export default function QueHacer() {
         {/* CTA */}
         <section className="anim-fade-up" style={{ animationDelay: '400ms' }}>
           <div className="text-center py-12 px-8 rounded-3xl shadow-lg text-white"
-            style={{ background: 'linear-gradient(135deg, #EA580C 0%, #1D6ADE 100%)' }}>
+            style={{ background: 'linear-gradient(135deg, #1D6ADE 0%, #0D9488 55%, #69B34C 100%)' }}>
             <h2 className="text-3xl font-extrabold mb-3">¡Tú Puedes Hacer la Diferencia!</h2>
             <p className="text-white/80 mb-8 max-w-lg mx-auto leading-relaxed">
               Recuerda lavar y aplanar tus envases Tetrapak antes de llevarlos a un centro de acopio. Cada envase cuenta para construir un futuro más sostenible.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               {[
-                { label: 'Lavar el envase',               color: '#10B981' },
-                { label: 'Aplanarlo para ahorrar espacio', color: '#F59E0B' },
-                { label: 'Llevarlo al centro de acopio',   color: '#3B82F6' },
+                { label: 'Lavar el envase', color: '#10B981' },
+                { label: 'Aplanarlo para ahorrar espacio', color: '#0D9488' },
+                { label: 'Llevarlo al centro de acopio', color: '#3B82F6' },
               ].map(({ label, color }, i) => (
                 <button
                   key={i}
@@ -157,7 +157,7 @@ export default function QueHacer() {
                   style={{ background: color }}
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeWidth="3" d="M5 13l4 4L19 7"/>
+                    <path strokeWidth="3" d="M5 13l4 4L19 7" />
                   </svg>
                   {label}
                 </button>

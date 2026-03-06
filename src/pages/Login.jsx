@@ -6,8 +6,8 @@ import { User, Lock, ArrowRight, Loader2 } from 'lucide-react'
 export default function Login() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [error, setError]       = useState('')
-  const [loading, setLoading]   = useState(false)
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
   const { login, loginAsGuest } = useAuth()
   const navigate = useNavigate()
 
@@ -31,21 +31,21 @@ export default function Login() {
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center relative overflow-hidden"
-      style={{ background: 'linear-gradient(135deg, #1a3a5c 0%, #1D4ED8 30%, #0d9488 65%, #166534 100%)' }}
+      style={{ background: 'linear-gradient(132deg, #214a88 0%, #2b67dc 36%, #149e95 68%, #3a9f6b 100%)' }}
     >
       {/* Background blobs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-32 -left-32 w-80 h-80 rounded-full opacity-25" style={{ background: 'radial-gradient(circle, #60a5fa, transparent)' }} />
-        <div className="absolute -bottom-24 -right-24 w-96 h-96 rounded-full opacity-20" style={{ background: 'radial-gradient(circle, #34d399, transparent)' }} />
-        <div className="absolute top-1/2 left-1/4 w-48 h-48 rounded-full opacity-10" style={{ background: 'radial-gradient(circle, #fbbf24, transparent)' }} />
+        <div className="absolute -top-32 -left-32 w-80 h-80 rounded-full opacity-26" style={{ background: 'radial-gradient(circle, #93c5fd, transparent)' }} />
+        <div className="absolute -bottom-24 -right-24 w-96 h-96 rounded-full opacity-23" style={{ background: 'radial-gradient(circle, #6ee7b7, transparent)' }} />
+        <div className="absolute top-1/2 left-1/4 w-48 h-48 rounded-full opacity-14" style={{ background: 'radial-gradient(circle, #67e8f9, transparent)' }} />
       </div>
 
       {/* Card */}
-      <div className="relative z-10 flex w-full max-w-xl mx-4 bg-white rounded-2xl shadow-2xl overflow-hidden"
-        style={{ boxShadow: '0 25px 60px rgba(0,0,0,0.3)' }}>
+      <div className="relative z-10 flex w-full max-w-xl mx-4 bg-white/95 rounded-2xl shadow-2xl overflow-hidden border border-blue-200/70"
+        style={{ boxShadow: '0 28px 68px rgba(12, 31, 64, 0.35)' }}>
 
         {/* Left — Form */}
-        <div className="flex-1 px-8 py-10 sm:px-10">
+        <div className="flex-1 px-8 py-10 sm:px-10 bg-gradient-to-b from-white to-slate-50/50">
           <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Bienvenido</h1>
           <p className="text-sm text-gray-400 mt-1 mb-8">Sistema de Logística y Centros de Acopio</p>
 
@@ -59,7 +59,7 @@ export default function Login() {
                   value={username}
                   onChange={e => setUsername(e.target.value)}
                   placeholder="Ingrese su usuario"
-                  className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/15 transition-all"
+                  className="w-full pl-10 pr-4 py-3 border border-blue-200 rounded-xl text-sm focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-100 transition-all"
                   required
                 />
               </div>
@@ -74,7 +74,7 @@ export default function Login() {
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/15 transition-all"
+                  className="w-full pl-10 pr-4 py-3 border border-blue-200 rounded-xl text-sm focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-100 transition-all"
                   required
                 />
               </div>
@@ -87,7 +87,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 bg-primary text-white rounded-xl font-semibold text-sm hover:bg-blue-700 active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2 shadow-sm disabled:opacity-60 mt-2"
+              className="w-full py-3 bg-gradient-to-r from-blue-600 via-teal-600 to-green-600 text-white rounded-xl font-semibold text-sm hover:from-blue-700 hover:via-teal-700 hover:to-green-700 active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2 shadow-sm disabled:opacity-60 mt-2"
             >
               {loading
                 ? <Loader2 size={16} className="animate-spin" />
@@ -104,7 +104,7 @@ export default function Login() {
 
           <button
             onClick={handleGuest}
-            className="w-full py-3 border border-gray-200 text-gray-600 rounded-xl text-sm font-medium hover:bg-gray-50 hover:border-gray-300 active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2"
+            className="w-full py-3 border border-blue-200 text-gray-600 rounded-xl text-sm font-medium hover:bg-blue-50 hover:border-teal-300 active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2"
           >
             <User size={15} strokeWidth={1.8} className="text-gray-400" />
             Acceso Invitado
@@ -120,7 +120,7 @@ export default function Login() {
 
         {/* Right — Hero */}
         <div className="hidden sm:flex flex-col justify-between w-56 p-8 text-white relative overflow-hidden shrink-0"
-          style={{ background: 'linear-gradient(145deg, #1D6ADE 0%, #0d9488 100%)' }}
+          style={{ background: 'linear-gradient(145deg, #2b67dc 0%, #148fba 45%, #0d9488 72%, #3a9f6b 100%)' }}
         >
           {/* Dot grid overlay */}
           <div className="absolute inset-0 opacity-10"
