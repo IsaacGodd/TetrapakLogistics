@@ -3,3 +3,4 @@ id,nombre,alias,horario,dias,materiales,tetrapak,movil,dias_activo,lat,lng,direc
 2,Centro Sur - Cumbres,+ Tetrapak,9:00 - 17:00,"Lun,Mié,Vie","Plástico,Cartón,Tetrapak,PET",true,false,0,25.7012,-100.3510,"Blvd. Cumbres 567, Monterrey",81 9999 0002,42,1,7.5,2,97,32
 3,Centro Este - Guadalupe,+ Tetrapak,8:30 - 16:00,"Mar,Jue,Sáb","Cartón,Papel,Tetrapak,Aluminio",true,false,0,25.6748,-100.2184,"Calle Reforma 890, Guadalupe",81 9999 0003,38,1,8.1,2,95,35
 4,Punto Móvil Plaza,Móvil,10:00 - 14:00,"Sáb,Dom","Tetrapak,Plástico,PET",true,true,7,25.6800,-100.3100,"Plaza Principal, Monterrey",81 9999 0099,15,0,0,1,90,10
+    
