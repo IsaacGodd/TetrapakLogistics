@@ -1,8 +1,62 @@
-import { useState, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Truck, Calendar, ChevronDown, Plus, Check, Download } from 'lucide-react'
 import MockMap from '../components/MockMap'
 import { diasSemana, materialesLista } from '../data/mockData'
 import { useData } from '../context/DataContext'
+
+const seedCentros = [
+  {
+    id: 9001,
+    nombre: 'Centro Norte - San Nicolás',
+    alias: '+ Tetrapak',
+    horario: '8:00 - 17:00',
+    dias: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie'],
+    materiales: ['Vidrio', 'Plástico', 'Tetrapak', 'Poliestireno'],
+    tetrapak: true,
+    movil: false,
+    dias_activo: 0,
+    lat: 25.7514,
+    lng: -100.2773,
+    direccion: 'Av. Universidad 1234, San Nicolás de los Garza',
+    telefono: '81 9999 0001',
+    capacidad: 56,
+    geofenceRadius: 180,
+  },
+  {
+    id: 9002,
+    nombre: 'Centro Sur - Cumbres',
+    alias: '+ Tetrapak',
+    horario: '9:00 - 17:00',
+    dias: ['Lun', 'Mié', 'Vie'],
+    materiales: ['Plástico', 'Cartón', 'Tetrapak', 'PET'],
+    tetrapak: true,
+    movil: false,
+    dias_activo: 0,
+    lat: 25.7012,
+    lng: -100.351,
+    direccion: 'Blvd. Cumbres 567, Monterrey',
+    telefono: '81 9999 0002',
+    capacidad: 42,
+    geofenceRadius: 180,
+  },
+  {
+    id: 9003,
+    nombre: 'Punto Móvil Plaza',
+    alias: 'Móvil',
+    horario: '10:00 - 14:00',
+    dias: ['Sáb', 'Dom'],
+    materiales: ['Tetrapak', 'Plástico', 'PET'],
+    tetrapak: true,
+    movil: true,
+    dias_activo: 7,
+    lat: 25.68,
+    lng: -100.31,
+    direccion: 'Plaza Principal, Monterrey',
+    telefono: '81 9999 0099',
+    capacidad: 15,
+    geofenceRadius: 160,
+  },
+]
 
 export default function MapaTransportistas() {
   const { centros } = useData()
@@ -12,14 +66,45 @@ export default function MapaTransportistas() {
   const [selectedCentro, setSelectedCentro] = useState(null)
   const [addedRoutes, setAddedRoutes] = useState([])
 
+  const sourceCentros = centros.length ? centros : seedCentros
+
+  const normalize = (value) => String(value ?? '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim()
+    .toLowerCase()
+
+  const diaMatches = (centro, dia) => {
+    const dias = Array.isArray(centro?.dias)
+      ? centro.dias
+      : String(centro?.dias ?? '').split(',').map(d => d.trim()).filter(Boolean)
+    const wanted = normalize(dia)
+    return dias.some(d => normalize(d) === wanted)
+  }
+
+  const autoDia = useMemo(() => {
+    if (sourceCentros.some(c => diaMatches(c, selectedDia))) return selectedDia
+    const firstWithData = diasSemana.find(dia => sourceCentros.some(c => diaMatches(c, dia)))
+    return firstWithData || selectedDia
+  }, [sourceCentros, selectedDia])
+
+  useEffect(() => {
+    if (autoDia !== selectedDia) setSelectedDia(autoDia)
+  }, [autoDia, selectedDia])
+
   const filteredCentros = useMemo(() => {
-    return centros.filter(c => {
-      const diasOk = c.dias.includes(selectedDia)
+    return sourceCentros.filter(c => {
+      const diasOk = diaMatches(c, autoDia)
       const materialOk = materialFiltro === 'Todos los materiales' ? true : c.materiales.includes(materialFiltro)
       const tetrapakOk = tetrapakFiltro === 'todos' ? true : tetrapakFiltro === 'si' ? c.tetrapak : !c.tetrapak
       return diasOk && materialOk && tetrapakOk
     })
-  }, [selectedDia, materialFiltro, tetrapakFiltro])
+  }, [sourceCentros, autoDia, materialFiltro, tetrapakFiltro])
+
+  useEffect(() => {
+    if (!selectedCentro) return
+    if (!filteredCentros.some(c => c.id === selectedCentro.id)) setSelectedCentro(null)
+  }, [filteredCentros, selectedCentro])
 
   const movilesDia = filteredCentros.filter(c => c.tetrapak).length
 
@@ -58,11 +143,10 @@ export default function MapaTransportistas() {
                     <button
                       key={dia}
                       onClick={() => setSelectedDia(dia)}
-                      className={`py-1.5 text-xs rounded-lg font-medium transition-all duration-200 active:scale-95 ${
-                        selectedDia === dia
-                          ? 'bg-primary text-white shadow-sm'
-                          : 'bg-white text-gray-500 hover:bg-gray-100 border border-gray-200'
-                      }`}
+                      className={`py-1.5 text-xs rounded-lg font-medium transition-all duration-200 active:scale-95 ${selectedDia === dia
+                        ? 'bg-primary text-white shadow-sm'
+                        : 'bg-white text-gray-500 hover:bg-gray-100 border border-gray-200'
+                        }`}
                     >
                       {dia}
                     </button>
@@ -102,17 +186,16 @@ export default function MapaTransportistas() {
             <div className="flex rounded-xl overflow-hidden border border-gray-200 text-xs font-medium">
               {[
                 { val: 'todos', label: 'Todos' },
-                { val: 'si',    label: '✓ Sí'  },
-                { val: 'no',    label: 'No'     },
+                { val: 'si', label: '✓ Sí' },
+                { val: 'no', label: 'No' },
               ].map(({ val, label }) => (
                 <button
                   key={val}
                   onClick={() => setTetrapakFiltro(val)}
-                  className={`flex-1 py-2 transition-all duration-200 active:scale-95 ${
-                    tetrapakFiltro === val
-                      ? val === 'todos' ? 'bg-gray-800 text-white' : val === 'si' ? 'bg-primary text-white' : 'bg-gray-600 text-white'
-                      : 'bg-white text-gray-500 hover:bg-gray-50'
-                  }`}
+                  className={`flex-1 py-2 transition-all duration-200 active:scale-95 ${tetrapakFiltro === val
+                    ? val === 'todos' ? 'bg-gray-800 text-white' : val === 'si' ? 'bg-primary text-white' : 'bg-gray-600 text-white'
+                    : 'bg-white text-gray-500 hover:bg-gray-50'
+                    }`}
                 >
                   {label}
                 </button>
@@ -143,34 +226,32 @@ export default function MapaTransportistas() {
                 <div
                   key={centro.id}
                   onClick={() => setSelectedCentro(centro)}
-                  className={`group p-3 rounded-xl border cursor-pointer transition-all duration-200 hover:shadow-sm ${
-                    isSelected
-                      ? 'border-primary/30 bg-blue-50 shadow-sm'
-                      : 'border-gray-100 hover:border-gray-200 bg-white'
-                  }`}
+                  className={`group p-3 rounded-xl border cursor-pointer transition-all duration-200 hover:shadow-sm ${isSelected
+                    ? 'border-primary/30 bg-blue-50 shadow-sm'
+                    : 'border-gray-100 hover:border-gray-200 bg-white'
+                    }`}
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex-1 min-w-0">
                       <p className="text-xs font-semibold text-gray-800 leading-tight">{centro.nombre}</p>
                       <div className="flex items-center gap-1 mt-1">
                         <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                          <path strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                         <span className="text-xs text-gray-500">{centro.horario}</span>
                       </div>
                       {centro.tetrapak
                         ? <span className="inline-flex items-center gap-1 text-xs font-semibold text-green-600 mt-1">
-                            <Check size={10} strokeWidth={3} /> Tetrapak
-                          </span>
+                          <Check size={10} strokeWidth={3} /> Tetrapak
+                        </span>
                         : <span className="text-xs text-gray-400 mt-1 block">Sin Tetrapak</span>
                       }
                       <p className="text-xs text-gray-400 mt-1 truncate">{centro.materiales.join(', ')}</p>
                     </div>
                     <button
                       onClick={e => { e.stopPropagation(); toggleRoute(centro) }}
-                      className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 transition-all duration-200 active:scale-90 ${
-                        isAdded ? 'bg-green-500 text-white shadow-sm' : 'bg-primary text-white shadow-sm hover:bg-blue-700'
-                      }`}
+                      className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 transition-all duration-200 active:scale-90 ${isAdded ? 'bg-green-500 text-white shadow-sm' : 'bg-primary text-white shadow-sm hover:bg-blue-700'
+                        }`}
                     >
                       {isAdded
                         ? <Check size={13} strokeWidth={2.5} />
@@ -200,24 +281,23 @@ export default function MapaTransportistas() {
               </div>
               <button onClick={() => setSelectedCentro(null)} className="text-gray-400 hover:text-gray-600 transition-colors ml-2 mt-0.5 active:scale-90">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeWidth="2" d="M6 18L18 6M6 6l12 12"/>
+                  <path strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
             <div className="space-y-2 text-xs text-gray-600">
               <InfoRow label="Materiales Aceptados" value={selectedCentro.materiales.join(', ')} />
-              <InfoRow label="Horario"    value={selectedCentro.horario} />
-              <InfoRow label="Dirección"  value={selectedCentro.direccion} />
-              <InfoRow label="Tetrapak"   value={selectedCentro.tetrapak ? 'Sí' : 'No'} />
-              <InfoRow label="Días"       value={selectedCentro.dias.join(', ')} />
+              <InfoRow label="Horario" value={selectedCentro.horario} />
+              <InfoRow label="Dirección" value={selectedCentro.direccion} />
+              <InfoRow label="Tetrapak" value={selectedCentro.tetrapak ? 'Sí' : 'No'} />
+              <InfoRow label="Días" value={selectedCentro.dias.join(', ')} />
             </div>
             <button
               onClick={() => toggleRoute(selectedCentro)}
-              className={`mt-4 w-full py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 active:scale-95 shadow-sm ${
-                addedRoutes.includes(selectedCentro.id)
-                  ? 'bg-green-500 text-white'
-                  : 'bg-primary text-white hover:bg-blue-700'
-              }`}
+              className={`mt-4 w-full py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 active:scale-95 shadow-sm ${addedRoutes.includes(selectedCentro.id)
+                ? 'bg-green-500 text-white'
+                : 'bg-primary text-white hover:bg-blue-700'
+                }`}
             >
               {addedRoutes.includes(selectedCentro.id) ? '✓ Añadido a la ruta' : '+ Añadir a la ruta'}
             </button>
@@ -227,6 +307,7 @@ export default function MapaTransportistas() {
           centros={filteredCentros}
           onMarkerClick={setSelectedCentro}
           showGeofencing={true}
+          showTransportistas={true}
           selectedCentro={selectedCentro}
           height="100%"
         />
