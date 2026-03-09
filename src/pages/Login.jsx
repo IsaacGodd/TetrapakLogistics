@@ -4,27 +4,31 @@ import { useAuth } from '../context/AuthContext'
 import { User, Lock, ArrowRight, Loader2 } from 'lucide-react'
 
 export default function Login() {
-  const [username, setUsername] = useState('')
+  const [email, setEmail]       = useState('')
   const [password, setPassword] = useState('')
   const [error, setError]       = useState('')
   const [loading, setLoading]   = useState(false)
-  const { login, loginAsGuest } = useAuth()
+  const { login, loginAsGuest, useRealApi } = useAuth()
   const navigate = useNavigate()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
     setLoading(true)
-    setTimeout(() => {
-      const result = login(username, password)
-      setLoading(false)
+    try {
+      // useRealApi → email; mock → username (sin @)
+      const result = await login(email, password)
       if (result.success) {
         const r = result.user.role
-        navigate(['admin', 'employee', 'tester'].includes(r) ? '/dashboard' : '/que-hacer')
+        if (['admin', 'employee'].includes(r)) navigate('/dashboard')
+        else if (r === 'transportista') navigate('/mapa-transportistas')
+        else navigate('/que-hacer')
       } else {
         setError(result.error)
       }
-    }, 400)
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleGuest = () => { loginAsGuest(); navigate('/que-hacer') }
@@ -51,14 +55,16 @@ export default function Login() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold text-gray-500 mb-1.5">Usuario</label>
+              <label className="block text-xs font-semibold text-gray-500 mb-1.5">
+                {useRealApi ? 'Email' : 'Usuario'}
+              </label>
               <div className="relative">
                 <User size={15} strokeWidth={1.8} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input
-                  type="text"
-                  value={username}
-                  onChange={e => setUsername(e.target.value)}
-                  placeholder="Ingrese su usuario"
+                  type={useRealApi ? 'email' : 'text'}
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  placeholder={useRealApi ? 'correo@ejemplo.com' : 'Ingrese su usuario'}
                   className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/15 transition-all"
                   required
                 />
@@ -113,8 +119,18 @@ export default function Login() {
           {/* Test hint */}
           <div className="mt-6 p-3 bg-gray-50 rounded-xl text-xs text-gray-400 space-y-0.5">
             <p className="font-semibold text-gray-500 mb-1">Cuentas de prueba:</p>
-            <p>admin / admin123 &nbsp;·&nbsp; empleado / empleado123</p>
-            <p>transportista / trans123 &nbsp;·&nbsp; tester / tester123</p>
+            {useRealApi ? (
+              <>
+                <p>admin@tetrapak.mx / admin123</p>
+                <p>empleado@tetrapak.mx / empleado123</p>
+                <p>juan@tetrapak.mx / trans123</p>
+              </>
+            ) : (
+              <>
+                <p>admin / admin123 &nbsp;·&nbsp; empleado / empleado123</p>
+                <p>transportista / trans123</p>
+              </>
+            )}
           </div>
         </div>
 
