@@ -71,6 +71,58 @@ export const distribucionMateriales = [
   { name: 'Polialuminio', value: 2,  color: '#7C3AED' },
 ]
 
+// ===================== TRANSPORTISTAS =====================
+export const transportistas = [
+  {
+    id: 't1',
+    nombre: 'Juan Pérez',
+    vehiculo: 'Camión 3.5T',
+    placa: 'NL-001-TK',
+    color: '#EF4444',
+    estado: 'en_ruta',
+    lat: 25.6866,
+    lng: -100.3161,
+    velocidad: 45,
+    rutaAsignada: [],
+  },
+  {
+    id: 't2',
+    nombre: 'María López',
+    vehiculo: 'Van de Carga',
+    placa: 'NL-002-TK',
+    color: '#10B981',
+    estado: 'descansando',
+    lat: 25.7200,
+    lng: -100.2800,
+    velocidad: 40,
+    rutaAsignada: [],
+  },
+  {
+    id: 't3',
+    nombre: 'Roberto Silva',
+    vehiculo: 'Pickup 1T',
+    placa: 'NL-003-TK',
+    color: '#F59E0B',
+    estado: 'en_ruta',
+    lat: 25.6500,
+    lng: -100.4000,
+    velocidad: 50,
+    rutaAsignada: [],
+  },
+  {
+    id: 't4',
+    nombre: 'Ana Castro',
+    vehiculo: 'Camión 5T',
+    placa: 'NL-004-TK',
+    color: '#8B5CF6',
+    estado: 'sin_asignar',
+    lat: 25.7500,
+    lng: -100.3500,
+    velocidad: 35,
+    rutaAsignada: [],
+  },
+]
+
 export const diasSemana = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
 
 export const materialesLista = [

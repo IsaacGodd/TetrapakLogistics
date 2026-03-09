@@ -1,10 +1,11 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import {
   BarChart, Bar, LineChart, Line, AreaChart, Area,
   ComposedChart, PieChart, Pie, Cell,
   XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts'
-import { Truck, Package, MapPin, TrendingUp, Users, DollarSign, Filter, Download, Check } from 'lucide-react'
+import { Truck, Package, MapPin, TrendingUp, Users, DollarSign, Filter, Download, Check, FileSpreadsheet, FileText, ChevronDown } from 'lucide-react'
+import * as XLSX from 'xlsx'
 import { useData } from '../context/DataContext'
 import {
   recoleccionMensual, tendenciaViajes, eficienciaOperativa,
@@ -46,6 +47,17 @@ function computeDistribucion(selectedData) {
 export default function Dashboard() {
   const { centros, viajes } = useData()
   const [selectedIds, setSelectedIds] = useState([])
+  const [showExportMenu, setShowExportMenu] = useState(false)
+  const exportRef = useRef(null)
+
+  // Close export menu on outside click
+  useEffect(() => {
+    function handler(e) {
+      if (exportRef.current && !exportRef.current.contains(e.target)) setShowExportMenu(false)
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [])
 
   // Sync chip selection when centros are imported
   useEffect(() => {
@@ -113,6 +125,118 @@ export default function Dashboard() {
     { key: 'costos',      label: 'Costos Operativos',    Icon: DollarSign, bg: 'bg-red-500',    fmt: v => `$${v}`,     delta: '-20%', positive: true,  deltaLabel: 'vs mes anterior' },
   ]
 
+  // ── Export Excel ─────────────────────────────────────────────────────────
+  function exportExcel() {
+    const wb = XLSX.utils.book_new()
+
+    // Hoja 1: KPIs
+    const kpiRows = [
+      ['Métrica', 'Valor'],
+      ['Viajes Totales', kpis.viajes],
+      ['Material Recolectado (Ton)', kpis.toneladas],
+      ['Centros Activos', kpis.centros],
+      ['Eficiencia de Ruta (%)', kpis.eficiencia],
+      ['Conductores Activos', kpis.conductores],
+      ['Costos Operativos ($)', kpis.costos],
+    ]
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(kpiRows), 'KPIs')
+
+    // Hoja 2: Centros seleccionados
+    const centroRows = [
+      ['Nombre', 'Dirección', 'Tetrapak', 'Capacidad (ton/sem)', 'Toneladas', 'Viajes', 'Eficiencia %', 'Costos $'],
+      ...selectedData.map(c => [
+        c.nombre, c.direccion,
+        c.tetrapak ? 'Sí' : 'No',
+        c.capacidad,
+        c.stats.toneladas, c.stats.viajes, c.stats.eficiencia, c.stats.costos,
+      ]),
+    ]
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(centroRows), 'Centros')
+
+    // Hoja 3: Viajes
+    if (viajes.length > 0) {
+      const viajeRows = [
+        ['ID', 'Fecha', 'Conductor', 'Ruta', 'Toneladas', 'Estado'],
+        ...viajes.map(v => [v.id, v.fecha, v.conductor, v.ruta, v.toneladas, v.estado]),
+      ]
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(viajeRows), 'Viajes')
+    }
+
+    const fecha = new Date().toISOString().slice(0, 10)
+    XLSX.writeFile(wb, `reporte-tetrapak-${fecha}.xlsx`)
+    setShowExportMenu(false)
+  }
+
+  // ── Export PDF (print) ────────────────────────────────────────────────────
+  function exportPDF() {
+    const fecha = new Date().toLocaleDateString('es-MX', { day: '2-digit', month: 'long', year: 'numeric' })
+    const html = `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Reporte TetrapakLogistics</title>
+  <style>
+    body { font-family: Arial, sans-serif; font-size: 11px; color: #1f2937; margin: 24px; }
+    h1 { font-size: 18px; color: #1D6ADE; margin-bottom: 4px; }
+    .sub { color: #6b7280; font-size: 10px; margin-bottom: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    th { background: #1D6ADE; color: white; padding: 6px 8px; text-align: left; font-size: 10px; }
+    td { padding: 5px 8px; border-bottom: 1px solid #e5e7eb; font-size: 10px; }
+    tr:nth-child(even) td { background: #f9fafb; }
+    .kpi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 20px; }
+    .kpi { border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px; }
+    .kpi-label { color: #6b7280; font-size: 9px; margin-bottom: 3px; }
+    .kpi-value { font-size: 16px; font-weight: bold; color: #1f2937; }
+  </style>
+</head>
+<body>
+  <h1>Reporte de Operaciones — TetrapakLogistics</h1>
+  <p class="sub">Generado el ${fecha} · Centros seleccionados: ${kpis.centros}</p>
+
+  <div class="kpi-grid">
+    <div class="kpi"><div class="kpi-label">Viajes Totales</div><div class="kpi-value">${kpis.viajes}</div></div>
+    <div class="kpi"><div class="kpi-label">Material Recolectado</div><div class="kpi-value">${kpis.toneladas} Ton</div></div>
+    <div class="kpi"><div class="kpi-label">Eficiencia de Ruta</div><div class="kpi-value">${kpis.eficiencia}%</div></div>
+    <div class="kpi"><div class="kpi-label">Conductores Activos</div><div class="kpi-value">${kpis.conductores}</div></div>
+    <div class="kpi"><div class="kpi-label">Centros Activos</div><div class="kpi-value">${kpis.centros}</div></div>
+    <div class="kpi"><div class="kpi-label">Costos Operativos</div><div class="kpi-value">$${kpis.costos.toLocaleString()}</div></div>
+  </div>
+
+  <table>
+    <thead><tr><th>Centro</th><th>Tetrapak</th><th>Toneladas</th><th>Viajes</th><th>Eficiencia %</th><th>Costos $</th></tr></thead>
+    <tbody>
+      ${selectedData.map(c => `<tr>
+        <td>${c.nombre}</td>
+        <td>${c.tetrapak ? 'Sí' : 'No'}</td>
+        <td>${c.stats.toneladas}</td>
+        <td>${c.stats.viajes}</td>
+        <td>${c.stats.eficiencia}%</td>
+        <td>$${c.stats.costos.toLocaleString()}</td>
+      </tr>`).join('')}
+    </tbody>
+  </table>
+
+  ${viajes.length > 0 ? `
+  <table>
+    <thead><tr><th>ID</th><th>Fecha</th><th>Conductor</th><th>Ruta</th><th>Toneladas</th><th>Estado</th></tr></thead>
+    <tbody>
+      ${viajes.map(v => `<tr>
+        <td>#${v.id}</td><td>${v.fecha}</td><td>${v.conductor}</td>
+        <td>${v.ruta}</td><td>${v.toneladas}</td><td>${v.estado}</td>
+      </tr>`).join('')}
+    </tbody>
+  </table>` : ''}
+</body>
+</html>`
+
+    const win = window.open('', '_blank')
+    win.document.write(html)
+    win.document.close()
+    win.focus()
+    setTimeout(() => { win.print(); win.close() }, 400)
+    setShowExportMenu(false)
+  }
+
   return (
     <div className="p-6 space-y-5 bg-gray-50 min-h-full">
       {/* Header */}
@@ -121,9 +245,31 @@ export default function Dashboard() {
           <h1 className="text-xl font-bold text-gray-900">Dashboard General</h1>
           <p className="text-sm text-gray-500 mt-0.5">Resumen de operaciones y rendimiento logístico</p>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 bg-primary text-white text-sm rounded-xl font-medium hover:bg-blue-700 transition-all active:scale-95 shadow-sm">
-          <Download size={15} strokeWidth={2} /> Exportar Reporte
-        </button>
+        <div ref={exportRef} className="relative">
+          <button
+            onClick={() => setShowExportMenu(v => !v)}
+            className="flex items-center gap-2 px-4 py-2 bg-primary text-white text-sm rounded-xl font-medium hover:bg-blue-700 transition-all active:scale-95 shadow-sm"
+          >
+            <Download size={15} strokeWidth={2} /> Exportar
+            <ChevronDown size={13} strokeWidth={2.5} className={`transition-transform ${showExportMenu ? 'rotate-180' : ''}`} />
+          </button>
+          {showExportMenu && (
+            <div className="absolute right-0 top-full mt-1 w-44 bg-white rounded-xl shadow-lg border border-gray-100 py-1 z-50">
+              <button
+                onClick={exportExcel}
+                className="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+              >
+                <FileSpreadsheet size={15} className="text-green-600" /> Excel (.xlsx)
+              </button>
+              <button
+                onClick={exportPDF}
+                className="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+              >
+                <FileText size={15} className="text-red-500" /> PDF
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* ---- FILTRO CENTROS ---- */}

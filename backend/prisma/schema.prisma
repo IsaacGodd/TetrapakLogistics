@@ -1,0 +1,162 @@
+// Prisma schema — TetrapakLogistics
+// Docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────
+// Usuarios / Autenticación
+// ─────────────────────────────────────────────
+model User {
+  id        String   @id @default(cuid())
+  nombre    String
+  email     String   @unique
+  password  String   // bcrypt hash
+  role      Role     @default(invitado)
+  avatar    String?  // URL o inicial
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relaciones
+  transportista Transportista?
+
+  @@map("users")
+}
+
+enum Role {
+  admin
+  employee
+  transportista
+  invitado
+}
+
+// ─────────────────────────────────────────────
+// Centros de Acopio
+// ─────────────────────────────────────────────
+model Centro {
+  id        String   @id @default(cuid())
+  nombre    String
+  direccion String
+  horario   String
+  telefono  String?
+  lat       Float
+  lng       Float
+  tetrapak  Boolean  @default(false)
+  movil     Boolean  @default(false)
+  capacidad Float    @default(0) // ton/semana
+  dias      String[] // ["Lun","Mié","Vie"]
+  materiales String[] // ["Tetrapak","Cartón"]
+  activo    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relaciones
+  visitas   Visita[]
+  stats     CentroStats?
+
+  @@map("centros")
+}
+
+// Estadísticas acumuladas del centro (1-a-1)
+model CentroStats {
+  id          String  @id @default(cuid())
+  centroId    String  @unique
+  toneladas   Float   @default(0)
+  viajes      Int     @default(0)
+  eficiencia  Float   @default(0) // %
+  conductores Int     @default(0)
+  costos      Float   @default(0)
+
+  centro      Centro  @relation(fields: [centroId], references: [id], onDelete: Cascade)
+
+  @@map("centro_stats")
+}
+
+// ─────────────────────────────────────────────
+// Transportistas
+// ─────────────────────────────────────────────
+model Transportista {
+  id       String            @id @default(cuid())
+  nombre   String
+  vehiculo String
+  placa    String            @unique
+  color    String            @default("#3B82F6")
+  estado   EstadoTransportista @default(sin_asignar)
+  lat      Float
+  lng      Float
+  velocidad Float            @default(45) // km/h
+  userId   String?           @unique
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  // Relaciones
+  user     User?             @relation(fields: [userId], references: [id])
+  viajes   Viaje[]
+  visitas  Visita[]
+
+  @@map("transportistas")
+}
+
+enum EstadoTransportista {
+  en_ruta
+  en_centro
+  descansando
+  sin_asignar
+}
+
+// ─────────────────────────────────────────────
+// Viajes
+// ─────────────────────────────────────────────
+model Viaje {
+  id              String        @id @default(cuid())
+  transportistaId String
+  origen          String
+  destino         String
+  distanciaKm     Float         @default(0)
+  duracionMin     Int           @default(0)
+  toneladas       Float         @default(0)
+  costo           Float         @default(0)
+  estado          EstadoViaje   @default(planificado)
+  iniciadoEn      DateTime?
+  finalizadoEn    DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  // Relaciones
+  transportista   Transportista @relation(fields: [transportistaId], references: [id])
+  visitas         Visita[]
+
+  @@map("viajes")
+}
+
+enum EstadoViaje {
+  planificado
+  en_progreso
+  completado
+  cancelado
+}
+
+// ─────────────────────────────────────────────
+// Visitas (paradas dentro de un viaje)
+// ─────────────────────────────────────────────
+model Visita {
+  id              String        @id @default(cuid())
+  viajeId         String
+  centroId        String
+  transportistaId String
+  llegadaReal     DateTime?
+  salidaReal      DateTime?
+  createdAt       DateTime      @default(now())
+
+  viaje           Viaje         @relation(fields: [viajeId], references: [id])
+  centro          Centro        @relation(fields: [centroId], references: [id])
+  transportista   Transportista @relation(fields: [transportistaId], references: [id])
+
+  @@map("visitas")
+}
