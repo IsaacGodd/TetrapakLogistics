@@ -9,8 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@react-google-maps/api": "^2.20.8",
-    "@tailwindcss/vite": "^4.2.1",
+"@tailwindcss/vite": "^4.2.1",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.577.0",
     "papaparse": "^5.5.3",
