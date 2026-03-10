@@ -26,8 +26,9 @@ export default function Perfil() {
   const { viajes } = useData()
   const imgInputRef = useRef(null)
 
-  // Profile image
-  const [profileImg, setProfileImg] = useState(null)
+  // Profile image — persisted in localStorage keyed by user id
+  const storageKey = `profileImg_${user?.id ?? 'guest'}`
+  const [profileImg, setProfileImg] = useState(() => localStorage.getItem(storageKey) || null)
   const [imgError, setImgError] = useState('')
 
   const handleImageUpload = e => {
@@ -37,7 +38,10 @@ export default function Perfil() {
     if (file.size > 5 * 1024 * 1024) { setImgError('La imagen no debe superar 5 MB'); return }
     setImgError('')
     const reader = new FileReader()
-    reader.onload = ev => setProfileImg(ev.target.result)
+    reader.onload = ev => {
+      setProfileImg(ev.target.result)
+      localStorage.setItem(storageKey, ev.target.result)
+    }
     reader.readAsDataURL(file)
     e.target.value = ''
   }

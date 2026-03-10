@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { MapPin, Calendar, ChevronDown, Info, ExternalLink } from 'lucide-react'
+import { MapPin, Calendar, ChevronDown, Info, ExternalLink, Menu, X } from 'lucide-react'
 import MockMap from '../components/MockMap'
 import { diasSemana, materialesLista } from '../data/mockData'
 import { useData } from '../context/DataContext'
@@ -97,11 +97,17 @@ export default function CentrosAcopio() {
   }, [filteredCentros, selectedCentro])
 
   const diasRows = [diasSemana.slice(0, 4), diasSemana.slice(4)]
+  const [panelOpen, setPanelOpen] = useState(false)
 
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex h-screen overflow-hidden relative">
+      {/* Mobile backdrop */}
+      {panelOpen && (
+        <div className="lg:hidden fixed inset-0 bg-black/40 z-10" onClick={() => setPanelOpen(false)} />
+      )}
+
       {/* Left Panel */}
-      <div className="w-72 shrink-0 bg-white border-r border-gray-100 flex flex-col overflow-hidden shadow-sm">
+      <div className={`absolute lg:relative inset-y-0 left-0 z-20 w-72 shrink-0 bg-white border-r border-gray-100 flex flex-col overflow-hidden shadow-xl lg:shadow-sm transition-transform duration-300 ${panelOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
 
         {/* Header */}
         <div className="p-4 border-b border-gray-100">
@@ -229,7 +235,16 @@ export default function CentrosAcopio() {
       </div>
 
       {/* Map */}
-      <div className="flex-1 relative">
+      <div className="flex-1 relative min-w-0">
+        {/* Mobile panel toggle */}
+        <button
+          onClick={() => setPanelOpen(p => !p)}
+          className="lg:hidden absolute top-3 left-3 z-20 bg-white rounded-xl px-3 py-2 shadow-md border border-gray-100 active:scale-95 transition-all flex items-center gap-1.5 text-xs font-semibold text-gray-700"
+        >
+          {panelOpen ? <X size={14} /> : <Menu size={14} />}
+          {panelOpen ? 'Cerrar' : 'Filtros'}
+        </button>
+
         {selectedCentro && (
           <div className="absolute top-4 right-4 z-10 bg-white rounded-2xl shadow-xl border border-gray-100 p-5 w-72">
             <div className="flex items-start justify-between mb-3">

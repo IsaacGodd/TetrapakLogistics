@@ -4,6 +4,7 @@ import { useState } from 'react'
 import {
   LayoutDashboard, Map, HelpCircle, History, MapPin, LogOut, Menu, X, Upload
 } from 'lucide-react'
+import logoImg from '../images/WhatsApp_Image_2026-03-10_at_9.19.57_AM-removebg-preview.png'
 
 // Per-path brand colors for active state (dark mode only)
 const navColors = {
@@ -38,10 +39,11 @@ export default function Sidebar() {
       {/* Logo */}
       <div className="px-5 py-6 border-b border-gray-100 dark:border-gray-800">
         <Link to="/dashboard" className="flex items-center gap-3 group">
-          <div className="rounded-2xl flex items-center justify-center text-white font-extrabold text-2xl shrink-0 shadow-lg transition-transform group-hover:scale-105"
-            style={{ background: 'linear-gradient(135deg, #1d6ade 0%, #0d9488 55%, #69b34c 100%)', width: 52, height: 52 }}>
-            T
-          </div>
+          <img
+            src={logoImg}
+            alt="Logo"
+            className="w-[52px] h-[52px] object-contain shrink-0 transition-transform group-hover:scale-105"
+          />
           <div className="leading-tight">
             <div className="font-extrabold text-primary text-base tracking-tight">Tetrapak</div>
             <div className="font-extrabold text-teal-600 text-base -mt-0.5 tracking-tight">Logistics</div>
