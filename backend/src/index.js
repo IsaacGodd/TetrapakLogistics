@@ -16,10 +16,18 @@ const allowedOrigins = [
   'https://tetrapak-logistics.vercel.app',
   ...(process.env.FRONTEND_URL ? [process.env.FRONTEND_URL] : []),
 ]
+
+function isAllowed(origin) {
+  if (!origin) return true
+  if (allowedOrigins.includes(origin)) return true
+  // Permite cualquier subdominio de vercel.app (preview deploys)
+  if (/^https:\/\/[\w-]+-[\w-]+\.vercel\.app$/.test(origin)) return true
+  return false
+}
+
 app.use(cors({
   origin: (origin, cb) => {
-    // Permite requests sin origin (Postman, curl, Railway health checks)
-    if (!origin || allowedOrigins.includes(origin)) return cb(null, true)
+    if (isAllowed(origin)) return cb(null, true)
     cb(new Error(`CORS bloqueado: ${origin}`))
   },
   credentials: true,
