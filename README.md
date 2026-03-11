@@ -1,288 +1,126 @@
 ♻️ Tetrapak Logistics
-Plataforma de logística inteligente para reciclaje de envases Tetrapak
+<p align="center">
+  <img src="src/images/Logo.jpeg" width="180">
+</p>
 
-Tetrapak Logistics es una plataforma web diseñada para optimizar la recolección, gestión y análisis de residuos reciclables, especialmente envases multicapa como Tetrapak.
+<h1 align="center">Tetrapak Logistics</h1>
 
-El sistema integra visualización de datos, geolocalización y gestión logística, permitiendo mejorar la eficiencia del transporte de residuos reciclables y fomentar la participación ciudadana dentro de un modelo de economía circular.
+<p align="center">
+Plataforma inteligente para la logística del reciclaje de envases Tetrapak
+</p>
 
-📚 Tabla de Contenido
+Sistema web para optimizar la recolección y transporte de envases Tetrapak, conectando centros de acopio, transportistas y ciudadanos mediante mapas, dashboards y análisis logístico.
 
-📌 Descripción del Proyecto
+</p>
+🧰 Tech Stack
+<p align="center"> <img src="https://img.shields.io/badge/frontend-Vite-blue"> <img src="https://img.shields.io/badge/style-TailwindCSS-38bdf8"> <img src="https://img.shields.io/badge/backend-Node.js-green"> <img src="https://img.shields.io/badge/language-JavaScript-yellow"> <img src="https://img.shields.io/badge/license-MIT-green"> </p>
 
-🎯 Objetivos
+🚀 Demo | Documentación
 
-⚙️ Funcionalidades del Sistema
+👉 Demo del sistema
 
-🧠 Arquitectura del Sistema
+👉 Manual de usuario
 
-💻 Tecnologías Utilizadas
+👉 Documentación del proyecto
 
-📁 Estructura del Proyecto
-
-🚀 Instalación
-
-🧭 Uso del Sistema
-
-🤝 Colaboraciones y Alianzas
-
-👨‍💻 Colaboradores
-
-📝 Notas y Funcionalidades Adicionales
-
-📜 Licencia
-
-📌 Descripción del Proyecto
-
-Tetrapak Logistics es una plataforma digital orientada a mejorar la logística de reciclaje en entornos urbanos, conectando centros de acopio, transportistas y ciudadanos mediante herramientas tecnológicas.
-
-El sistema permite:
-
-🔹 Monitorear centros de reciclaje
-
-🔹 Visualizar rutas logísticas
-
-🔹 Analizar métricas de recolección
-
-🔹 Fomentar la participación comunitaria
-
-🔹 Optimizar la planificación de transporte
-
-A través de dashboards, mapas interactivos y estadísticas de reciclaje, la plataforma facilita la toma de decisiones para mejorar la gestión de residuos.
-
-El proyecto está enfocado en fortalecer la economía circular y promover una cultura de reciclaje en Monterrey, México.
-
-🎯 Objetivos
-
-El sistema fue desarrollado con los siguientes objetivos:
-
-🔹 Facilitar la localización de centros de reciclaje
-
-🔹 Optimizar las rutas de recolección de residuos
-
-🔹 Promover la participación ciudadana
-
-🔹 Visualizar indicadores logísticos en tiempo real
-
-🔹 Analizar la eficiencia del sistema de reciclaje
-
-🔹 Apoyar iniciativas de economía circular
-
-⚙️ Funcionalidades del Sistema
-🔐 Login y Autenticación
-
-El sistema permite el acceso mediante credenciales de usuario.
-
-Tipos de acceso disponibles:
-
-🔹 Administrador
-
-🔹 Empleado
-
-🔹 Transportista
-
-🔹 Invitado con funcionalidades limitadas
-
-Cada rol tiene permisos específicos dentro de la plataforma.
+✨ Features
 
 📊 Dashboard Logístico
+<p align="center">
+  <img src="src/images/Dashboard.png" width="180">
+</p>
 
-El Dashboard General muestra indicadores clave del sistema.
+El dashboard muestra el estado general del sistema de reciclaje.
 
-Entre las métricas disponibles se encuentran:
-
-🔹 Viajes logísticos realizados
+🔹 Número total de viajes logísticos
 
 🔹 Toneladas de material recolectado
 
 🔹 Centros de acopio activos
 
-🔹 Eficiencia de rutas logísticas
-
 🔹 Conductores registrados
 
-🔹 Costos operativos del sistema
+🔹 Costos operativos
 
-Además, el sistema incluye diferentes visualizaciones para analizar el comportamiento logístico.
+🔹 Eficiencia de rutas
 
-Entre ellas:
-
-🔹 Recolección mensual por tipo de material
-
-🔹 Tendencia de viajes logísticos
-
-🔹 Evolución de la eficiencia operativa
-
-🔹 Comparación entre ingresos y costos operativos
-
-Estas métricas permiten evaluar el desempeño del sistema logístico y apoyar la toma de decisiones. 
-
-Manual de Uso_TetrapakLogistic
+También incluye gráficas de análisis logístico para visualizar tendencias.
 
 🗺️ Mapa de Transportistas
 
-El sistema incluye un mapa interactivo para planificación logística.
-
-Funciones principales del mapa:
+Mapa interactivo para planificar rutas de recolección.
 
 🔹 Visualización de centros de acopio
 
-🔹 Ubicación de transportistas y vehículos
+🔹 Ubicación de transportistas
+
+🔹 Selección de centros a visitar
 
 🔹 Cálculo automático de rutas óptimas
 
-🔹 Estimación de distancia y tiempo de recorrido
-
-Los administradores pueden seleccionar centros de acopio y transportistas para generar automáticamente la mejor ruta de recolección. 
-
-Manual de Uso_TetrapakLogistic
+🔹 Estimación de distancia y tiempo
 
 🏭 Centros de Acopio
 
-Esta sección permite localizar centros de reciclaje disponibles dentro de la ciudad.
+Permite localizar centros de reciclaje en la ciudad.
 
-La plataforma muestra información relevante como:
+🔹 Ubicación en mapa interactivo
 
-🔹 Nombre del centro de acopio
-
-🔹 Horario de operación
+🔹 Horarios de operación
 
 🔹 Materiales aceptados
 
-🔹 Disponibilidad para recibir Tetrapak
-
-🔹 Ubicación geográfica en el mapa
-
-Esto facilita que los ciudadanos puedan encontrar puntos de reciclaje cercanos y disponer correctamente sus residuos. 
-
-Manual de Uso_TetrapakLogistic
+🔹 Disponibilidad para Tetrapak
 
 🌎 Comunidad
 
-La sección de comunidad busca incentivar la participación ciudadana en el reciclaje.
-
-Incluye diferentes herramientas para reconocer y visualizar la actividad de los usuarios:
+Sistema de participación ciudadana.
 
 🔹 Reciclador del mes
 
-🔹 Estadísticas de reciclaje comunitario
+🔹 Ranking de recicladores
 
-🔹 Tabla de honor de recicladores
+🔹 Estadísticas de reciclaje
 
-🔹 Registro de actividad reciente
-
-Estas herramientas fomentan la participación y el impacto ambiental positivo dentro de la plataforma. 
-
-Manual de Uso_TetrapakLogistic
+🔹 Actividad reciente
 
 📥 Importación de Datos
 
-Los administradores pueden cargar información mediante archivos externos para actualizar la base de datos del sistema.
+Administradores pueden cargar información mediante archivos.
 
-Tipos de datos que se pueden importar:
+Tipos de datos soportados:
 
 🔹 Centros de acopio
 
 🔹 Viajes logísticos
 
-🔹 Usuarios registrados
+🔹 Usuarios
 
-Formatos de archivo compatibles:
+Formatos permitidos:
 
-    CSV
-    XLS
-    XLSX
-
-El sistema también proporciona plantillas de importación para asegurar que los datos tengan la estructura correcta antes de ser cargados. 
-
-Manual de Uso_TetrapakLogistic
+        CSV
+        XLS
+        XLSX
 
 👤 Perfil de Usuario
 
-La sección de perfil permite gestionar la información del usuario dentro del sistema.
+Gestión de cuenta dentro del sistema.
 
-Entre las funciones disponibles se encuentran:
-
-🔹 Visualización de datos del usuario
+🔹 Información del usuario
 
 🔹 Cambio de contraseña
 
 🔹 Gestión de transportistas
 
-🔹 Asignación de rutas logísticas
+🔹 Asignación de rutas
 
-Esta sección funciona como un punto central para la administración de cuentas dentro de la plataforma. 
-
-Manual de Uso_TetrapakLogistic
-
-🧠 Arquitectura del Sistema
-
-La plataforma sigue una arquitectura moderna basada en aplicaciones web.
-
-    Usuario
-       │
-    Frontend (Interfaz Web)
-       │
-    API / Backend
-       │
-    Base de Datos
-       │
-    Servicios de Mapas y Geolocalización
-
-Componentes principales:
-
-🔹 Frontend con dashboards, mapas y paneles interactivos
-
-🔹 Backend encargado del procesamiento y gestión de datos
-
-🔹 Base de datos para almacenar usuarios, rutas y centros de reciclaje
-
-🔹 Servicios externos para mapas y geolocalización
-
-💻 Tecnologías Utilizadas
-
-Frontend
-
-    HTML
-    JavaScript
-    Vite
-    TailwindCSS
-
-Backend
-
-    Node.js
-    REST API
-
-Herramientas adicionales
-
-🔹 Git para control de versiones
-
-🔹 GitHub para colaboración
-
-🔹 APIs de mapas para geolocalización
-
-🔹 herramientas de visualización de datos
-
-📁 Estructura del Proyecto
-    TetrapakLogistics
-    │
-    ├── backend
-    │
-    ├── src
-    │
-    ├── index.html
-    ├── package.json
-    ├── tailwind.config.js
-    ├── vite.config.js
-    ├── postcss.config.js
-    │
-    └── README.md
-🚀 Instalación
+⚡ Quick Start
 
 Clonar el repositorio
 
     git clone https://github.com/usuario/TetrapakLogistics.git
 
-Entrar al directorio del proyecto
+Entrar al proyecto
 
     cd TetrapakLogistics
 
@@ -290,81 +128,108 @@ Instalar dependencias
 
     npm install
 
-Ejecutar el servidor de desarrollo
+Ejecutar servidor
 
     npm run dev
-    
-🧭 Uso del Sistema
 
-Flujo general de uso del sistema:
+🧠 Arquitectura
+Usuario
 
-    Login
-      ↓
-    Dashboard
-      ↓
-    Visualización de centros
-      ↓
-    Selección de transportistas
-      ↓
-    Cálculo de rutas
-      ↓
-    Recolección de materiales
-      ↓
-    Análisis logístico
+   │
 
-Este flujo permite monitorear y optimizar las operaciones del sistema de reciclaje.
+Frontend (Vite + Tailwind)
 
-🤝 Colaboraciones y Alianzas
+   │
 
-El proyecto considera la colaboración de diversas organizaciones involucradas en sostenibilidad y reciclaje.
+Backend (Node.js)
 
-🔹 Tetra Pak
+   │
 
-Empresa internacional especializada en soluciones de envasado y reciclaje.
+Base de Datos
 
-🔹 SEDUSO
+   │
 
-Secretaría de Desarrollo Sustentable responsable de políticas ambientales.
+Servicios de Mapas
 
-🔹 Ecolana
+📂 Estructura del Proyecto
 
-Plataforma digital que conecta ciudadanos con centros de reciclaje. 
+TetrapakLogistics
 
-Manual de Uso_TetrapakLogistic
+│
 
-Estas organizaciones contribuyen al fortalecimiento de un ecosistema de reciclaje más eficiente.
+├── backend
+
+│
+
+├── src
+
+│
+
+├── index.html
+
+├── package.json
+
+├── tailwind.config.js
+
+├── vite.config.js
+
+├── postcss.config.js
+
+│
+
+└── README.md
+
+🤝 Colaboraciones
+
+El proyecto considera la colaboración de organizaciones relacionadas con reciclaje.
+
+
+🔹 Tetra Pak — soluciones de envasado y reciclaje
+
+🔹 SEDUSO — políticas ambientales en Nuevo León
+
+🔹 Ecolana — plataforma de centros de reciclaje
 
 👨‍💻 Colaboradores
-
-Proyecto desarrollado por:
 
 🔹 José Alejandro Zavala Manjarrez
 
 🔹 Isaac Hernández Pérez
 
+Tecnológico de Monterrey
 Monterrey, Nuevo León
-2025 
 
-Manual de Uso_TetrapakLogistic
+📝 Notas
 
-📝 Notas y Funcionalidades Adicionales
+El sistema también incluye funcionalidades adicionales.
 
-La plataforma incluye diversas funcionalidades adicionales que mejoran la experiencia del usuario.
+🔹 Modo oscuro
 
-🔹 Modo oscuro para reducir la fatiga visual
+🔹 Solicitudes de reciclaje
 
-🔹 Sistema de solicitudes de reciclaje
+🔹 Estadísticas ambientales
 
-🔹 Visualización de estadísticas ambientales
+🔹 Mapas interactivos
 
-🔹 Mapas interactivos de centros de acopio
+🔹 Seguimiento de actividad
 
-🔹 Seguimiento de actividad dentro del sistema
+Estas herramientas permiten mejorar la logística del reciclaje y fomentar la economía circular.
 
-Estas funciones complementan el sistema principal y fortalecen el objetivo de la plataforma: facilitar la logística del reciclaje y promover la economía circular. 
+📜 License
 
-Manual de Uso_TetrapakLogistic
+MIT License
 
-📜 Licencia
+⭐ Support
 
-Este proyecto fue desarrollado con fines académicos y de investigación en sostenibilidad, logística y economía circular.
+Si te gusta el proyecto:
+
+⭐ Dale Star al repositorio
+
+♻️ Comparte el proyecto
+
+🌎 Ayuda a promover el reciclaje
+
+
+⭐ Dale Star al repositorio
+♻️ Comparte el proyecto
+🌎 Ayuda a promover el reciclaje
