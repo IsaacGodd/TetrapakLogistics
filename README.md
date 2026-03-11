@@ -23,7 +23,7 @@ Sistema web para optimizar la recolección y transporte de envases Tetrapak, con
 
 ✨ Features
 
-📊 Dashboard Logístico
+### 📊 Dashboard Logístico
 
 El dashboard muestra el estado general del sistema de reciclaje.
 
@@ -41,7 +41,7 @@ El dashboard muestra el estado general del sistema de reciclaje.
 
 También incluye gráficas de análisis logístico para visualizar tendencias.
 
-🗺️ Mapa de Transportistas
+### 🗺️ Mapa de Transportistas
 
 Mapa interactivo para planificar rutas de recolección.
 
@@ -55,7 +55,7 @@ Mapa interactivo para planificar rutas de recolección.
   
   🔹 Estimación de distancia y tiempo
 
-🏭 Centros de Acopio
+### 🏭 Centros de Acopio
 
 Permite localizar centros de reciclaje en la ciudad.
 
@@ -67,7 +67,7 @@ Permite localizar centros de reciclaje en la ciudad.
   
   🔹 Disponibilidad para Tetrapak
 
-🌎 Comunidad
+### 🌎 Comunidad
 
 Sistema de participación ciudadana.
 
@@ -79,7 +79,7 @@ Sistema de participación ciudadana.
   
   🔹 Actividad reciente
 
-📥 Importación de Datos
+### 📥 Importación de Datos
 
 Administradores pueden cargar información mediante archivos.
 
@@ -97,7 +97,7 @@ Formatos permitidos:
         XLS
         XLSX
 
-👤 Perfil de Usuario
+### 👤 Perfil de Usuario
 
 Gestión de cuenta dentro del sistema.
 
@@ -109,7 +109,7 @@ Gestión de cuenta dentro del sistema.
   
   🔹 Asignación de rutas
 
-⚡ Quick Start
+### ⚡ Quick Start
 
 Clonar el repositorio
 
@@ -127,7 +127,7 @@ Ejecutar servidor
 
     npm run dev
 
-🧠 Arquitectura
+### 🧠 Arquitectura
 Usuario
 
    │
@@ -146,7 +146,7 @@ Base de Datos
 
 Servicios de Mapas
 
-📂 Estructura del Proyecto
+### 📂 Estructura del Proyecto
 
 TetrapakLogistics
 
@@ -174,7 +174,7 @@ TetrapakLogistics
 
 └── README.md
 
-🤝 Colaboraciones
+### 🤝 Colaboraciones
 
 El proyecto considera la colaboración de organizaciones relacionadas con reciclaje.
 
@@ -185,7 +185,7 @@ El proyecto considera la colaboración de organizaciones relacionadas con recicl
   
   🔹 Ecolana — plataforma de centros de reciclaje
 
-👨‍💻 Colaboradores
+### 👨‍💻 Colaboradores
 
   🔹 José Alejandro Zavala Manjarrez
   
@@ -194,7 +194,7 @@ El proyecto considera la colaboración de organizaciones relacionadas con recicl
 Tecnológico de Monterrey
 Monterrey, Nuevo León
 
-📝 Notas
+### 📝 Notas
 
 El sistema también incluye funcionalidades adicionales.
 
@@ -210,11 +210,11 @@ El sistema también incluye funcionalidades adicionales.
 
 Estas herramientas permiten mejorar la logística del reciclaje y fomentar la economía circular.
 
-📜 License
+### 📜 License
 
 MIT License
 
-⭐ Support
+### ⭐ Support
 
 Si te gusta el proyecto:
 
