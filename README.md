@@ -27,17 +27,17 @@ Sistema web para optimizar la recolección y transporte de envases Tetrapak, con
 
 El dashboard muestra el estado general del sistema de reciclaje.
 
-🔹 Número total de viajes logísticos
-
-🔹 Toneladas de material recolectado
-
-🔹 Centros de acopio activos
-
-🔹 Conductores registrados
-
-🔹 Costos operativos
-
-🔹 Eficiencia de rutas
+  🔹 Número total de viajes logísticos
+  
+  🔹 Toneladas de material recolectado
+  
+  🔹 Centros de acopio activos
+  
+  🔹 Conductores registrados
+  
+  🔹 Costos operativos
+  
+  🔹 Eficiencia de rutas
 
 También incluye gráficas de análisis logístico para visualizar tendencias.
 
@@ -45,39 +45,39 @@ También incluye gráficas de análisis logístico para visualizar tendencias.
 
 Mapa interactivo para planificar rutas de recolección.
 
-🔹 Visualización de centros de acopio
-
-🔹 Ubicación de transportistas
-
-🔹 Selección de centros a visitar
-
-🔹 Cálculo automático de rutas óptimas
-
-🔹 Estimación de distancia y tiempo
+  🔹 Visualización de centros de acopio
+  
+  🔹 Ubicación de transportistas
+  
+  🔹 Selección de centros a visitar
+  
+  🔹 Cálculo automático de rutas óptimas
+  
+  🔹 Estimación de distancia y tiempo
 
 🏭 Centros de Acopio
 
 Permite localizar centros de reciclaje en la ciudad.
 
-🔹 Ubicación en mapa interactivo
-
-🔹 Horarios de operación
-
-🔹 Materiales aceptados
-
-🔹 Disponibilidad para Tetrapak
+  🔹 Ubicación en mapa interactivo
+  
+  🔹 Horarios de operación
+  
+  🔹 Materiales aceptados
+  
+  🔹 Disponibilidad para Tetrapak
 
 🌎 Comunidad
 
 Sistema de participación ciudadana.
 
-🔹 Reciclador del mes
-
-🔹 Ranking de recicladores
-
-🔹 Estadísticas de reciclaje
-
-🔹 Actividad reciente
+  🔹 Reciclador del mes
+  
+  🔹 Ranking de recicladores
+  
+  🔹 Estadísticas de reciclaje
+  
+  🔹 Actividad reciente
 
 📥 Importación de Datos
 
@@ -85,11 +85,11 @@ Administradores pueden cargar información mediante archivos.
 
 Tipos de datos soportados:
 
-🔹 Centros de acopio
-
-🔹 Viajes logísticos
-
-🔹 Usuarios
+  🔹 Centros de acopio
+  
+  🔹 Viajes logísticos
+  
+  🔹 Usuarios
 
 Formatos permitidos:
 
@@ -101,13 +101,13 @@ Formatos permitidos:
 
 Gestión de cuenta dentro del sistema.
 
-🔹 Información del usuario
-
-🔹 Cambio de contraseña
-
-🔹 Gestión de transportistas
-
-🔹 Asignación de rutas
+  🔹 Información del usuario
+  
+  🔹 Cambio de contraseña
+  
+  🔹 Gestión de transportistas
+  
+  🔹 Asignación de rutas
 
 ⚡ Quick Start
 
@@ -179,17 +179,17 @@ TetrapakLogistics
 El proyecto considera la colaboración de organizaciones relacionadas con reciclaje.
 
 
-🔹 Tetra Pak — soluciones de envasado y reciclaje
-
-🔹 SEDUSO — políticas ambientales en Nuevo León
-
-🔹 Ecolana — plataforma de centros de reciclaje
+  🔹 Tetra Pak — soluciones de envasado y reciclaje
+  
+  🔹 SEDUSO — políticas ambientales en Nuevo León
+  
+  🔹 Ecolana — plataforma de centros de reciclaje
 
 👨‍💻 Colaboradores
 
-🔹 José Alejandro Zavala Manjarrez
-
-🔹 Isaac Hernández Pérez
+  🔹 José Alejandro Zavala Manjarrez
+  
+  🔹 Isaac Hernández Pérez
 
 Tecnológico de Monterrey
 Monterrey, Nuevo León
@@ -198,15 +198,15 @@ Monterrey, Nuevo León
 
 El sistema también incluye funcionalidades adicionales.
 
-🔹 Modo oscuro
-
-🔹 Solicitudes de reciclaje
-
-🔹 Estadísticas ambientales
-
-🔹 Mapas interactivos
-
-🔹 Seguimiento de actividad
+  🔹 Modo oscuro
+  
+  🔹 Solicitudes de reciclaje
+  
+  🔹 Estadísticas ambientales
+  
+  🔹 Mapas interactivos
+  
+  🔹 Seguimiento de actividad
 
 Estas herramientas permiten mejorar la logística del reciclaje y fomentar la economía circular.
 
@@ -218,8 +218,8 @@ MIT License
 
 Si te gusta el proyecto:
 
-⭐ Dale Star al repositorio
-
-♻️ Comparte el proyecto
-
-🌎 Ayuda a promover el reciclaje
+  ⭐ Dale Star al repositorio
+  
+  ♻️ Comparte el proyecto
+  
+  🌎 Ayuda a promover el reciclaje
