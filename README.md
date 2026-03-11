@@ -15,8 +15,6 @@ Sistema web para optimizar la recolección y transporte de envases Tetrapak, con
 🧰 Tech Stack
 <p align="center"> <img src="https://img.shields.io/badge/frontend-Vite-blue"> <img src="https://img.shields.io/badge/style-TailwindCSS-38bdf8"> <img src="https://img.shields.io/badge/backend-Node.js-green"> <img src="https://img.shields.io/badge/language-JavaScript-yellow"> <img src="https://img.shields.io/badge/license-MIT-green"> </p>
 
-🚀 Demo | Documentación
-
 👉 Demo del sistema
 
 👉 Manual de usuario
