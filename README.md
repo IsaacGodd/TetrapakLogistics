@@ -24,9 +24,6 @@ Sistema web para optimizar la recolección y transporte de envases Tetrapak, con
 ✨ Features
 
 📊 Dashboard Logístico
-<p align="center">
-  <img src="src/images/Dashboard.png" width="180">
-</p>
 
 El dashboard muestra el estado general del sistema de reciclaje.
 
