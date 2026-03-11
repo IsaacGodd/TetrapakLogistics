@@ -2,7 +2,7 @@ import { NavLink, Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useState } from 'react'
 import {
-  LayoutDashboard, Map, HelpCircle, History, MapPin, LogOut, Menu, X, Upload
+  LayoutDashboard, Map, HelpCircle, History, MapPin, LogOut, Menu, X, Upload, Trophy
 } from 'lucide-react'
 import logoImg from '../images/WhatsApp_Image_2026-03-10_at_9.19.57_AM-removebg-preview.png'
 
@@ -13,7 +13,8 @@ const navColors = {
   '/que-hacer': { bg: 'bg-gradient-to-r from-green-100 to-teal-50 dark:from-slate-800 dark:via-slate-800 dark:to-slate-700', text: 'text-green-700', border: 'border-l-green-600' },
   '/historia': { bg: 'bg-gradient-to-r from-blue-50 to-green-100 dark:from-slate-800 dark:via-slate-800 dark:to-slate-700', text: 'text-blue-700', border: 'border-l-blue-600' },
   '/centros-acopio': { bg: 'bg-gradient-to-r from-teal-50 to-green-100 dark:from-slate-800 dark:via-slate-800 dark:to-slate-700', text: 'text-teal-700', border: 'border-l-teal-600' },
-  '/importar': { bg: 'bg-gradient-to-r from-blue-100 to-teal-100 dark:from-slate-800 dark:via-slate-800 dark:to-slate-700', text: 'text-blue-700', border: 'border-l-blue-600' },
+  '/importar':  { bg: 'bg-gradient-to-r from-blue-100 to-teal-100 dark:from-slate-800 dark:via-slate-800 dark:to-slate-700', text: 'text-blue-700', border: 'border-l-blue-600' },
+  '/comunidad': { bg: 'bg-gradient-to-r from-green-100 to-emerald-50 dark:from-slate-800 dark:via-slate-800 dark:to-slate-700', text: 'text-green-700', border: 'border-l-green-600' },
 }
 
 const navItems = [
@@ -22,6 +23,7 @@ const navItems = [
   { path: '/que-hacer', label: '¿Qué hacer con Tetrapak?', roles: ['admin', 'employee', 'transportista', 'invitado', 'tester'], Icon: HelpCircle },
   { path: '/historia', label: 'Historia', roles: ['admin', 'employee', 'transportista', 'invitado', 'tester'], Icon: History },
   { path: '/centros-acopio', label: 'Centros de Acopio', roles: ['admin', 'employee', 'transportista', 'invitado', 'tester'], Icon: MapPin },
+  { path: '/comunidad', label: 'Comunidad', roles: ['admin', 'employee', 'transportista', 'invitado', 'tester'], Icon: Trophy },
   { path: '/importar', label: 'Importar Datos', roles: ['admin', 'employee', 'tester'], Icon: Upload },
 ]
 

@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom
 import { AuthProvider, useAuth } from './context/AuthContext'
 import { DataProvider } from './context/DataContext'
 import { ThemeProvider } from './context/ThemeContext'
+import { RecyclingProvider } from './context/RecyclingContext'
 import Sidebar from './components/Sidebar'
 import TopBar from './components/TopBar'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -13,6 +14,7 @@ import Historia from './pages/Historia'
 import CentrosAcopio from './pages/CentrosAcopio'
 import ImportarDatos from './pages/ImportarDatos'
 import Perfil from './pages/Perfil'
+import Comunidad from './pages/Comunidad'
 
 const ADMIN_ROLES = ['admin', 'employee', 'tester']
 const TRANSPORT_ROLES = ['admin', 'employee', 'transportista', 'tester']
@@ -69,6 +71,7 @@ function AppRoutes() {
           </ProtectedRoute>
         } />
         <Route path="/perfil" element={<Perfil />} />
+        <Route path="/comunidad" element={<Comunidad />} />
       </Route>
 
       <Route path="*" element={<Navigate to="/" replace />} />
@@ -82,7 +85,9 @@ export default function App() {
       <ThemeProvider>
         <AuthProvider>
           <DataProvider>
-            <AppRoutes />
+            <RecyclingProvider>
+              <AppRoutes />
+            </RecyclingProvider>
           </DataProvider>
         </AuthProvider>
       </ThemeProvider>

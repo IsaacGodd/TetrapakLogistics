@@ -6,6 +6,7 @@ const authRoutes          = require('./routes/auth')
 const centrosRoutes       = require('./routes/centros')
 const transportistasRoutes = require('./routes/transportistas')
 const viajesRoutes        = require('./routes/viajes')
+const reciclajesRoutes    = require('./routes/reciclajes')
 
 const app = express()
 
@@ -39,6 +40,7 @@ app.use('/api/auth',           authRoutes)
 app.use('/api/centros',        centrosRoutes)
 app.use('/api/transportistas', transportistasRoutes)
 app.use('/api/viajes',         viajesRoutes)
+app.use('/api/reciclajes',     reciclajesRoutes)
 
 // ── Health check ──────────────────────────────────────────────────────────────
 app.get('/api/health', (_req, res) => res.json({ ok: true, ts: new Date().toISOString() }))

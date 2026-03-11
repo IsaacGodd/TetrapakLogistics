@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useState } from 'react'
-import { MapPin, Calendar, ChevronDown, Info, ExternalLink, Menu, X } from 'lucide-react'
+import { useEffect, useMemo, useState, useRef } from 'react'
+import { MapPin, Calendar, ChevronDown, Info, ExternalLink, Menu, X, Recycle, Check } from 'lucide-react'
 import MockMap from '../components/MockMap'
 import { diasSemana, materialesLista } from '../data/mockData'
 import { useData } from '../context/DataContext'
+import { useRecycling } from '../context/RecyclingContext'
 
 const seedCentros = [
   {
@@ -98,6 +99,43 @@ export default function CentrosAcopio() {
 
   const diasRows = [diasSemana.slice(0, 4), diasSemana.slice(4)]
   const [panelOpen, setPanelOpen] = useState(false)
+
+  // ── Recycling modal ──
+  const { registerRecycling } = useRecycling()
+  const [recycleStep, setRecycleStep] = useState(null) // null | 'form' | 'impact'
+  const [recycleName, setRecycleName] = useState('')
+  const [recycleImpacto, setRecycleImpacto] = useState(null)
+  const [recycleLoading, setRecycleLoading] = useState(false)
+  const nameInputRef = useRef(null)
+
+  function todayKey(centroNombre) {
+    return `tl_recycled_today_${centroNombre}_${new Date().toISOString().slice(0, 10)}`
+  }
+  function alreadyRecycledToday(centroNombre) {
+    return Boolean(localStorage.getItem(todayKey(centroNombre)))
+  }
+
+  function openRecycleModal() {
+    setRecycleName('')
+    setRecycleImpacto(null)
+    setRecycleStep('form')
+    setTimeout(() => nameInputRef.current?.focus(), 100)
+  }
+
+  async function handleConfirmRecycle() {
+    if (!recycleName.trim() || !selectedCentro) return
+    setRecycleLoading(true)
+    try {
+      const data = await registerRecycling(recycleName.trim(), selectedCentro.nombre)
+      setRecycleImpacto(data.impacto)
+      localStorage.setItem(todayKey(selectedCentro.nombre), '1')
+      setRecycleStep('impact')
+    } catch {
+      // silently ignore — form stays open
+    } finally {
+      setRecycleLoading(false)
+    }
+  }
 
   return (
     <div className="flex h-screen overflow-hidden relative">
@@ -278,9 +316,108 @@ export default function CentrosAcopio() {
               <ExternalLink size={13} strokeWidth={2} />
               Ir a este centro
             </a>
+
+            {alreadyRecycledToday(selectedCentro.nombre) ? (
+              <div className="mt-2 flex items-center justify-center gap-1.5 w-full py-2 text-xs font-semibold text-green-700 bg-green-50 rounded-xl border border-green-200">
+                <Check size={13} strokeWidth={2.5} /> Ya reciclaste aquí hoy
+              </div>
+            ) : (
+              <button
+                onClick={openRecycleModal}
+                className="mt-2 flex items-center justify-center gap-1.5 w-full py-2.5 bg-green-600 hover:bg-green-700 text-white text-xs rounded-xl font-semibold transition-all active:scale-95 shadow-sm"
+              >
+                <Recycle size={13} strokeWidth={2} /> Registré mi reciclaje aquí
+              </button>
+            )}
             <button onClick={() => setSelectedCentro(null)} className="mt-2 w-full py-1.5 text-xs text-gray-400 hover:text-gray-600 transition-colors">Cerrar</button>
           </div>
         )}
+        {/* ── Recycling Modal ── */}
+        {recycleStep && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+            <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6 animate-in fade-in zoom-in-95 duration-200">
+
+              {recycleStep === 'form' && (
+                <>
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="w-9 h-9 bg-green-100 rounded-xl flex items-center justify-center shrink-0">
+                      <Recycle size={18} className="text-green-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-bold text-gray-900">¡Registra tu reciclaje!</h3>
+                      <p className="text-xs text-gray-500 leading-tight">{selectedCentro?.nombre}</p>
+                    </div>
+                  </div>
+                  <label className="text-xs font-semibold text-gray-600 block mb-1.5">¿Cómo te llamas?</label>
+                  <input
+                    ref={nameInputRef}
+                    type="text"
+                    value={recycleName}
+                    onChange={e => setRecycleName(e.target.value)}
+                    onKeyDown={e => e.key === 'Enter' && handleConfirmRecycle()}
+                    placeholder="Ej. Ana García"
+                    className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-200 transition-all"
+                  />
+                  <div className="flex gap-2 mt-4">
+                    <button
+                      onClick={() => setRecycleStep(null)}
+                      className="flex-1 py-2.5 rounded-xl text-xs font-semibold text-gray-600 bg-gray-100 hover:bg-gray-200 transition-all active:scale-95"
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      onClick={handleConfirmRecycle}
+                      disabled={!recycleName.trim() || recycleLoading}
+                      className="flex-1 py-2.5 rounded-xl text-xs font-semibold text-white bg-green-600 hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-95 shadow-sm"
+                    >
+                      {recycleLoading ? 'Registrando...' : 'Confirmar'}
+                    </button>
+                  </div>
+                </>
+              )}
+
+              {recycleStep === 'impact' && recycleImpacto && (
+                <>
+                  <div className="text-center mb-4">
+                    <div className="text-4xl mb-2">🌱</div>
+                    <h3 className="text-lg font-black text-gray-900">¡Gracias, {recycleName}!</h3>
+                    <p className="text-xs text-gray-500 mt-1">Tu aporte en {selectedCentro?.nombre}</p>
+                  </div>
+                  <div className="space-y-2 mb-5">
+                    <div className="flex items-center gap-3 bg-green-50 rounded-xl px-4 py-3">
+                      <span className="text-xl">♻️</span>
+                      <div>
+                        <p className="text-xs text-gray-500">Envases evitados</p>
+                        <p className="text-base font-black text-green-700">{recycleImpacto.envases} envases</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3 bg-blue-50 rounded-xl px-4 py-3">
+                      <span className="text-xl">💧</span>
+                      <div>
+                        <p className="text-xs text-gray-500">Agua ahorrada</p>
+                        <p className="text-base font-black text-blue-700">{recycleImpacto.agua} litros</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3 bg-gray-50 rounded-xl px-4 py-3">
+                      <span className="text-xl">🌍</span>
+                      <div>
+                        <p className="text-xs text-gray-500">CO₂ evitado</p>
+                        <p className="text-base font-black text-gray-700">{recycleImpacto.co2} kg</p>
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setRecycleStep(null)}
+                    className="w-full py-3 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 transition-all active:scale-95 shadow-sm"
+                  >
+                    ¡Genial! 🎉
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        )}
+
         <MockMap
           centros={filteredCentros}
           onMarkerClick={setSelectedCentro}
