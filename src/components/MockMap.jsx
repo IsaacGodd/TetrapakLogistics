@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
+import truckImg from '../images/icons/camion-neutro.png'
 
 // Fix Leaflet default icon paths with Vite
 delete L.Icon.Default.prototype._getIconUrl
@@ -31,20 +32,25 @@ function makeTruckIcon(color, isSelected = false) {
   return L.divIcon({
     className: '',
     html: `<div style="
-      width: 34px; height: 34px;
+      width: 44px; height: 44px;
       background: ${color};
       border: ${isSelected ? '3px solid #1D6ADE' : '3px solid white'};
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
+      border-radius: 10px;
       box-shadow: ${isSelected ? '0 0 0 3px rgba(29,106,222,0.4), 2px 2px 10px rgba(0,0,0,0.5)' : '2px 2px 8px rgba(0,0,0,0.4)'};
-      font-size: 16px;
-      line-height: 1;
       transform: ${isSelected ? 'scale(1.2)' : 'scale(1)'};
       transition: transform 0.2s;
-    ">🚛</div>`,
-    iconSize: [34, 34],
-    iconAnchor: [17, 17],
-    popupAnchor: [0, -20],
+      -webkit-mask-image: url(${truckImg});
+      mask-image: url(${truckImg});
+      -webkit-mask-size: 80%;
+      mask-size: 80%;
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+      -webkit-mask-position: center;
+      mask-position: center;
+    "></div>`,
+    iconSize: [44, 44],
+    iconAnchor: [22, 22],
+    popupAnchor: [0, -24],
   })
 }
 
