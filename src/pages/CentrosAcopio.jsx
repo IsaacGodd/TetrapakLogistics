@@ -239,7 +239,7 @@ export default function CentrosAcopio() {
         {/* Mobile panel toggle */}
         <button
           onClick={() => setPanelOpen(p => !p)}
-          className="lg:hidden absolute top-3 left-3 z-20 bg-white rounded-xl px-3 py-2 shadow-md border border-gray-100 active:scale-95 transition-all flex items-center gap-1.5 text-xs font-semibold text-gray-700"
+          className="lg:hidden absolute bottom-6 left-4 z-20 bg-white rounded-xl px-3 py-2 shadow-md border border-gray-100 active:scale-95 transition-all flex items-center gap-1.5 text-xs font-semibold text-gray-700"
         >
           {panelOpen ? <X size={14} /> : <Menu size={14} />}
           {panelOpen ? 'Cerrar' : 'Filtros'}

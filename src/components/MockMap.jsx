@@ -75,7 +75,7 @@ export default function MockMap({
     const map = L.map(mapRef.current, {
       center: [25.6866, -100.3161],
       zoom: 11,
-      zoomControl: true,
+      zoomControl: false,
     })
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

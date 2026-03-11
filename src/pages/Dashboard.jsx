@@ -273,16 +273,16 @@ export default function Dashboard() {
       </div>
 
       {/* ---- FILTRO CENTROS ---- */}
-      <div className="bg-white rounded-2xl border border-blue-100 p-5 shadow-sm">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
-            <Filter size={16} className="text-primary" strokeWidth={2} />
-            Filtrar por Centro de Acopio
+      <div className="bg-white rounded-2xl border border-blue-100 p-4 lg:p-5 shadow-sm">
+        <div className="flex flex-wrap items-center gap-2 mb-4">
+          <div className="flex items-center gap-1.5 text-sm font-semibold text-gray-700 shrink-0">
+            <Filter size={15} className="text-primary" strokeWidth={2} />
+            Filtrar por Centro
           </div>
-          <div className="flex gap-2 text-xs items-center">
-            <span className="text-gray-400 font-medium mr-1">{selectedIds.length}/{centros.length} seleccionados</span>
-            <button onClick={selectAll} className="px-3 py-1.5 rounded-lg bg-blue-100 hover:bg-blue-200 text-blue-700 font-semibold transition active:scale-95">Seleccionar Todos</button>
-            <button onClick={clearAll} className="px-3 py-1.5 rounded-lg bg-teal-100 hover:bg-teal-200 text-teal-700 font-semibold transition active:scale-95">Limpiar</button>
+          <div className="flex gap-2 text-xs items-center ml-auto flex-wrap">
+            <span className="text-gray-400 font-medium">{selectedIds.length}/{centros.length}</span>
+            <button onClick={selectAll} className="px-2.5 py-1.5 rounded-lg bg-blue-100 hover:bg-blue-200 text-blue-700 font-semibold transition active:scale-95 whitespace-nowrap">Todos</button>
+            <button onClick={clearAll} className="px-2.5 py-1.5 rounded-lg bg-teal-100 hover:bg-teal-200 text-teal-700 font-semibold transition active:scale-95">Limpiar</button>
           </div>
         </div>
         {centros.length === 0 ? (
@@ -322,21 +322,21 @@ export default function Dashboard() {
       </div>
 
       {/* ---- KPI CARDS ---- */}
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4">
         {kpiCards.map(({ key, label, Icon, bg, fmt, delta, positive, deltaLabel }) => (
-          <div key={key} className="bg-white rounded-2xl border border-gray-100 p-5 flex items-center justify-between shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:border-blue-200">
-            <div>
-              <p className="text-xs text-gray-500 font-medium mb-1">{label}</p>
-              <p className="text-3xl font-bold text-gray-900 leading-none transition-all duration-300">
+          <div key={key} className="bg-white rounded-2xl border border-gray-100 p-3 lg:p-5 flex items-center justify-between shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:border-blue-200 min-w-0">
+            <div className="min-w-0 flex-1 mr-2">
+              <p className="text-xs text-gray-500 font-medium mb-1 leading-tight">{label}</p>
+              <p className="text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900 leading-none transition-all duration-300 truncate">
                 {fmt(kpis[key])}
               </p>
-              <p className={`text-xs mt-2 font-semibold flex items-center gap-1 ${positive ? 'text-green-600' : 'text-red-500'}`}>
-                <span className="text-base leading-none">{positive ? '↑' : '↓'}</span>
-                <span>{delta} {deltaLabel}</span>
+              <p className={`text-xs mt-1.5 font-semibold flex items-center gap-0.5 flex-wrap ${positive ? 'text-green-600' : 'text-red-500'}`}>
+                <span className="text-sm leading-none">{positive ? '↑' : '↓'}</span>
+                <span className="truncate">{delta} <span className="hidden sm:inline">{deltaLabel}</span></span>
               </p>
             </div>
-            <div className={`w-12 h-12 ${bg} rounded-2xl flex items-center justify-center shadow-sm shrink-0`}>
-              <Icon size={22} strokeWidth={1.8} className="text-white" />
+            <div className={`w-9 h-9 lg:w-12 lg:h-12 ${bg} rounded-xl lg:rounded-2xl flex items-center justify-center shadow-sm shrink-0`}>
+              <Icon size={18} strokeWidth={1.8} className="text-white" />
             </div>
           </div>
         ))}
