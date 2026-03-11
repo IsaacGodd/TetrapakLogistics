@@ -228,8 +228,3 @@ Si te gusta el proyecto:
 ♻️ Comparte el proyecto
 
 🌎 Ayuda a promover el reciclaje
-
-
-⭐ Dale Star al repositorio
-♻️ Comparte el proyecto
-🌎 Ayuda a promover el reciclaje
