@@ -11,9 +11,19 @@ Plataforma inteligente para la logística del reciclaje de envases Tetrapak
 
 Sistema web para optimizar la recolección y transporte de envases Tetrapak, conectando centros de acopio, transportistas y ciudadanos mediante mapas, dashboards y análisis logístico.
 
+
+### 🧰 Tech Stack
+<p align="center">
+
+<img src="https://img.shields.io/badge/frontend-Vite-blue">
+<img src="https://img.shields.io/badge/style-TailwindCSS-38bdf8">
+<img src="https://img.shields.io/badge/backend-Node.js-green">
+<img src="https://img.shields.io/badge/database-PostgreSQL-blue">
+<img src="https://img.shields.io/badge/deploy-Railway-purple">
+<img src="https://img.shields.io/badge/language-JavaScript-yellow">
+<img src="https://img.shields.io/badge/license-MIT-green">
+
 </p>
-🧰 Tech Stack
-<p align="center"> <img src="https://img.shields.io/badge/frontend-Vite-blue"> <img src="https://img.shields.io/badge/style-TailwindCSS-38bdf8"> <img src="https://img.shields.io/badge/backend-Node.js-green"> <img src="https://img.shields.io/badge/language-JavaScript-yellow"> <img src="https://img.shields.io/badge/license-MIT-green"> </p>
 
 👉 Demo del sistema
 
@@ -140,11 +150,11 @@ Backend (Node.js)
 
    │
 
-Base de Datos
+PostgreSQL Database
 
    │
 
-Servicios de Mapas
+Railway Hosting
 
 ### 📂 Estructura del Proyecto
 
