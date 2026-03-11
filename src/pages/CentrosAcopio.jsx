@@ -1,5 +1,11 @@
 import { useEffect, useMemo, useState, useRef } from 'react'
 import { MapPin, Calendar, ChevronDown, Info, ExternalLink, Menu, X, Recycle, Check } from 'lucide-react'
+import plantaImg from '../images/icons/planta.png'
+import tetrapakIconImg from '../images/icons/tetrapak-icon.png'
+import gotaImg from '../images/icons/gota.png'
+import planetaImg from '../images/icons/planeta.png'
+import relojArenaImg from '../images/icons/reloj-arena.png'
+import pulgarImg from '../images/icons/pulgar.png'
 import MockMap from '../components/MockMap'
 import { diasSemana, materialesLista } from '../data/mockData'
 import { useData } from '../context/DataContext'
@@ -379,27 +385,27 @@ export default function CentrosAcopio() {
               {recycleStep === 'impact' && recycleImpacto && (
                 <>
                   <div className="text-center mb-4">
-                    <div className="text-4xl mb-2">🌱</div>
+                    <img src={plantaImg} alt="planta" className="w-14 h-14 object-contain mx-auto mb-2" />
                     <h3 className="text-lg font-black text-gray-900">¡Solicitud enviada!</h3>
                     <p className="text-xs text-gray-500 mt-1">Tu registro en {selectedCentro?.nombre}</p>
                   </div>
                   <div className="space-y-2 mb-4">
                     <div className="flex items-center gap-3 bg-green-50 rounded-xl px-4 py-3">
-                      <span className="text-xl">♻️</span>
+                      <img src={tetrapakIconImg} alt="reciclaje" className="w-8 h-8 object-contain shrink-0" />
                       <div>
                         <p className="text-xs text-gray-500">Envases evitados</p>
                         <p className="text-base font-black text-green-700">{recycleImpacto.envases} envases</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-3 bg-blue-50 rounded-xl px-4 py-3">
-                      <span className="text-xl">💧</span>
+                      <img src={gotaImg} alt="agua" className="w-8 h-8 object-contain shrink-0" />
                       <div>
                         <p className="text-xs text-gray-500">Agua ahorrada</p>
                         <p className="text-base font-black text-blue-700">{recycleImpacto.agua} litros</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-3 bg-gray-50 rounded-xl px-4 py-3">
-                      <span className="text-xl">🌍</span>
+                      <img src={planetaImg} alt="planeta" className="w-8 h-8 object-contain shrink-0" />
                       <div>
                         <p className="text-xs text-gray-500">CO₂ evitado</p>
                         <p className="text-base font-black text-gray-700">{recycleImpacto.co2} kg</p>
@@ -407,7 +413,7 @@ export default function CentrosAcopio() {
                     </div>
                   </div>
                   <div className="flex items-start gap-2 bg-amber-50 border border-amber-200 rounded-xl px-3 py-2.5 mb-4">
-                    <span className="text-base shrink-0">⏳</span>
+                    <img src={relojArenaImg} alt="pendiente" className="w-5 h-5 object-contain shrink-0 mt-0.5" />
                     <p className="text-xs text-amber-800 leading-relaxed">
                       Tu solicitud está <span className="font-semibold">pendiente de aprobación</span>. Un empleado la revisará pronto. Cuando sea aprobada, recibirás un código de confirmación y tu aporte contará en el ranking.
                     </p>
@@ -416,7 +422,7 @@ export default function CentrosAcopio() {
                     onClick={() => setRecycleStep(null)}
                     className="w-full py-3 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 transition-all active:scale-95 shadow-sm"
                   >
-                    ¡Entendido! 👍
+                    ¡Entendido! <img src={pulgarImg} alt="ok" className="w-5 h-5 object-contain inline ml-1" />
                   </button>
                 </>
               )}

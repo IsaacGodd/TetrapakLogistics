@@ -1,6 +1,11 @@
 import { useRecycling } from '../context/RecyclingContext'
 import { Trophy, Users, Recycle, Clock, CheckCircle, XCircle, HourglassIcon } from 'lucide-react'
 import { useState, useEffect } from 'react'
+import trofeoImg from '../images/icons/trofeo.png'
+import medallaOroImg from '../images/icons/medalla-oro.png'
+import medallaPlataImg from '../images/icons/medalla-plata.png'
+import medallaBronceImg from '../images/icons/medalla-bronce.png'
+import tetrapakIconImg from '../images/icons/tetrapak-icon.png'
 
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
 
@@ -19,7 +24,7 @@ function timeAgo(dateStr) {
   return `hace ${days}d`
 }
 
-const MEDALS = ['🥇', '🥈', '🥉']
+const MEDAL_IMGS = [medallaOroImg, medallaPlataImg, medallaBronceImg]
 
 const ESTADO_CONFIG = {
   pendiente:  { icon: HourglassIcon, color: 'text-amber-600', bg: 'bg-amber-50 dark:bg-amber-900/20', label: 'Pendiente' },
@@ -71,8 +76,8 @@ export default function Comunidad() {
       {topRecyclerMonth ? (
         <div className="bg-gradient-to-br from-green-500 via-emerald-500 to-teal-600 rounded-2xl p-5 text-white shadow-lg">
           <div className="flex items-start gap-4">
-            <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center shrink-0 text-3xl">
-              🏆
+            <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center shrink-0 p-2">
+              <img src={trofeoImg} alt="trofeo" className="w-full h-full object-contain" />
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-xs font-semibold uppercase tracking-wider text-white/70 mb-0.5">Reciclador del mes</p>
@@ -95,7 +100,7 @@ export default function Comunidad() {
         </div>
       ) : (
         <div className="bg-gradient-to-br from-gray-100 to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-5 border border-dashed border-gray-300 dark:border-gray-700 text-center">
-          <p className="text-2xl mb-2">🏆</p>
+          <img src={trofeoImg} alt="trofeo" className="w-12 h-12 object-contain mx-auto mb-2" />
           <p className="text-sm font-semibold text-gray-600 dark:text-gray-300">¡Sé el primero en reciclar este mes!</p>
           <p className="text-xs text-gray-400 mt-1">Ve a Centros de Acopio y registra tu reciclaje</p>
         </div>
@@ -169,7 +174,7 @@ export default function Comunidad() {
 
         {leaderboard.length === 0 ? (
           <div className="py-12 text-center">
-            <p className="text-3xl mb-2">♻️</p>
+            <img src={tetrapakIconImg} alt="reciclaje" className="w-12 h-12 object-contain mx-auto mb-2" />
             <p className="text-sm text-gray-500 dark:text-gray-400">Aún no hay reciclajes aprobados.</p>
             <p className="text-xs text-gray-400 mt-1">¡Tú puedes ser el primero!</p>
           </div>
@@ -178,9 +183,9 @@ export default function Comunidad() {
             {leaderboard.map((r, i) => (
               <div key={r.nombre} className={`flex items-center gap-3 px-5 py-3.5 ${i < 3 ? 'bg-gradient-to-r from-amber-50/60 to-transparent dark:from-amber-900/10' : ''}`}>
                 {/* Rank */}
-                <div className="w-7 text-center shrink-0">
+                <div className="w-7 flex items-center justify-center shrink-0">
                   {i < 3
-                    ? <span className="text-xl">{MEDALS[i]}</span>
+                    ? <img src={MEDAL_IMGS[i]} alt={`#${i+1}`} className="w-7 h-7 object-contain" />
                     : <span className="text-sm font-bold text-gray-400">#{i + 1}</span>
                   }
                 </div>

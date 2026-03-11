@@ -5,6 +5,8 @@ import { useRecycling } from '../context/RecyclingContext'
 import { useNotifications } from '../context/NotificationsContext'
 import { Sun, Moon, Bell, Check, X, Recycle } from 'lucide-react'
 import { useState, useRef, useEffect } from 'react'
+import trofeoImg from '../images/icons/trofeo.png'
+import palomitaImg from '../images/icons/palomita.png'
 
 function timeAgoShort(dateStr) {
   const diff = Date.now() - new Date(dateStr).getTime()
@@ -62,7 +64,7 @@ export default function TopBar() {
           to="/comunidad"
           className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-green-100 dark:bg-green-900/30 hover:bg-green-200 dark:hover:bg-green-900/50 transition-all active:scale-95 shrink-0 min-w-0"
         >
-          <span className="text-sm">🏆</span>
+          <img src={trofeoImg} alt="trofeo" className="w-5 h-5 object-contain shrink-0" />
           <span className="text-xs font-semibold text-green-800 dark:text-green-300 truncate max-w-[140px] sm:max-w-none">
             {topRecyclerMonth.nombre}
           </span>
@@ -106,7 +108,7 @@ export default function TopBar() {
                 <div className="max-h-80 overflow-y-auto">
                   {pending.length === 0 ? (
                     <div className="py-8 text-center">
-                      <p className="text-2xl mb-1">✅</p>
+                      <img src={palomitaImg} alt="ok" className="w-10 h-10 object-contain mx-auto mb-1" />
                       <p className="text-xs text-gray-500 dark:text-gray-400">Sin solicitudes pendientes</p>
                     </div>
                   ) : (
