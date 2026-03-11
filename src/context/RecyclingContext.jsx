@@ -53,7 +53,7 @@ export function RecyclingProvider({ children }) {
   }, [fetchAll])
 
   return (
-    <RecyclingContext.Provider value={{ leaderboard, topRecyclerMonth, recent, loading, registerRecycling }}>
+    <RecyclingContext.Provider value={{ leaderboard, topRecyclerMonth, recent, loading, registerRecycling, fetchAll }}>
       {children}
     </RecyclingContext.Provider>
   )

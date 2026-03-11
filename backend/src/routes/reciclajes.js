@@ -1,5 +1,6 @@
 const { Router } = require('express')
 const { PrismaClient } = require('@prisma/client')
+const { requireAuth, requireRole } = require('../middleware/auth')
 
 const router = Router()
 const prisma = new PrismaClient()
@@ -12,7 +13,11 @@ function calcImpacto(kg) {
   }
 }
 
-// POST /api/reciclajes — registrar reciclaje (público, sin auth)
+function genCodigo() {
+  return String(Math.floor(100000 + Math.random() * 900000))
+}
+
+// POST /api/reciclajes — registrar (queda pendiente)
 router.post('/', async (req, res, next) => {
   try {
     const { nombre, deviceId, centroNombre } = req.body
@@ -21,7 +26,7 @@ router.post('/', async (req, res, next) => {
     }
     const kg = +(0.3 + Math.random() * 1.2).toFixed(2)
     const reciclaje = await prisma.reciclaje.create({
-      data: { nombre: nombre.trim(), deviceId: deviceId.trim(), centroNombre: centroNombre.trim(), kg },
+      data: { nombre: nombre.trim(), deviceId: deviceId.trim(), centroNombre: centroNombre.trim(), kg, estado: 'pendiente' },
     })
     res.status(201).json({ reciclaje, impacto: calcImpacto(kg) })
   } catch (err) {
@@ -29,11 +34,12 @@ router.post('/', async (req, res, next) => {
   }
 })
 
-// GET /api/reciclajes/leaderboard — top 20 por kg total
+// GET /api/reciclajes/leaderboard — top 20 aprobados por kg total
 router.get('/leaderboard', async (_req, res, next) => {
   try {
     const rows = await prisma.reciclaje.groupBy({
       by: ['nombre'],
+      where: { estado: 'aprobado' },
       _sum: { kg: true },
       _count: { id: true },
       orderBy: { _sum: { kg: 'desc' } },
@@ -41,7 +47,7 @@ router.get('/leaderboard', async (_req, res, next) => {
     })
     const result = await Promise.all(rows.map(async (r) => {
       const last = await prisma.reciclaje.findFirst({
-        where: { nombre: r.nombre },
+        where: { nombre: r.nombre, estado: 'aprobado' },
         orderBy: { fecha: 'desc' },
         select: { centroNombre: true, fecha: true },
       })
@@ -59,7 +65,7 @@ router.get('/leaderboard', async (_req, res, next) => {
   }
 })
 
-// GET /api/reciclajes/top-month — #1 del mes actual
+// GET /api/reciclajes/top-month — #1 aprobado del mes actual
 router.get('/top-month', async (_req, res, next) => {
   try {
     const now = new Date()
@@ -68,7 +74,7 @@ router.get('/top-month', async (_req, res, next) => {
 
     const rows = await prisma.reciclaje.groupBy({
       by: ['nombre'],
-      where: { fecha: { gte: start, lte: end } },
+      where: { fecha: { gte: start, lte: end }, estado: 'aprobado' },
       _sum: { kg: true },
       _count: { id: true },
       orderBy: { _sum: { kg: 'desc' } },
@@ -78,7 +84,7 @@ router.get('/top-month', async (_req, res, next) => {
 
     const top = rows[0]
     const last = await prisma.reciclaje.findFirst({
-      where: { nombre: top.nombre, fecha: { gte: start, lte: end } },
+      where: { nombre: top.nombre, fecha: { gte: start, lte: end }, estado: 'aprobado' },
       orderBy: { fecha: 'desc' },
       select: { centroNombre: true },
     })
@@ -93,15 +99,77 @@ router.get('/top-month', async (_req, res, next) => {
   }
 })
 
-// GET /api/reciclajes/recent — últimos 10
+// GET /api/reciclajes/recent — últimos 10 aprobados
 router.get('/recent', async (_req, res, next) => {
   try {
     const items = await prisma.reciclaje.findMany({
+      where: { estado: 'aprobado' },
       orderBy: { fecha: 'desc' },
       take: 10,
       select: { id: true, nombre: true, centroNombre: true, kg: true, fecha: true },
     })
     res.json(items)
+  } catch (err) {
+    next(err)
+  }
+})
+
+// GET /api/reciclajes/pendientes — admin/employee only
+router.get('/pendientes', requireAuth, requireRole('admin', 'employee'), async (_req, res, next) => {
+  try {
+    const items = await prisma.reciclaje.findMany({
+      where: { estado: 'pendiente' },
+      orderBy: { fecha: 'desc' },
+      take: 50,
+      select: { id: true, nombre: true, centroNombre: true, kg: true, fecha: true },
+    })
+    res.json(items)
+  } catch (err) {
+    next(err)
+  }
+})
+
+// GET /api/reciclajes/mis?deviceId=xxx — historial del usuario
+router.get('/mis', async (req, res, next) => {
+  try {
+    const { deviceId } = req.query
+    if (!deviceId) return res.status(400).json({ error: 'deviceId requerido' })
+    const items = await prisma.reciclaje.findMany({
+      where: { deviceId },
+      orderBy: { fecha: 'desc' },
+      take: 20,
+      select: { id: true, nombre: true, centroNombre: true, kg: true, estado: true, codigo: true, fecha: true },
+    })
+    res.json(items)
+  } catch (err) {
+    next(err)
+  }
+})
+
+// PATCH /api/reciclajes/:id/aprobar — admin/employee only
+router.patch('/:id/aprobar', requireAuth, requireRole('admin', 'employee'), async (req, res, next) => {
+  try {
+    const { id } = req.params
+    const codigo = genCodigo()
+    const updated = await prisma.reciclaje.update({
+      where: { id },
+      data: { estado: 'aprobado', codigo },
+    })
+    res.json(updated)
+  } catch (err) {
+    next(err)
+  }
+})
+
+// PATCH /api/reciclajes/:id/rechazar — admin/employee only
+router.patch('/:id/rechazar', requireAuth, requireRole('admin', 'employee'), async (req, res, next) => {
+  try {
+    const { id } = req.params
+    const updated = await prisma.reciclaje.update({
+      where: { id },
+      data: { estado: 'rechazado' },
+    })
+    res.json(updated)
   } catch (err) {
     next(err)
   }

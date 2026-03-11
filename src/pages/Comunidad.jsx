@@ -1,5 +1,12 @@
 import { useRecycling } from '../context/RecyclingContext'
-import { Trophy, Users, Recycle, Clock } from 'lucide-react'
+import { Trophy, Users, Recycle, Clock, CheckCircle, XCircle, HourglassIcon } from 'lucide-react'
+import { useState, useEffect } from 'react'
+
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
+
+function getDeviceId() {
+  return localStorage.getItem('tl_device_id')
+}
 
 function timeAgo(dateStr) {
   const diff = Date.now() - new Date(dateStr).getTime()
@@ -14,8 +21,27 @@ function timeAgo(dateStr) {
 
 const MEDALS = ['🥇', '🥈', '🥉']
 
+const ESTADO_CONFIG = {
+  pendiente:  { icon: HourglassIcon, color: 'text-amber-600', bg: 'bg-amber-50 dark:bg-amber-900/20', label: 'Pendiente' },
+  aprobado:   { icon: CheckCircle,   color: 'text-green-600', bg: 'bg-green-50 dark:bg-green-900/20',  label: 'Aprobado' },
+  rechazado:  { icon: XCircle,       color: 'text-red-500',   bg: 'bg-red-50 dark:bg-red-900/20',      label: 'Rechazado' },
+}
+
 export default function Comunidad() {
   const { leaderboard, topRecyclerMonth, recent, loading } = useRecycling()
+  const [mis, setMis] = useState([])
+  const [misLoading, setMisLoading] = useState(false)
+
+  useEffect(() => {
+    const deviceId = getDeviceId()
+    if (!deviceId) return
+    setMisLoading(true)
+    fetch(`${BASE_URL}/api/reciclajes/mis?deviceId=${encodeURIComponent(deviceId)}`)
+      .then(r => r.json())
+      .then(data => setMis(Array.isArray(data) ? data : []))
+      .catch(() => {})
+      .finally(() => setMisLoading(false))
+  }, [])
 
   const totalPersonas = leaderboard.length
   const totalKgGlobal = leaderboard.reduce((s, r) => s + r.totalKg, 0).toFixed(1)
@@ -75,6 +101,45 @@ export default function Comunidad() {
         </div>
       )}
 
+      {/* ── Mis reciclajes ── */}
+      {mis.length > 0 && (
+        <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden">
+          <div className="px-5 py-4 border-b border-gray-100 dark:border-gray-700 flex items-center gap-2">
+            <Recycle size={16} className="text-primary" />
+            <h3 className="text-sm font-bold text-gray-800 dark:text-white">Mis reciclajes</h3>
+          </div>
+          <div className="divide-y divide-gray-50 dark:divide-gray-700">
+            {mis.map(r => {
+              const cfg = ESTADO_CONFIG[r.estado] ?? ESTADO_CONFIG.pendiente
+              const Icon = cfg.icon
+              return (
+                <div key={r.id} className="flex items-center gap-3 px-5 py-3">
+                  <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${cfg.bg}`}>
+                    <Icon size={15} className={cfg.color} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-semibold text-gray-800 dark:text-gray-100 truncate">{r.centroNombre}</p>
+                    <p className="text-xs text-gray-400">{r.kg} kg · {timeAgo(r.fecha)}</p>
+                  </div>
+                  <div className="text-right shrink-0">
+                    {r.estado === 'aprobado' && r.codigo ? (
+                      <div className="text-right">
+                        <p className="text-xs font-bold text-green-600 tracking-widest font-mono">{r.codigo}</p>
+                        <p className="text-xs text-gray-400">código</p>
+                      </div>
+                    ) : (
+                      <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${cfg.bg} ${cfg.color}`}>
+                        {cfg.label}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )}
+
       {/* ── Contadores comunidad ── */}
       <div className="grid grid-cols-2 gap-3">
         <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-4 shadow-sm">
@@ -105,7 +170,7 @@ export default function Comunidad() {
         {leaderboard.length === 0 ? (
           <div className="py-12 text-center">
             <p className="text-3xl mb-2">♻️</p>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Aún no hay recicladores registrados.</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Aún no hay reciclajes aprobados.</p>
             <p className="text-xs text-gray-400 mt-1">¡Tú puedes ser el primero!</p>
           </div>
         ) : (

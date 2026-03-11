@@ -380,10 +380,10 @@ export default function CentrosAcopio() {
                 <>
                   <div className="text-center mb-4">
                     <div className="text-4xl mb-2">🌱</div>
-                    <h3 className="text-lg font-black text-gray-900">¡Gracias, {recycleName}!</h3>
-                    <p className="text-xs text-gray-500 mt-1">Tu aporte en {selectedCentro?.nombre}</p>
+                    <h3 className="text-lg font-black text-gray-900">¡Solicitud enviada!</h3>
+                    <p className="text-xs text-gray-500 mt-1">Tu registro en {selectedCentro?.nombre}</p>
                   </div>
-                  <div className="space-y-2 mb-5">
+                  <div className="space-y-2 mb-4">
                     <div className="flex items-center gap-3 bg-green-50 rounded-xl px-4 py-3">
                       <span className="text-xl">♻️</span>
                       <div>
@@ -406,11 +406,17 @@ export default function CentrosAcopio() {
                       </div>
                     </div>
                   </div>
+                  <div className="flex items-start gap-2 bg-amber-50 border border-amber-200 rounded-xl px-3 py-2.5 mb-4">
+                    <span className="text-base shrink-0">⏳</span>
+                    <p className="text-xs text-amber-800 leading-relaxed">
+                      Tu solicitud está <span className="font-semibold">pendiente de aprobación</span>. Un empleado la revisará pronto. Cuando sea aprobada, recibirás un código de confirmación y tu aporte contará en el ranking.
+                    </p>
+                  </div>
                   <button
                     onClick={() => setRecycleStep(null)}
                     className="w-full py-3 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 transition-all active:scale-95 shadow-sm"
                   >
-                    ¡Genial! 🎉
+                    ¡Entendido! 👍
                   </button>
                 </>
               )}

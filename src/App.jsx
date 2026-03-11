@@ -3,6 +3,7 @@ import { AuthProvider, useAuth } from './context/AuthContext'
 import { DataProvider } from './context/DataContext'
 import { ThemeProvider } from './context/ThemeContext'
 import { RecyclingProvider } from './context/RecyclingContext'
+import { NotificationsProvider } from './context/NotificationsContext'
 import Sidebar from './components/Sidebar'
 import TopBar from './components/TopBar'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -86,7 +87,9 @@ export default function App() {
         <AuthProvider>
           <DataProvider>
             <RecyclingProvider>
-              <AppRoutes />
+              <NotificationsProvider>
+                <AppRoutes />
+              </NotificationsProvider>
             </RecyclingProvider>
           </DataProvider>
         </AuthProvider>

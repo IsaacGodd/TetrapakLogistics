@@ -145,13 +145,21 @@ enum EstadoViaje {
 // ─────────────────────────────────────────────
 // Reciclajes ciudadanos (sin login)
 // ─────────────────────────────────────────────
+enum EstadoReciclaje {
+  pendiente
+  aprobado
+  rechazado
+}
+
 model Reciclaje {
-  id           String   @id @default(cuid())
+  id           String          @id @default(cuid())
   nombre       String
   deviceId     String
   centroNombre String
   kg           Float
-  fecha        DateTime @default(now())
+  estado       EstadoReciclaje @default(pendiente)
+  codigo       String?
+  fecha        DateTime        @default(now())
 
   @@map("reciclajes")
 }
